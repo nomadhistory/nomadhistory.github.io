@@ -1,73 +1,130 @@
 /* ============================================================
    BASE — tokens, reset, tipografia, botões.
-   Fontes do sistema de propósito: zero requisição externa, e a
-   CSP do site não permite host nenhum de fora.
+
+   ┌──────────────────────────────────────────────────────────┐
+   │ PARA QUEM VAI APLICAR A IDENTIDADE VISUAL                 │
+   │                                                          │
+   │ Tudo que define a marca está no bloco DESIGN TOKENS       │
+   │ abaixo. Trocar os valores de lá muda o site inteiro —     │
+   │ nenhuma cor, fonte ou raio está escrito solto no resto    │
+   │ do CSS. Os três arquivos de estilo consomem só tokens.    │
+   │                                                          │
+   │ Ordem sugerida de trabalho:                              │
+   │   1. --font-display e --font-text (ver nota de fontes)   │
+   │   2. as cores de marca (--brand-*)                        │
+   │   3. --radius e --border para a "dureza" da marca         │
+   │   4. assets/wordmark.svg e assets/mark.svg                │
+   │                                                          │
+   │ NOTA SOBRE FONTES: o site não carrega nada de fora (a     │
+   │ CSP bloqueia). Para usar uma fonte própria, coloque os    │
+   │ arquivos .woff2 em assets/fonts/ e declare o @font-face   │
+   │ no fim deste arquivo — está preparado lá embaixo.         │
+   └──────────────────────────────────────────────────────────┘
    ============================================================ */
 
+/* ---- DESIGN TOKENS ---------------------------------------- */
+
 :root {
-  --paper: #faf7f2;
-  --paper-alt: #f1ece3;
-  --ink: #17130f;
-  --ink-soft: #5b5148;
-  --line: #ddd4c7;
-  --accent: #a8471f;
-  --accent-soft: #f6e7de;
-  --deep: #1d4034;
-  --card: #ffffff;
-  --shadow: 0 1px 2px rgba(23, 19, 15, .05), 0 8px 24px rgba(23, 19, 15, .06);
+  /* Cores de marca — o designer mexe aqui */
+  --brand-ink: #14100c;         /* texto e fundos escuros */
+  --brand-paper: #f7f3ec;       /* fundo claro */
+  --brand-accent: #b4441a;      /* cor de ação e destaques */
+  --brand-accent-warm: #e08a4c; /* segundo tom do gradiente */
+  --brand-deep: #16382c;        /* verde da seção de troca */
 
-  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Tipografia */
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --font-text: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --tracking-display: -.025em;
+  --tracking-eyebrow: .14em;
 
-  --wrap: 1080px;
-  --gap: 1.25rem;
-  --radius: 14px;
+  /* Forma */
+  --radius: 18px;
+  --radius-sm: 10px;
+  --border: 1px;
+
+  /* Ritmo */
+  --wrap: 1180px;
+  --section-y: clamp(4.5rem, 9vw, 8.5rem);
+
+  /* Movimento — mexer aqui afeta o site inteiro de uma vez */
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --dur: .8s;
+  --dur-fast: .32s;
+}
+
+/* ---- Derivados: saem dos tokens acima, não editar ---------- */
+
+:root {
+  --paper: var(--brand-paper);
+  --paper-alt: color-mix(in srgb, var(--brand-paper) 92%, var(--brand-ink));
+  --ink: var(--brand-ink);
+  --ink-soft: color-mix(in srgb, var(--brand-ink) 62%, var(--brand-paper));
+  --line: color-mix(in srgb, var(--brand-ink) 15%, var(--brand-paper));
+  --accent: var(--brand-accent);
+  --accent-soft: color-mix(in srgb, var(--brand-accent) 12%, var(--brand-paper));
+  --deep: var(--brand-deep);
+  --card: color-mix(in srgb, var(--brand-paper) 96%, #fff);
+  --gradient: linear-gradient(115deg, var(--brand-accent), var(--brand-accent-warm));
+  --shadow: 0 1px 2px color-mix(in srgb, var(--brand-ink) 6%, transparent),
+            0 18px 44px color-mix(in srgb, var(--brand-ink) 9%, transparent);
+  --shadow-lift: 0 2px 4px color-mix(in srgb, var(--brand-ink) 8%, transparent),
+                 0 30px 70px color-mix(in srgb, var(--brand-ink) 16%, transparent);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #12100e;
-    --paper-alt: #191512;
-    --ink: #f3ede5;
-    --ink-soft: #a99d90;
-    --line: #2f2823;
-    --accent: #e0794c;
-    --accent-soft: #2a1c14;
-    --deep: #8fbfab;
-    --card: #1c1815;
-    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .3);
+    --paper: var(--brand-ink);
+    --paper-alt: color-mix(in srgb, var(--brand-ink) 88%, var(--brand-paper));
+    --ink: var(--brand-paper);
+    --ink-soft: color-mix(in srgb, var(--brand-paper) 62%, var(--brand-ink));
+    --line: color-mix(in srgb, var(--brand-paper) 14%, var(--brand-ink));
+    --accent: color-mix(in srgb, var(--brand-accent) 55%, var(--brand-accent-warm));
+    --accent-soft: color-mix(in srgb, var(--brand-accent) 22%, var(--brand-ink));
+    --card: color-mix(in srgb, var(--brand-ink) 92%, var(--brand-paper));
+    --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 18px 44px rgba(0, 0, 0, .34);
+    --shadow-lift: 0 2px 4px rgba(0, 0, 0, .55), 0 30px 70px rgba(0, 0, 0, .45);
   }
 }
 
+/* ---- reset ------------------------------------------------ */
+
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  * { animation: none !important; transition: none !important; }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--sans);
+  font-family: var(--font-text);
   font-size: 17px;
-  line-height: 1.65;
+  line-height: 1.62;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 h1, h2, h3 {
-  font-family: var(--serif);
+  font-family: var(--font-display);
   font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -.01em;
+  line-height: 1.06;
+  letter-spacing: var(--tracking-display);
   margin: 0 0 .5em;
+  text-wrap: balance;
 }
 
-h1 { font-size: clamp(2.1rem, 5.2vw, 3.4rem); }
-h2 { font-size: clamp(1.6rem, 3.4vw, 2.3rem); }
-h3 { font-size: 1.16rem; font-family: var(--sans); font-weight: 650; letter-spacing: 0; }
+h1 { font-size: clamp(2.6rem, 6.6vw, 5.2rem); }
+h2 { font-size: clamp(2rem, 4.4vw, 3.3rem); }
+h3 {
+  font-size: 1.16rem;
+  font-family: var(--font-text);
+  font-weight: 650;
+  letter-spacing: 0;
+  line-height: 1.3;
+}
 
 p { margin: 0 0 1em; }
 p:last-child { margin-bottom: 0; }
@@ -82,49 +139,64 @@ ul { margin: 0; padding: 0; list-style: none; }
   width: 100%;
   max-width: var(--wrap);
   margin: 0 auto;
-  padding: 0 1.25rem;
+  padding: 0 1.5rem;
 }
 
 .lead {
-  font-size: 1.09rem;
+  font-size: clamp(1.04rem, 1.5vw, 1.19rem);
   color: var(--ink-soft);
-  max-width: 62ch;
+  max-width: 60ch;
+  text-wrap: pretty;
 }
 
 .eyebrow {
-  font-size: .77rem;
-  font-weight: 650;
-  letter-spacing: .1em;
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
   text-transform: uppercase;
   color: var(--accent);
-  margin: 0 0 1rem;
+  margin: 0 0 1.2rem;
+}
+.eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 2px;
+  background: var(--gradient);
 }
 
 /* ---- botões ---- */
 
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: .5rem;
-  padding: .78rem 1.35rem;
-  border: 1px solid transparent;
+  padding: .92rem 1.6rem;
+  border: var(--border) solid transparent;
   border-radius: 999px;
   font: inherit;
-  font-weight: 600;
+  font-weight: 620;
   font-size: .97rem;
   text-decoration: none;
   cursor: pointer;
-  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+  transition: transform var(--dur-fast) var(--ease),
+              box-shadow var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
 }
-.btn:hover { transform: translateY(-1px); }
-.btn:active { transform: translateY(0); }
 
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: #8f3a17; }
-@media (prefers-color-scheme: dark) {
-  .btn-primary { color: #17130f; }
-  .btn-primary:hover { background: #efa27f; }
+.btn-primary {
+  background: var(--gradient);
+  color: #fff;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--brand-accent) 28%, transparent);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--brand-accent) 38%, transparent);
 }
 
 .btn-ghost {
@@ -132,9 +204,18 @@ ul { margin: 0; padding: 0; list-style: none; }
   color: var(--ink);
   border-color: var(--line);
 }
-.btn-ghost:hover { border-color: var(--ink-soft); }
+.btn-ghost:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  color: var(--accent);
+}
 
-.btn[disabled] { opacity: .4; cursor: not-allowed; transform: none; }
+.btn[disabled] {
+  opacity: .35;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
 
 :focus-visible {
   outline: 2px solid var(--accent);
@@ -149,6 +230,19 @@ ul { margin: 0; padding: 0; list-style: none; }
   background: var(--ink);
   color: var(--paper);
   padding: .7rem 1rem;
-  z-index: 10;
+  z-index: 30;
 }
 .skip-link:focus { left: .5rem; top: .5rem; }
+
+/* ============================================================
+   FONTES PRÓPRIAS — descomentar quando a identidade trouxer os
+   arquivos. Colocar os .woff2 em assets/fonts/ e depois apontar
+   --font-display / --font-text para elas.
+
+   @font-face {
+     font-family: "Nome Da Fonte";
+     src: url("assets/fonts/nome-da-fonte.woff2") format("woff2");
+     font-weight: 400 700;
+     font-display: swap;
+   }
+   ============================================================ */

@@ -32,6 +32,7 @@
 <link rel="icon" type="image/svg+xml" href="assets/mark.svg">
 <link rel="stylesheet" href="styles-base.css">
 <link rel="stylesheet" href="styles-site.css">
+<link rel="stylesheet" href="styles-motion.css">
 
 <script type="application/ld+json">
 {
@@ -59,6 +60,11 @@
 
 <a class="skip-link" href="#main">Skip to content</a>
 
+<!-- Textura de grão sobre a página inteira. Puramente decorativa. -->
+<div class="grain" aria-hidden="true"></div>
+<!-- Progresso de leitura, preenchido pelo js/motion.js -->
+<div class="scroll-progress" aria-hidden="true"><span></span></div>
+
 <header class="site-header">
   <div class="wrap header-inner">
     <a class="brand" href="#top" aria-label="História Nômade — home">
@@ -76,11 +82,18 @@
 <main id="main">
   <span id="top"></span>
 
-  <section class="hero" id="hero" aria-labelledby="hero-title"></section>
+  <section class="hero" id="hero" aria-labelledby="hero-title">
+    <div class="hero-aura" aria-hidden="true"></div>
+  </section>
+
+  <section class="marquee-band" id="marquee" aria-hidden="true"></section>
 
   <section class="section" id="services" aria-labelledby="services-title"></section>
 
   <section class="section section-alt" id="team" aria-labelledby="team-title"></section>
+
+  <!-- Preenchida só quando CONTENT.journey.current existir -->
+  <section class="section section-journey" id="journey" hidden></section>
 
   <section class="section" id="method" aria-labelledby="method-title"></section>
 
@@ -103,5 +116,6 @@
 <script src="js/proposal-engine.js"></script>
 <script src="js/site.js"></script>
 <script src="js/proposal.js"></script>
+<script src="js/motion.js"></script>
 </body>
 </html>
