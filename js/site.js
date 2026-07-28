@@ -134,8 +134,23 @@
 
     const grid = el("div", "team-grid");
     c.members.forEach((m) => {
-      const card = el("article", "member");
+      const card = el("article", "member" + (m.photo ? " has-photo" : ""));
       card.setAttribute("data-reveal", "");
+
+      // Sem foto o card não abre buraco nem tenta carregar imagem
+      if (m.photo) {
+        const frame = el("div", "member-photo");
+        const img = document.createElement("img");
+        img.src = m.photo;
+        img.alt = m.name;
+        img.width = 900;
+        img.height = 1125;
+        img.loading = "lazy";
+        img.decoding = "async";
+        frame.appendChild(img);
+        card.appendChild(frame);
+      }
+
       card.appendChild(el("h3", null, m.name));
       card.appendChild(el("p", "role", m.role));
       card.appendChild(el("p", null, m.bio));

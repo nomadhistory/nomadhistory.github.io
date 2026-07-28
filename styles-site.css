@@ -335,6 +335,39 @@
   border-radius: 3px;
   background: var(--gradient);
 }
+/* A barra de sotaque acompanha a altura do card, foto inclusa */
+.member-photo {
+  position: relative;
+  margin-bottom: 1.4rem;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--paper-alt);
+  aspect-ratio: 4 / 5;
+  max-width: 300px;
+}
+.member-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 1.2s var(--ease);
+}
+.member:hover .member-photo img { transform: scale(1.05); }
+
+/* Véu quente por cima: costura a foto na paleta da marca, seja qual
+   for a luz de onde ela foi tirada */
+.member-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 45%,
+    color-mix(in srgb, var(--brand-accent) 16%, transparent) 100%
+  );
+}
+
 .member h3 {
   margin-bottom: .15rem;
   font-size: clamp(1.4rem, 2.2vw, 1.8rem);

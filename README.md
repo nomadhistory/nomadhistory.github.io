@@ -24,10 +24,28 @@ do `index.html` bloqueia qualquer host de fora.
 | `js/site.js` | Monta as seções a partir do `content.js`. Não tem texto dentro. |
 | `js/proposal-engine.js` | Lógica do formulário: qual pacote, quais serviços, qual acerto. Sem DOM. |
 | `js/proposal.js` | Interface do formulário. Só DOM. |
-| `styles-base.css` | Tokens de cor e tipografia, botões. |
+| `styles-base.css` | **Tokens da marca** — cor, fonte, raio, movimento. É aqui que a identidade visual entra. |
 | `styles-site.css` | Layout das seções. |
+| `styles-motion.css` | Todo o movimento. |
+| `js/motion.js` | Revelação por scroll, título linha a linha, trilha do itinerário. Puro enfeite. |
 | `dev/make-og.py` | Regera o `og-image.png` (o preview de link compartilhado). |
+| `dev/make-photos.py` | Prepara foto de perfil da equipe. |
 | `tests/test-proposal.mjs` | Testes do motor de propostas. |
+
+## Foto de perfil da equipe
+
+```bash
+python3 dev/make-photos.py marina ~/Downloads/foto.jpg --focus 0.35
+```
+
+Aceita `.jpg`, `.png` e `.heic` do iPhone. Recorta em 4:5 em volta do
+rosto (`--focus` é a altura dele, 0 = topo, 1 = base; o padrão 0.38
+serve pra retrato em pé), redimensiona pra 900px, **remove o EXIF** —
+o original carrega GPS e modelo do aparelho, que não têm o que fazer
+num site público — e salva em `assets/team/<slug>.webp`.
+
+Depois é só apontar o campo `photo` do membro em `js/content.js`.
+Membro sem foto renderiza só o texto, sem buraco no layout.
 
 ## Rodar local
 
