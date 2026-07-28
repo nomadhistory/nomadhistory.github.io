@@ -19,10 +19,12 @@ const CONTENT = {
   },
 
   hero: {
-    eyebrow: "Brand · Website · Automation · Paid traffic",
+    // Curto de propósito: cabe numa linha no celular, e o resto da
+    // explicação já está no título e no parágrafo logo abaixo.
+    eyebrow: "A travelling studio",
     title: "Every place has a story. Most hotels are sitting on theirs.",
     lead:
-      "We are a two-person studio for hospitality and tourism. A historian who finds the story your property is actually built on, and a marketer-engineer who turns it into a brand, a website and a booking machine that runs without you.",
+      "We are a two-person studio that travels for a living. A historian who digs out the story your property is actually built on, and a marketer-engineer who turns it into a brand, a website and a booking machine that runs without you.",
     primaryCta: "Get a proposal in 2 minutes",
     secondaryCta: "See what we do",
     // Prova rápida logo abaixo do hero.
@@ -31,6 +33,38 @@ const CONTENT = {
       "Built to send guests to your direct booking, not to the OTA",
       "Everything you get is yours: files, accounts, passwords",
     ],
+  },
+
+  // Faixa correndo abaixo do hero. Puramente atmosférica.
+  marquee: [
+    "Hostels",
+    "Guesthouses",
+    "Boutique hotels",
+    "Mountain lodges",
+    "Beach cabins",
+    "Family restaurants",
+    "Tour operators",
+    "Vineyards",
+    "Surf camps",
+    "Historic inns",
+  ],
+
+  // ------------------------------------------------------------
+  // ONDE ESTAMOS — a parte nômade da história. A seção só aparece
+  // quando `current` estiver preenchido; enquanto estiver vazio o
+  // site simplesmente não mostra nada, como nos contatos.
+  // TODO Tiago: preencher com o lugar real e as próximas regiões.
+  // ------------------------------------------------------------
+  journey: {
+    label: "Right now we're in",
+    current: "Vietnam",
+    since: "Working out of Southeast Asia — the route moves with the projects.",
+    nextLabel: "Where we're heading",
+    // TODO Tiago: as próximas paradas, quando souberem.
+    // Formato: "Região — mês". Vazio esconde a coluna inteira.
+    next: [],
+    note:
+      "Being somewhere is not the same as knowing it. We stay long enough to eat where the staff eats, learn what the building was before it was a hotel, and find out which story the neighbours tell about it — the one that never makes it onto the website.",
   },
 
   team: {

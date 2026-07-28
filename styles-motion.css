@@ -1,0 +1,131 @@
+/* ============================================================
+   MOTION — todo o movimento do site vive aqui.
+
+   Regras:
+   - só transform e opacity (o resto força repaint e engasga no
+     celular, que é onde o anfitrião vai abrir o link);
+   - nada de essencial depende de animação: sem JS ou com movimento
+     reduzido, o site aparece inteiro e legível;
+   - a duração e a curva saem dos tokens --dur / --ease.
+   ============================================================ */
+
+/* ---- revelação por scroll ---- */
+
+/* Estado inicial só é aplicado quando o JS marca o documento —
+   assim nada fica invisível se o script não rodar. */
+.js-motion [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.js-motion [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+.js-motion [data-reveal].is-in { will-change: auto; }
+
+/* variação lateral, usada nos cards de serviço */
+.js-motion [data-reveal="left"] { transform: translateX(-28px); }
+.js-motion [data-reveal="right"] { transform: translateX(28px); }
+.js-motion [data-reveal="scale"] { transform: scale(.965); }
+
+/* ---- tipografia cinética: linhas subindo de trás de uma máscara ---- */
+
+/* `text-wrap: balance` reequilibra a quebra DEPOIS da medição, e aí
+   cada máscara reparte o texto de um jeito diferente do que foi
+   medido — a linha quebra dentro da máscara e some no overflow.
+   Título que vai ser dividido quebra normal. */
+[data-split] { text-wrap: normal; }
+
+.line-mask {
+  display: block;
+  overflow: hidden;
+  /* respiro pras descidas (g, y, p): sem isso o overflow corta o
+     rabo das letras, e a caixa é do tamanho exato da linha */
+  padding-bottom: .16em;
+  margin-bottom: -.16em;
+}
+.line-inner {
+  display: block;
+  transform: translateY(115%);
+  transition: transform 1s var(--ease);
+  transition-delay: var(--line-delay, 0ms);
+}
+.is-in .line-inner,
+.line-mask.is-in .line-inner { transform: translateY(0); }
+
+/* ---- hero ---- */
+
+.js-motion .hero-aura {
+  animation: aura-drift 22s ease-in-out infinite alternate;
+}
+@keyframes aura-drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-4%, 3%, 0) scale(1.12); }
+}
+
+/* O aura acompanha o scroll de leve — parallax barato, só transform */
+.hero-aura { will-change: transform; }
+
+/* ---- marquee ---- */
+
+.marquee-track { animation: marquee 42s linear infinite; }
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+.marquee-band:hover .marquee-track { animation-play-state: paused; }
+
+/* ---- pin pulsando de "estamos aqui" ---- */
+
+.journey-pin::after { animation: pin-pulse 2.4s var(--ease) infinite; }
+@keyframes pin-pulse {
+  0% { transform: scale(1); opacity: .9; }
+  70% { transform: scale(2.6); opacity: 0; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+/* ---- trilha do itinerário ---- */
+
+.method-route .route-fill { transition: height 1.1s var(--ease); }
+
+/* ---- barra de progresso ---- */
+
+.scroll-progress span { transition: width .12s linear; }
+
+/* ============================================================
+   MOVIMENTO REDUZIDO — respeita a preferência do sistema.
+   Tudo estático, nada escondido.
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  .js-motion [data-reveal],
+  .js-motion [data-reveal="left"],
+  .js-motion [data-reveal="right"],
+  .js-motion [data-reveal="scale"] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .line-inner { transform: none; transition: none; }
+
+  .js-motion .hero-aura,
+  .marquee-track,
+  .journey-pin::after {
+    animation: none;
+  }
+
+  .method-route .route-fill,
+  .scroll-progress span { transition: none; }
+
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}

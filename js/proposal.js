@@ -70,7 +70,10 @@
 
     const box = el("div", "options");
     question.options.forEach((opt) => {
-      const button = el("button", "option", opt.label);
+      // O texto vai num span porque o botão tem uma camada de cor
+      // (::before) que varre por baixo dele no hover.
+      const button = el("button", "option");
+      button.appendChild(el("span", null, opt.label));
       button.type = "button";
       button.setAttribute("aria-pressed", String(answers[question.id] === opt.value));
       button.addEventListener("click", () => {
