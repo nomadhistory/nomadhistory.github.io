@@ -79,8 +79,10 @@ const CONTENT = {
         name: "Marina",
         photo: "assets/team/marina.webp",
         role: "Historian · Story and positioning",
+        // Texto escrito pela própria Marina — não reescrever sem falar
+        // com ela.
         bio:
-          "BA and teaching degree in History. She researches what your building, your family, your street and your region actually were — and turns that into the reason a guest picks you over the identical place two blocks away. Most properties describe their amenities. Almost none can say why they exist.",
+          "With a background in History, Marina uncovers the story behind every business to turn its heritage into its greatest competitive advantage. In a market crowded with generic offerings, she builds strategic positioning that emotionally connects guests to your brand's true value—making your story the definitive reason they choose you.",
       },
       {
         name: "Tiago",
