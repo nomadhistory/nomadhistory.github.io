@@ -71,15 +71,20 @@ const CONTENT = {
     title: "Who you'd be working with",
     lead:
       "Small on purpose. You talk to the two people who do the work — nobody is handed off to an account manager.",
+    // `photo` é opcional: sem ela o card renderiza só o texto, sem
+    // buraco nem imagem quebrada. Gerar com:
+    //   python3 dev/make-photos.py <slug> <foto> [--focus 0.45]
     members: [
       {
         name: "Marina",
+        photo: "", // TODO: assets/team/marina.webp
         role: "Historian · Story and positioning",
         bio:
           "BA and teaching degree in History. She researches what your building, your family, your street and your region actually were — and turns that into the reason a guest picks you over the identical place two blocks away. Most properties describe their amenities. Almost none can say why they exist.",
       },
       {
         name: "Tiago",
+        photo: "assets/team/tiago.webp",
         role: "Marketing and engineering · Build and automation",
         bio:
           "Years in software and performance marketing. He builds the brand, the website and the automations around that story, and sets up the paid traffic that feeds it. Fast sites, clean tracking, no monthly platform you'll be stuck paying for.",
