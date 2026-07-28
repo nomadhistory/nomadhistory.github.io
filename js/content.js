@@ -51,6 +51,9 @@ const CONTENT = {
           "Years in software and performance marketing. He builds the brand, the website and the automations around that story, and sets up the paid traffic that feeds it. Fast sites, clean tracking, no monthly platform you'll be stuck paying for.",
       },
     ],
+    // O argumento que separa vocês de quem faz troca-por-hospedagem.
+    note:
+      "Agencies give you a designer who has never read anything about your region, and a copywriter paid by the word. The research and the build here are done by the same two people, in the same room — which is why the story actually survives all the way into the website.",
   },
 
   services: {
