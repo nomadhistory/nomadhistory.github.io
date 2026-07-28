@@ -95,6 +95,7 @@
       grid.appendChild(card);
     });
     w.appendChild(grid);
+    if (c.note) w.appendChild(el("p", "team-note", c.note));
   }
 
   // ---- método ----
