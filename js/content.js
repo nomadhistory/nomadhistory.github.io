@@ -77,7 +77,7 @@ const CONTENT = {
     members: [
       {
         name: "Marina",
-        photo: "", // TODO: assets/team/marina.webp
+        photo: "assets/team/marina.webp",
         role: "Historian · Story and positioning",
         bio:
           "BA and teaching degree in History. She researches what your building, your family, your street and your region actually were — and turns that into the reason a guest picks you over the identical place two blocks away. Most properties describe their amenities. Almost none can say why they exist.",
