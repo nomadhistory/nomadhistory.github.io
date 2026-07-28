@@ -13,7 +13,7 @@
    │   1. --font-display e --font-text (ver nota de fontes)   │
    │   2. as cores de marca (--brand-*)                        │
    │   3. --radius e --border para a "dureza" da marca         │
-   │   4. assets/wordmark.svg e assets/mark.svg                │
+   │   4. assets/wordmark.svg (a marca em si já está pronta)   │
    │                                                          │
    │ NOTA SOBRE FONTES: o site não carrega nada de fora (a     │
    │ CSP bloqueia). Para usar uma fonte própria, coloque os    │

@@ -30,6 +30,7 @@ do `index.html` bloqueia qualquer host de fora.
 | `js/motion.js` | Revelação por scroll, título linha a linha, trilha do itinerário. Puro enfeite. |
 | `dev/make-og.py` | Regera o `og-image.png` (o preview de link compartilhado). |
 | `dev/make-photos.py` | Prepara foto de perfil da equipe. |
+| `dev/make-logo.py` | Regera a marca e os favicons a partir do PNG transparente. |
 | `tests/test-proposal.mjs` | Testes do motor de propostas. |
 
 ## Foto de perfil da equipe
@@ -89,8 +90,30 @@ resultado inventado. **Não publicar case com número que não aconteceu** — �
    ```
 
    Tem que voltar vazio. Repo limpo e página servindo `noindex` já aconteceu antes.
-4. **Wordmark definitivo** — `assets/wordmark.svg` é tipográfico e provisório
-   (usa fonte do sistema). Serve pro lançamento, mas não é o logo final.
+4. **Wordmark definitivo** — a marca (`assets/logo-mark.png`) já é a final, da
+   Marina. Só o *nome escrito* ao lado dela (`assets/wordmark.svg`) ainda é
+   tipografia de sistema, provisória.
+
+## Logo
+
+A marca vem de um PNG preto sobre transparente. Para regerar tudo:
+
+```bash
+python3 dev/make-logo.py ~/Downloads/historia-nomade-logo-transparente.png
+```
+
+Gera `logo-mark.png` (recortado no limite real, cinza+alfa pra pesar pouco) e
+os três favicons.
+
+**A marca tem que ser preta pura, sem cor.** No tema escuro o CSS aplica
+`filter: invert(1)` pra deixar ela branca — é o que impede o logo de sumir no
+fundo escuro. Qualquer cor no arquivo vira cor invertida errada.
+
+Os favicons saem com o fundo creme de propósito: ícone transparente
+desaparece na barra de abas dependendo do tema do sistema.
+
+No cabeçalho a marca aparece com o nome ao lado; abaixo de 560px o nome some e
+fica só a marca, senão o botão "Get a proposal" quebra em duas linhas.
 
 ## Domínio próprio (quando comprar)
 
