@@ -52,8 +52,18 @@ def main() -> None:
 
     margin = 84
     wordmark = font(SERIF, 34)
-    draw.text((margin, 76), "HISTÓRIA NÔMADE", font=wordmark, fill=INK)
-    draw.rectangle([margin, 128, margin + 70, 131], fill=ACCENT)
+
+    # A marca ao lado do nome, mesmo lockup do cabeçalho do site
+    mark_path = root / "assets" / "logo-mark.png"
+    text_x = margin
+    if mark_path.exists():
+        mark = Image.open(mark_path).convert("RGBA")
+        mark.thumbnail((54, 54), Image.LANCZOS)
+        image.paste(mark, (margin, 70), mark)
+        text_x = margin + mark.width + 20
+
+    draw.text((text_x, 76), "HISTÓRIA NÔMADE", font=wordmark, fill=INK)
+    draw.rectangle([text_x, 128, text_x + 70, 131], fill=ACCENT)
 
     title = font(SERIF, 62)
     lines = wrap(draw, "Every place has a story. Most hotels are sitting on theirs.", title, W - margin * 2)
