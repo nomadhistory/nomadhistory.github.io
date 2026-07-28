@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 68" width="360" height="68" role="img" aria-label="História Nômade">
+  <style>
+    .wm { fill: #17130f; font-family: "Iowan Old Style", Palatino, Georgia, "Times New Roman", serif; font-size: 30px; letter-spacing: 2.2px; }
+    .rule { fill: #a8471f; }
+    @media (prefers-color-scheme: dark) {
+      .wm { fill: #f3ede5; }
+      .rule { fill: #e0794c; }
+    }
+  </style>
+  <text class="wm" x="0" y="38">HISTÓRIA NÔMADE</text>
+  <rect class="rule" x="0" y="52" width="66" height="3" rx="1.5"/>
+</svg>
