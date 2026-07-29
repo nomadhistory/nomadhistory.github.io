@@ -88,6 +88,11 @@ const CONTENT = {
         name: "Tiago",
         photo: "assets/team/tiago.webp",
         role: "Marketing and engineering · Build and automation",
+        // Opcional, um por membro. Abre em aba nova, sem passar o
+        // referrer. Marina: é só acrescentar o mesmo bloco no card dela.
+        links: [
+          { label: "@tiagohyad", href: "https://instagram.com/tiagohyad" },
+        ],
         bio:
           "Years in software and performance marketing. He builds the brand, the website and the automations around that story, and sets up the paid traffic that feeds it. Fast sites, clean tracking, no monthly platform you'll be stuck paying for.",
       },

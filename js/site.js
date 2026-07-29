@@ -154,6 +154,19 @@
       card.appendChild(el("h3", null, m.name));
       card.appendChild(el("p", "role", m.role));
       card.appendChild(el("p", null, m.bio));
+
+      if (m.links && m.links.length) {
+        const box = el("p", "member-links");
+        m.links.forEach((l) => {
+          const a = link(l.href, l.label, "member-link");
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.referrerPolicy = "no-referrer";
+          box.appendChild(a);
+        });
+        card.appendChild(box);
+      }
+
       grid.appendChild(card);
     });
     w.appendChild(grid);
