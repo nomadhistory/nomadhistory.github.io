@@ -900,6 +900,56 @@
 
 .contact-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.8rem; }
 
+/* ---- botão flutuante de contato ---- */
+
+.fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 18; /* acima do conteúdo, abaixo do skip-link */
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .85rem 1.35rem;
+  border-radius: 999px;
+  background: var(--gradient);
+  color: #fff;
+  font-weight: 620;
+  font-size: .95rem;
+  text-decoration: none;
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--brand-accent) 38%, transparent),
+              0 2px 6px color-mix(in srgb, var(--brand-ink) 20%, transparent);
+  transition: transform var(--dur-fast) var(--ease),
+              box-shadow var(--dur-fast) var(--ease),
+              opacity var(--dur-fast) var(--ease);
+}
+.fab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px color-mix(in srgb, var(--brand-accent) 48%, transparent),
+              0 2px 6px color-mix(in srgb, var(--brand-ink) 20%, transparent);
+}
+@media (prefers-color-scheme: dark) {
+  .fab { color: #17130f; }
+}
+
+/* Recolhido enquanto a pessoa ainda está no hero, onde já existe um
+   CTA grande. Quem controla é o js/motion.js — e se ele não rodar, o
+   botão fica visível o tempo todo, que é o comportamento seguro. */
+.fab.is-tucked {
+  opacity: 0;
+  transform: translateY(12px) scale(.9);
+  pointer-events: none;
+}
+
+@media (max-width: 560px) {
+  .fab {
+    right: 1rem;
+    bottom: 1rem;
+    padding: .8rem 1.1rem;
+    font-size: .9rem;
+  }
+}
+
 /* ---- rodapé ---- */
 
 .site-footer {

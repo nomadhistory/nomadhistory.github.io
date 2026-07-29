@@ -24,7 +24,10 @@
   // vertical, pra acompanhar a quebra real do texto na tela.
 
   function splitLines(el) {
-    const text = el.textContent.trim();
+    // Guarda o texto original: a divisão vale só pra largura em que
+    // foi medida, e no celular girar a tela muda essa largura.
+    if (!el.dataset.text) el.dataset.text = el.textContent.trim();
+    const text = el.dataset.text;
     if (!text) return;
 
     // A medição só vale se a quebra final for a mesma da medida:
@@ -130,11 +133,18 @@
   const header = document.querySelector(".site-header");
   const progress = document.querySelector(".scroll-progress span");
   const aura = document.querySelector(".hero-aura");
+  const fab = document.querySelector(".fab");
+
+  // O botão flutuante começa recolhido: no hero já existe um CTA
+  // grande, e dois botões brigando ali não ajudam ninguém.
+  if (fab) fab.classList.add("is-tucked");
 
   function onScroll() {
     const y = window.scrollY;
 
     if (header) header.classList.toggle("is-stuck", y > 24);
+
+    if (fab) fab.classList.toggle("is-tucked", y < window.innerHeight * 0.6);
 
     if (progress) {
       const max = document.documentElement.scrollHeight - window.innerHeight;
@@ -163,6 +173,30 @@
     { passive: true }
   );
 
-  window.addEventListener("resize", paintRoute, { passive: true });
+  // Girar o celular muda a largura e, com ela, onde o texto quebra.
+  // Sem refazer a divisão, as máscaras ficam com o agrupamento da
+  // largura antiga e o título sai desalinhado.
+  let lastWidth = window.innerWidth;
+  let resizeTimer = null;
+
+  window.addEventListener(
+    "resize",
+    () => {
+      paintRoute();
+      if (window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        document.querySelectorAll("[data-split]").forEach((el) => {
+          const wasIn = el.classList.contains("is-in");
+          splitLines(el);
+          // já foi revelado uma vez: não esconder de novo no meio do uso
+          if (wasIn) el.classList.add("is-in");
+        });
+      }, 180);
+    },
+    { passive: true }
+  );
+
   onScroll();
 })();

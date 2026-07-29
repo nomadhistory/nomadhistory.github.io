@@ -10,11 +10,11 @@ const CONTENT = {
   brand: {
     name: "História Nômade",
     tagline: "Marketing studio for hotels, hostels and tourism",
-    // TODO Tiago: preencher antes do lançamento. Ficam VAZIOS de
-    // propósito — número inventado num site público é mensagem de
-    // cliente caindo no telefone de um desconhecido. Enquanto forem
-    // vazios, os botões correspondentes simplesmente não aparecem.
-    email: "", // ex.: "hello@historianomade.com"
+    email: "historianomadecontact@gmail.com",
+    // TODO Tiago: o WhatsApp continua vazio de propósito — número
+    // inventado num site público é mensagem de cliente caindo no
+    // telefone de um desconhecido. Enquanto estiver vazio, os botões
+    // de WhatsApp simplesmente não aparecem.
     whatsapp: "", // só dígitos, com código do país. ex.: "5511987654321"
   },
 
@@ -309,6 +309,16 @@ const CONTENT = {
     // Mostrado no lugar dos botões enquanto brand.email e brand.whatsapp
     // estiverem vazios.
     pending: "Contact details are being set up — they go live with the site.",
+
+    // Botão flutuante, presente na página inteira. Só existe se
+    // brand.email estiver preenchido.
+    floating: {
+      label: "Email us",
+      ariaLabel: "Email História Nômade",
+      subject: "Hello from your website",
+      body:
+        "Hi Marina and Tiago,\n\nI run:\nWhere:\nWhat I need:\n\n",
+    },
   },
 
   footer: {
