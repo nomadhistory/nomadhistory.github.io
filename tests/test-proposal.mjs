@@ -8,7 +8,7 @@ import assert from "node:assert/strict";
 
 const require = createRequire(import.meta.url);
 const engine = require("../js/proposal-engine.js");
-const { buildProposal, pickPackage, prioritise, visibleQuestions, PACKAGES } = engine;
+const { buildProposal, pickPackage, prioritise, QUESTIONS, PACKAGES } = engine;
 
 let passed = 0;
 function test(name, fn) {
@@ -26,36 +26,67 @@ function test(name, fn) {
 const base = {
   venue: "hostel",
   have: "old-site",
-  bottleneck: "ota",
-  settlement: "nights",
-  stay: "week",
-  offer: "room",
+  bottleneck: "amateur",
   contact: { name: "Ana", place: "Casa do Porto", where: "Porto, Portugal" },
 };
 const with_ = (extra) => Object.assign({}, base, extra);
 
 console.log("proposal engine");
 
-test("estadia longa vale mais pacote que estadia curta", () => {
-  assert.equal(pickPackage(with_({ stay: "few" })).id, "essentials");
-  assert.equal(pickPackage(with_({ stay: "week" })).id, "signature");
-  assert.equal(pickPackage(with_({ stay: "month" })).id, "residency");
+test("o formulario tem 4 passos fixos, sem ramo condicional", () => {
+  assert.equal(QUESTIONS.length, 4);
+  assert.deepEqual(
+    QUESTIONS.map((q) => q.id),
+    ["venue", "have", "bottleneck", "contact"]
+  );
+  assert.ok(
+    QUESTIONS.every((q) => !q.showIf),
+    "nenhuma pergunta pode ter showIf: o fluxo e fixo"
+  );
 });
 
-test("pagando em dinheiro, o tier vem do orcamento e nao da estadia", () => {
-  const money = { settlement: "money", stay: "month" };
-  assert.equal(pickPackage(with_({ ...money, budget: "small" })).id, "essentials");
-  assert.equal(pickPackage(with_({ ...money, budget: "mid" })).id, "signature");
-  assert.equal(pickPackage(with_({ ...money, budget: "large" })).id, "residency");
+test("quem nao tem nada precisa do pacote completo", () => {
+  assert.equal(pickPackage(with_({ have: "nothing" })).id, "expedition");
+});
+
+test("dependencia de OTA puxa o pacote completo, tenha o que tiver", () => {
+  ["nothing", "logo", "old-site", "site-no-bookings"].forEach((have) => {
+    assert.equal(pickPackage(with_({ have, bottleneck: "ota" })).id, "expedition");
+  });
+});
+
+test("site que ja funciona com problema pontual fica no menor", () => {
+  assert.equal(
+    pickPackage(with_({ have: "site-no-bookings", bottleneck: "invisible" })).id,
+    "compass"
+  );
+  assert.equal(
+    pickPackage(with_({ have: "site-no-bookings", bottleneck: "manual" })).id,
+    "compass"
+  );
+});
+
+test("o resto cai no plano do meio", () => {
+  assert.equal(pickPackage(with_({ have: "logo", bottleneck: "amateur" })).id, "landmark");
+  assert.equal(pickPackage(with_({ have: "old-site", bottleneck: "invisible" })).id, "landmark");
+});
+
+test("os tres pacotes sao alcancaveis pela arvore", () => {
+  const reached = new Set();
+  ["nothing", "logo", "old-site", "site-no-bookings"].forEach((have) => {
+    ["invisible", "amateur", "ota", "manual"].forEach((bottleneck) => {
+      reached.add(pickPackage(with_({ have, bottleneck })).id);
+    });
+  });
+  assert.deepEqual([...reached].sort(), ["compass", "expedition", "landmark"]);
 });
 
 test("o gargalo define a ordem base", () => {
   // have indefinido = nenhuma regra de "o que ja existe" dispara,
   // entao isto testa a dimensao do gargalo sozinha.
   const only = (bottleneck) => prioritise({ venue: "hostel", bottleneck })[0];
-  assert.equal(only("manual"), "automation");
   assert.equal(only("amateur"), "brand");
-  assert.equal(only("invisible"), "traffic");
+  assert.equal(only("invisible"), "channels");
   assert.equal(only("ota"), "website");
 });
 
@@ -67,7 +98,7 @@ test("com o gargalo fixo, o que ja existe muda a ordem", () => {
 });
 
 test("quem nao tem nada comeca pela identidade", () => {
-  assert.equal(prioritise(with_({ have: "nothing", bottleneck: "ota" }))[0], "brand");
+  assert.equal(prioritise(with_({ have: "nothing", bottleneck: "invisible" }))[0], "brand");
 });
 
 test("quem ja tem site que nao converte nao comeca por identidade", () => {
@@ -75,67 +106,62 @@ test("quem ja tem site que nao converte nao comeca por identidade", () => {
   assert.equal(ranked[ranked.length - 1], "brand");
 });
 
-test("restaurante prioriza trafego local", () => {
-  assert.equal(prioritise(with_({ venue: "restaurant", bottleneck: "ota" }))[0], "traffic");
+test("restaurante prioriza material visual", () => {
+  assert.equal(prioritise(with_({ venue: "restaurant", bottleneck: "amateur" }))[0], "media");
 });
 
 test("o pacote limita quantos servicos entram", () => {
-  assert.equal(buildProposal(with_({ stay: "few" })).focus.length, PACKAGES.essentials.slots);
-  assert.equal(buildProposal(with_({ stay: "week" })).focus.length, PACKAGES.signature.slots);
-  assert.equal(buildProposal(with_({ stay: "month" })).focus.length, PACKAGES.residency.slots);
-});
-
-test("cada forma de pagamento produz um acerto diferente", () => {
-  const money = buildProposal(with_({ settlement: "money", budget: "mid" })).settlement.label;
-  const nights = buildProposal(with_({ settlement: "nights" })).settlement.label;
-  const mix = buildProposal(with_({ settlement: "mix" })).settlement.label;
-  assert.equal(money, "US$2,400");
-  assert.match(nights, /^12 nights/);
-  assert.match(mix, /nights \+ US\$/);
-  assert.equal(new Set([money, nights, mix]).size, 3);
-});
-
-test("o que a pessoa oferece muda o acerto, nao so a mensagem", () => {
-  const detail = (offer) => buildProposal(with_({ settlement: "nights", offer })).settlement.detail;
-  const seen = ["room", "apartment", "room-meals", "room-experience"].map(detail);
-  assert.equal(new Set(seen).size, 4, `detalhes repetidos:\n${seen.join("\n")}`);
-  // e vale tambem no acerto misto
-  const mixed = ["room", "room-meals"].map(
-    (offer) => buildProposal(with_({ settlement: "mix", offer })).settlement.detail
+  assert.equal(
+    buildProposal(with_({ have: "site-no-bookings", bottleneck: "invisible" })).focus.length,
+    PACKAGES.compass.slots
   );
-  assert.notEqual(mixed[0], mixed[1]);
+  assert.equal(
+    buildProposal(with_({ have: "logo", bottleneck: "amateur" })).focus.length,
+    PACKAGES.landmark.slots
+  );
+  assert.equal(
+    buildProposal(with_({ have: "nothing" })).focus.length,
+    PACKAGES.expedition.slots
+  );
 });
 
-test("perguntas de estadia so aparecem quando ha troca", () => {
-  const ids = (a) => visibleQuestions(a).map((q) => q.id);
-  assert.ok(ids({ settlement: "money" }).includes("budget"));
-  assert.ok(!ids({ settlement: "money" }).includes("stay"));
-  assert.ok(ids({ settlement: "nights" }).includes("stay"));
-  assert.ok(!ids({ settlement: "nights" }).includes("budget"));
+test("o preco de lancamento aparece com a referencia anterior", () => {
+  const landmark = buildProposal(with_({ have: "logo", bottleneck: "amateur" }));
+  assert.equal(landmark.settlement.label, "US$599");
+  assert.match(landmark.settlement.detail, /down from US\$1,000/);
+
+  // Pacote sem preco anterior nao pode inventar desconto
+  const compass = buildProposal(with_({ have: "site-no-bookings", bottleneck: "invisible" }));
+  assert.equal(compass.settlement.label, "US$500");
+  assert.doesNotMatch(compass.settlement.detail, /down from/);
 });
 
 test("a mensagem carrega as respostas reais", () => {
   const msg = buildProposal(base).message;
   assert.ok(msg.includes("Casa do Porto"));
   assert.ok(msg.includes("Porto, Portugal"));
-  assert.ok(msg.includes("Signature"));
-  assert.ok(msg.includes("A private room"));
+  assert.ok(msg.includes("Landmark"));
+  assert.ok(msg.includes("US$599"));
 });
 
 // O teste que importa: nenhuma resposta e decorativa.
 test("caminhos diferentes nunca devolvem a mesma proposta", () => {
   const paths = [
-    with_({ venue: "hostel", have: "nothing", bottleneck: "amateur", stay: "few" }),
-    with_({ venue: "hotel", have: "old-site", bottleneck: "ota", stay: "week" }),
-    with_({ venue: "guesthouse", have: "logo", bottleneck: "manual", stay: "month" }),
-    with_({ venue: "restaurant", have: "site-no-bookings", bottleneck: "invisible", settlement: "money", budget: "mid" }),
-    with_({ venue: "tours", have: "logo", bottleneck: "invisible", settlement: "mix", stay: "month" }),
+    with_({ venue: "hostel", have: "nothing", bottleneck: "amateur" }),
+    with_({ venue: "hotel", have: "old-site", bottleneck: "ota" }),
+    with_({ venue: "guesthouse", have: "logo", bottleneck: "manual" }),
+    with_({ venue: "restaurant", have: "site-no-bookings", bottleneck: "invisible" }),
+    with_({ venue: "tours", have: "old-site", bottleneck: "amateur" }),
   ];
   const fingerprints = paths.map((a) => {
     const p = buildProposal(a);
-    return [p.package.id, p.focus.map((f) => f.id).join("+"), p.settlement.label, p.venueNote].join("|");
+    return [p.package.id, p.focus.map((f) => f.id).join("+"), p.venueNote].join("|");
   });
-  assert.equal(new Set(fingerprints).size, paths.length, `saidas repetidas:\n${fingerprints.join("\n")}`);
+  assert.equal(
+    new Set(fingerprints).size,
+    paths.length,
+    `saidas repetidas:\n${fingerprints.join("\n")}`
+  );
 });
 
 console.log(`\n${passed} teste(s) passaram.`);

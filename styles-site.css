@@ -452,83 +452,6 @@
   color: var(--ink);
 }
 
-/* ---- onde estamos (nômade) ---- */
-
-.section-journey {
-  background:
-    linear-gradient(180deg,
-      color-mix(in srgb, var(--brand-accent) 7%, var(--paper)),
-      var(--paper));
-}
-
-.journey-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2.5rem;
-  align-items: start;
-}
-
-.journey-now .journey-label,
-.journey-next .journey-label {
-  font-size: .74rem;
-  font-weight: 700;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: .8rem;
-}
-.journey-place {
-  font-family: var(--font-display);
-  font-size: clamp(1.9rem, 4vw, 3rem);
-  line-height: 1.05;
-  letter-spacing: var(--tracking-display);
-  margin: 0;
-}
-.journey-since { color: var(--ink-soft); font-size: .95rem; margin-top: .5rem; }
-
-/* Pontinho pulsando: "estamos aqui agora" */
-.journey-pin {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  margin-right: .6rem;
-  border-radius: 50%;
-  background: var(--accent);
-  vertical-align: middle;
-  position: relative;
-}
-.journey-pin::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 2px solid var(--accent);
-}
-
-.journey-next li {
-  position: relative;
-  padding: .7rem 0 .7rem 1.6rem;
-  border-bottom: var(--border) dashed var(--line);
-  color: var(--ink-soft);
-  font-size: 1.02rem;
-}
-.journey-next li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 1.25rem;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  border: 2px solid var(--accent);
-}
-
-.journey-note {
-  margin-top: 2.5rem;
-  max-width: 62ch;
-  color: var(--ink-soft);
-}
-
 /* ---- método: o itinerário ---- */
 
 .method-route { position: relative; }
@@ -636,10 +559,12 @@
 
 /* ---- pacotes ---- */
 
+/* Quatro planos: 260px é o mínimo que ainda cabe os quatro lado a
+   lado num laptop de 1180px sem espremer o preço. */
 .package-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-  gap: 1.4rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.2rem;
   align-items: stretch;
 }
 .package {
@@ -684,17 +609,38 @@
   line-height: 1;
   letter-spacing: var(--tracking-display);
 }
-.package .price small {
-  display: block;
-  font-family: var(--font-text);
-  font-size: .72rem;
+
+/* Preço de referência riscado, antes do valor atual */
+.package .price-was {
+  font-size: .5em;
   color: var(--ink-soft);
-  font-weight: 700;
-  letter-spacing: var(--tracking-eyebrow);
-  text-transform: uppercase;
-  margin-bottom: .45rem;
+  margin-right: .5rem;
+  text-decoration-thickness: 2px;
+  vertical-align: middle;
 }
+
+/* Plano sob consulta: sem número, então sem o peso do número */
+.package .price-custom {
+  font-size: clamp(1.6rem, 2.4vw, 2rem);
+  color: var(--accent);
+}
+
+.package .price-note {
+  font-size: .78rem;
+  line-height: 1.35;
+  color: var(--accent);
+  margin: .6rem 0 0;
+}
+
 .package .timeline { font-size: .88rem; color: var(--ink-soft); margin: .6rem 0 1.4rem; }
+
+/* CTA do plano sob consulta, colado no fim do card */
+.package .package-cta {
+  margin-top: 1.3rem;
+  width: 100%;
+  padding: .7rem 1.1rem;
+  font-size: .9rem;
+}
 .package ul {
   border-top: var(--border) solid var(--line);
   padding-top: 1.3rem;
@@ -716,55 +662,6 @@
 }
 
 .packages-note { margin-top: 2rem; font-size: .93rem; color: var(--ink-soft); }
-
-/* ---- troca ---- */
-
-.section-trade {
-  background: var(--deep);
-  color: var(--brand-paper);
-  overflow: hidden;
-}
-.section-trade::before {
-  content: "";
-  position: absolute;
-  bottom: -40%;
-  left: -10%;
-  width: 60vw;
-  height: 60vw;
-  max-width: 760px;
-  max-height: 760px;
-  border-radius: 50%;
-  pointer-events: none;
-  background: radial-gradient(circle,
-    color-mix(in srgb, var(--brand-accent) 22%, transparent) 0%,
-    transparent 65%);
-  filter: blur(30px);
-}
-.section-trade .wrap { position: relative; z-index: 1; }
-.section-trade h2,
-.section-trade h3 { color: var(--brand-paper); }
-.section-trade .lead,
-.section-trade .trade-point p { color: color-mix(in srgb, var(--brand-paper) 74%, transparent); }
-.section-trade .section-index { color: var(--brand-accent-warm); }
-.section-trade .eyebrow::before { background: var(--brand-accent-warm); }
-
-.trade-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 2.2rem;
-  margin-bottom: 2.8rem;
-}
-.trade-point h3 { font-size: 1.15rem; margin-bottom: .5rem; }
-.trade-point p { font-size: .96rem; }
-.section-trade .btn-primary {
-  background: var(--brand-paper);
-  color: var(--brand-deep);
-  box-shadow: none;
-}
-.section-trade .btn-primary:hover {
-  background: #fff;
-  box-shadow: 0 14px 34px rgba(0, 0, 0, .3);
-}
 
 /* ---- formulário ---- */
 
@@ -916,6 +813,15 @@
   border-left: 3px solid var(--accent);
   padding-left: 1.1rem;
   margin-bottom: 1.8rem;
+}
+
+.result-upsell {
+  font-size: .9rem;
+  color: var(--ink-soft);
+  background: var(--accent-soft);
+  border-radius: var(--radius-sm);
+  padding: .9rem 1.1rem;
+  margin-bottom: 1.6rem;
 }
 
 .result-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-bottom: 1.2rem; }
