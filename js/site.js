@@ -82,10 +82,6 @@
     actions.appendChild(link("#proposal", c.primaryCta, "btn btn-primary"));
     actions.appendChild(link("#services", c.secondaryCta, "btn btn-ghost"));
     w.appendChild(actions);
-
-    const points = list(c.points, "hero-points");
-    Array.from(points.children).forEach((li) => li.setAttribute("data-reveal", ""));
-    w.appendChild(points);
   }
 
   // ---- serviços ----
