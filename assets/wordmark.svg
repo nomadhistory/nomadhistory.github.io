@@ -1,12 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 68" width="360" height="68" role="img" aria-label="Historia Nomade">
-  <style>
-    .wm { fill: #17130f; font-family: "Iowan Old Style", Palatino, Georgia, "Times New Roman", serif; font-size: 30px; letter-spacing: 2.2px; }
-    .rule { fill: #a8471f; }
-    @media (prefers-color-scheme: dark) {
-      .wm { fill: #f3ede5; }
-      .rule { fill: #e0794c; }
-    }
-  </style>
-  <text class="wm" x="0" y="38">HISTORIA NOMADE</text>
-  <rect class="rule" x="0" y="52" width="66" height="3" rx="1.5"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 42" width="360" height="42" role="img" aria-label="Historia Nomade">
+  <!-- Preto puro e sem media query de propósito. Um SVG carregado
+       via <img> é outro documento: ele não enxerga o tema escolhido
+       na página, só o do sistema. Por isso a cor é decidida fora,
+       com filter: invert(1), igual à marca — assim o botão de tema
+       manda nos dois. O traço laranja do lockup é desenhado em CSS,
+       que tem acesso aos tokens. -->
+  <text x="0" y="30" fill="#000000"
+        font-family="Iowan Old Style, Palatino, Georgia, Times New Roman, serif"
+        font-size="30" letter-spacing="2.2">HISTORIA NOMADE</text>
 </svg>

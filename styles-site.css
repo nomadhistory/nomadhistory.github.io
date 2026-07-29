@@ -73,27 +73,52 @@
   line-height: 0;
 }
 
-/* A marca é preta pura sobre transparente. No tema escuro `invert`
-   deixa ela branca — é por isso que o arquivo não pode ter cor. */
+/* Marca e nome são pretos puros sobre transparente. Quem decide a
+   cor é o CSS, com invert — e não uma media query dentro do SVG.
+   Motivo: SVG carregado via <img> é outro documento e não enxerga o
+   tema escolhido na página, só o do sistema; com media query interna
+   o nome sumia quando os dois discordavam. */
 .brand-mark {
   width: 34px;
   height: auto;
   transition: transform var(--dur) var(--ease);
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .brand-mark { filter: invert(1); }
-}
-:root[data-theme="dark"] .brand-mark { filter: invert(1); }
 
 /* As pegadas saem andando quando o cursor passa */
 .brand:hover .brand-mark { transform: translateY(-2px); }
 
 .brand-word {
-  width: 172px;
-  height: auto;
+  position: relative;
+  display: inline-block;
+  line-height: 0;
   transition: transform var(--dur-fast) var(--ease);
 }
+.brand-word img {
+  width: 172px;
+  height: auto;
+}
+
+/* O traço de sotaque do lockup vive aqui, e não no SVG, pra não ser
+   invertido junto com o texto — invert deixaria o laranja azul. */
+.brand-word::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 32%;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--gradient);
+}
+
 .brand:hover .brand-word { transform: translateX(2px); }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .brand-mark,
+  :root:not([data-theme="light"]) .brand-word img { filter: invert(1); }
+}
+:root[data-theme="dark"] .brand-mark,
+:root[data-theme="dark"] .brand-word img { filter: invert(1); }
 
 .site-nav {
   display: flex;
@@ -176,7 +201,7 @@
   .site-nav a:not(.nav-cta) { display: none; }
   .brand { gap: .55rem; }
   .brand-mark { width: 28px; }
-  .brand-word { width: 138px; }
+  .brand-word img { width: 138px; }
 }
 
 /* No celular a marca vai sozinha. O nome inteiro ao lado do botão não
@@ -244,35 +269,12 @@
 .hero h1 { max-width: 15ch; margin-bottom: .35em; }
 .hero .lead { font-size: clamp(1.1rem, 1.75vw, 1.32rem); margin-bottom: 2.4rem; }
 
+/* Sem margem inferior: os botões agora fecham o hero, e o respiro
+   até a próxima seção já vem do padding da própria seção. */
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: .8rem;
-  margin-bottom: clamp(3rem, 6vw, 4.5rem);
-}
-
-.hero-points {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.2rem 2.5rem;
-  padding-top: 2rem;
-  border-top: var(--border) solid var(--line);
-}
-.hero-points li {
-  position: relative;
-  padding-left: 1.5rem;
-  font-size: .95rem;
-  color: var(--ink-soft);
-}
-.hero-points li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: .58em;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--gradient);
 }
 
 /* ---- serviços ---- */

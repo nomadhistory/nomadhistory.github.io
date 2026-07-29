@@ -91,7 +91,7 @@
 
   // Cascata dentro de cada grade: os cards não entram todos juntos
   document
-    .querySelectorAll(".service-grid, .package-grid, .team-grid, .trade-grid, .case-grid, .hero-points")
+    .querySelectorAll(".service-grid, .package-grid, .team-grid, .case-grid")
     .forEach((grid) => {
       Array.from(grid.children).forEach((child, i) => {
         child.style.setProperty("--reveal-delay", i * 110 + "ms");

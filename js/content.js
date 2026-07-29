@@ -27,11 +27,6 @@ const CONTENT = {
       "A creative strategist and a software engineer. We turn what makes your property different into a brand, a website and a presence that fills rooms.",
     primaryCta: "Get your proposal",
     secondaryCta: "See what we do",
-    points: [
-      "Fixed scope, fixed price — no hourly billing",
-      "Your site, your accounts, your files — no monthly fee",
-      "We work across time zones; research happens on the ground",
-    ],
   },
 
   team: {
