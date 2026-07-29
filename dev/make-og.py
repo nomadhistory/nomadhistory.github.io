@@ -75,13 +75,13 @@ def main() -> None:
     sub = font(SANS, 27)
     draw.text(
         (margin, y + 26),
-        "Brand · Website · Automation · Paid traffic — for small hospitality",
+        "Brand · Website · Social media · Channels — for small hospitality",
         font=sub,
         fill=SOFT,
     )
 
     foot = font(SANS, 23)
-    draw.text((margin, H - 84), "Fixed prices — or pay us in nights.", font=foot, fill=ACCENT)
+    draw.text((margin, H - 84), "Fixed scope, fixed price. From US$500.", font=foot, fill=ACCENT)
 
     out = root / "og-image.png"
     image.save(out, "PNG", optimize=True)

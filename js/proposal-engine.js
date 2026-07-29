@@ -3,9 +3,9 @@
 //
 // Regra que governa este arquivo: TODA resposta tem que mudar a saída.
 // Se um campo for perguntado e não alterar o pacote, os serviços
-// priorizados, a forma de pagamento ou o texto da mensagem, ele sai
-// do formulário. Perguntar por perguntar é o que faz uma árvore de
-// decisão parecer inteligente sem ser.
+// priorizados ou o texto da mensagem, ele sai do formulário.
+// Perguntar por perguntar é o que faz uma árvore de decisão parecer
+// inteligente sem ser.
 // ============================================================
 
 const VENUES = {
@@ -19,13 +19,13 @@ const VENUES = {
     label: "Guesthouse or B&B",
     noun: "guesthouse",
     note:
-      "Guesthouses have the strongest stories and usually the weakest presentation of them. That gap is the whole opportunity here.",
+      "Guesthouses have the strongest stories and the weakest presentation of them. That gap is the opportunity here.",
   },
   hotel: {
     label: "Boutique hotel",
     noun: "hotel",
     note:
-      "A boutique hotel is already paying OTA commission on rooms it could be selling directly. Every point we shift to direct booking pays for this work.",
+      "You already pay OTA commission on rooms you could sell directly. Every point moved to direct booking pays for this work.",
   },
   restaurant: {
     label: "Restaurant or café",
@@ -37,13 +37,13 @@ const VENUES = {
     label: "Tours and experiences",
     noun: "tour operator",
     note:
-      "Experiences sell on the story more than any other tourism product — which is the part of this we're unusually well set up for.",
+      "Experiences sell on the story more than any other tourism product — the part we're unusually well set up for.",
   },
   other: {
     label: "Something else in tourism",
     noun: "business",
     note:
-      "We work across small tourism businesses; tell us more and we'll say honestly whether we're the right people for it.",
+      "We work across small tourism businesses. Tell us more and we'll say honestly whether we're the right people.",
   },
 };
 
@@ -56,36 +56,37 @@ const SERVICES = {
     title: "Website and direct booking",
     why: "so the people who already find you actually book with you",
   },
-  automation: {
-    title: "Automation",
-    why: "so the repetitive messages stop eating your day",
+  media: {
+    title: "Social media, photo and video",
+    why: "so every channel looks like the same business",
   },
-  traffic: {
-    title: "Marketing and paid traffic",
-    why: "so you're not dependent on one booking platform to be seen",
+  channels: {
+    title: "Channels and visibility",
+    why: "so one booking platform stops owning your demand",
   },
 };
 
 const PACKAGES = {
-  essentials: {
-    id: "essentials",
-    name: "Essentials",
-    price: 850,
+  compass: {
+    id: "compass",
+    name: "Compass",
+    price: 500,
     timeline: "about 1 week",
     slots: 1,
   },
-  signature: {
-    id: "signature",
-    name: "Signature",
-    price: 2400,
+  landmark: {
+    id: "landmark",
+    name: "Landmark",
+    price: 599,
+    priceWas: 1000,
     timeline: "2 to 3 weeks",
     slots: 2,
   },
-  residency: {
-    id: "residency",
-    name: "Full residency",
-    price: 5200,
-    timeline: "4 to 6 weeks, on site",
+  expedition: {
+    id: "expedition",
+    name: "Expedition",
+    price: 2000,
+    timeline: "4 to 6 weeks",
     slots: 4,
   },
 };
@@ -120,50 +121,6 @@ const QUESTIONS = [
     ],
   },
   {
-    id: "settlement",
-    label: "How would you rather settle this?",
-    type: "choice",
-    options: [
-      { value: "money", label: "Pay in money" },
-      { value: "nights", label: "Pay in accommodation — we stay with you" },
-      { value: "mix", label: "A mix of both" },
-    ],
-  },
-  {
-    id: "budget",
-    label: "Roughly what budget are you working with?",
-    type: "choice",
-    showIf: (a) => a.settlement === "money",
-    options: [
-      { value: "small", label: "Under US$1,000" },
-      { value: "mid", label: "US$1,000 to US$3,000" },
-      { value: "large", label: "US$3,000 or more" },
-    ],
-  },
-  {
-    id: "stay",
-    label: "How long could you host us?",
-    type: "choice",
-    showIf: (a) => a.settlement === "nights" || a.settlement === "mix",
-    options: [
-      { value: "few", label: "A few nights" },
-      { value: "week", label: "One to two weeks" },
-      { value: "month", label: "A month or more" },
-    ],
-  },
-  {
-    id: "offer",
-    label: "What could you offer us?",
-    type: "choice",
-    showIf: (a) => a.settlement === "nights" || a.settlement === "mix",
-    options: [
-      { value: "room", label: "A private room" },
-      { value: "apartment", label: "A studio or apartment" },
-      { value: "room-meals", label: "A room plus meals" },
-      { value: "room-experience", label: "A room plus an experience or tour" },
-    ],
-  },
-  {
     id: "contact",
     label: "Where should we send the proposal?",
     type: "contact",
@@ -175,40 +132,24 @@ const QUESTIONS = [
   },
 ];
 
-const NIGHTS_BY_STAY = { few: 4, week: 12, month: 30 };
-
-// O que a pessoa oferece muda o acerto de verdade, não só o texto da
-// mensagem: um estúdio com cozinha e mesa sustenta projeto longo,
-// refeição tira o custo que inviabiliza estadia longa, e experiência
-// vira material que volta pro marketing dela.
-const OFFER_NOTES = {
-  room: "We cover our own travel, food and equipment — you cover the room.",
-  apartment:
-    "A studio with a kitchen and somewhere to work is worth more to us than a room, because we work from where we stay. That's what makes the longer scope realistic.",
-  "room-meals":
-    "Meals included is the part that matters most on a long stay — food is the cost that usually makes these trades fall apart.",
-  "room-experience":
-    "We'd document the experience while we're there, and the photos and story that come out of it end up in your own marketing.",
-};
-
 // ---- lógica ------------------------------------------------
 
-function visibleQuestions(answers) {
-  return QUESTIONS.filter((q) => !q.showIf || q.showIf(answers));
-}
-
-// O tier vem do que é oferecido em troca: dinheiro → orçamento,
-// hospedagem → duração da estadia. Uma estadia longa vale mais que
-// uma curta pelo mesmo motivo que um orçamento maior: paga mais trabalho.
+// O pacote sai do quanto está faltando, cruzando o que já existe com
+// o gargalo declarado. Sem pergunta de orçamento: perguntar dinheiro
+// cedo espanta, e faz a pessoa se auto-rebaixar antes de ver o valor.
 function pickPackage(answers) {
-  if (answers.settlement === "money") {
-    if (answers.budget === "large") return PACKAGES.residency;
-    if (answers.budget === "mid") return PACKAGES.signature;
-    return PACKAGES.essentials;
+  const { have, bottleneck } = answers;
+
+  // Não tem nada, ou o problema é a dependência de OTA — os dois casos
+  // exigem marca, site e canais juntos; meio pacote não resolve.
+  if (have === "nothing" || bottleneck === "ota") return PACKAGES.expedition;
+
+  // Site já existe e funciona: o que falta é pontual.
+  if (have === "site-no-bookings" && (bottleneck === "invisible" || bottleneck === "manual")) {
+    return PACKAGES.compass;
   }
-  if (answers.stay === "month") return PACKAGES.residency;
-  if (answers.stay === "week") return PACKAGES.signature;
-  return PACKAGES.essentials;
+
+  return PACKAGES.landmark;
 }
 
 // O gargalo define a prioridade; o que já existe reordena.
@@ -216,11 +157,11 @@ function pickPackage(answers) {
 // problema que "ninguém nos acha" + "nem logo temos".
 function prioritise(answers) {
   const order = {
-    invisible: ["traffic", "website", "brand", "automation"],
-    amateur: ["brand", "website", "traffic", "automation"],
-    ota: ["website", "traffic", "brand", "automation"],
-    manual: ["automation", "website", "brand", "traffic"],
-  }[answers.bottleneck] || ["website", "brand", "traffic", "automation"];
+    invisible: ["channels", "website", "brand", "media"],
+    amateur: ["brand", "media", "website", "channels"],
+    ota: ["website", "channels", "brand", "media"],
+    manual: ["channels", "website", "brand", "media"],
+  }[answers.bottleneck] || ["website", "brand", "channels", "media"];
 
   const ranked = order.slice();
 
@@ -251,14 +192,14 @@ function prioritise(answers) {
   // Site bom sem reservas: o problema não é aparência, é audiência.
   if (answers.have === "site-no-bookings") {
     sink("brand");
-    bump("traffic");
+    bump("channels");
   }
 
-  // Restaurante não tem OTA nem motor de reservas: tráfego local e
-  // presença em mapas resolvem mais do que reconstruir o site.
+  // Restaurante não tem OTA nem motor de reservas: presença local e
+  // material visual resolvem mais do que reconstruir o site.
   if (answers.venue === "restaurant") {
-    bump("traffic");
-    sink("automation");
+    bump("media");
+    sink("website");
   }
 
   return ranked;
@@ -274,26 +215,13 @@ function buildProposal(answers) {
     why: SERVICES[id].why,
   }));
 
-  const nights = NIGHTS_BY_STAY[answers.stay] || 0;
-  const priced = pkg.price.toLocaleString("en-US");
-  let settlement;
-  if (answers.settlement === "money") {
-    settlement = {
-      label: `US$${priced}`,
-      detail: `Fixed price, ${pkg.timeline}. Split in two — half to start, half at handover.`,
-    };
-  } else if (answers.settlement === "nights") {
-    settlement = {
-      label: `${nights} nights with you`,
-      detail: `Instead of US$${priced}. ${OFFER_NOTES[answers.offer] || OFFER_NOTES.room}`,
-    };
-  } else {
-    const half = Math.round(pkg.price / 2 / 50) * 50;
-    settlement = {
-      label: `${nights} nights + US$${half.toLocaleString("en-US")}`,
-      detail: `Roughly half in accommodation, half in money, against a full price of US$${priced}. ${OFFER_NOTES[answers.offer] || OFFER_NOTES.room}`,
-    };
-  }
+  const priced = "US$" + pkg.price.toLocaleString("en-US");
+  const settlement = {
+    label: priced,
+    detail: pkg.priceWas
+      ? `Launch price, down from US$${pkg.priceWas.toLocaleString("en-US")}. Fixed scope, ${pkg.timeline}, half to start and half at handover.`
+      : `Fixed price, ${pkg.timeline}. Half to start, half at handover.`,
+  };
 
   const place = (answers.contact && answers.contact.place) || "";
   const headline = place ? `${pkg.name} for ${place}` : `${pkg.name} for your ${venue.noun}`;
@@ -304,7 +232,6 @@ function buildProposal(answers) {
     venueNote: venue.note,
     focus,
     settlement,
-    nights,
     message: buildMessage(answers, pkg, focus, settlement, venue),
   };
 }
@@ -319,13 +246,13 @@ function buildMessage(answers, pkg, focus, settlement, venue) {
     "",
     `It recommended: ${pkg.name} (${pkg.timeline})`,
     `Focus: ${focus.map((f) => f.title).join(", ")}`,
-    `Settlement: ${settlement.label}`,
+    `Price: ${settlement.label}`,
     "",
     `What we have today: ${labelFor("have", answers.have)}`,
     `Biggest bottleneck: ${labelFor("bottleneck", answers.bottleneck)}`,
+    "",
+    "Can we talk?",
   ];
-  if (answers.offer) lines.push(`What I can offer: ${labelFor("offer", answers.offer)}`);
-  lines.push("", "Can we talk?");
   return lines.join("\n");
 }
 
@@ -341,7 +268,6 @@ if (typeof module !== "undefined" && module.exports) {
     VENUES,
     SERVICES,
     PACKAGES,
-    visibleQuestions,
     pickPackage,
     prioritise,
     buildProposal,

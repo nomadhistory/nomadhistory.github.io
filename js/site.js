@@ -178,51 +178,6 @@
     }
   }
 
-  // ---- onde estamos ----
-  // Some inteira se não houver lugar preenchido: melhor não ter a
-  // seção do que ter "onde estamos: (vazio)" num site de viagem.
-
-  function renderJourney() {
-    const c = CONTENT.journey;
-    const section = document.getElementById("journey");
-    if (!c || !c.current) {
-      section.remove();
-      return;
-    }
-    section.hidden = false;
-    section.setAttribute("aria-labelledby", "journey-title");
-
-    const w = wrap(section);
-    const grid = el("div", "journey-grid");
-
-    const now = el("div", "journey-now");
-    now.setAttribute("data-reveal", "");
-    now.appendChild(el("p", "journey-label", c.label));
-    const place = el("h2", "journey-place");
-    place.id = "journey-title";
-    place.appendChild(el("span", "journey-pin"));
-    place.appendChild(document.createTextNode(c.current));
-    now.appendChild(place);
-    if (c.since) now.appendChild(el("p", "journey-since", c.since));
-    grid.appendChild(now);
-
-    if (c.next && c.next.length) {
-      const next = el("div", "journey-next");
-      next.setAttribute("data-reveal", "right");
-      next.appendChild(el("p", "journey-label", c.nextLabel));
-      next.appendChild(list(c.next));
-      grid.appendChild(next);
-    }
-
-    w.appendChild(grid);
-
-    if (c.note) {
-      const note = el("p", "journey-note lead", c.note);
-      note.setAttribute("data-reveal", "");
-      w.appendChild(note);
-    }
-  }
-
   // ---- método: o itinerário ----
 
   function renderMethod() {
@@ -299,45 +254,43 @@
       card.appendChild(el("p", "for-who", p.forWho));
 
       const price = el("div", "price");
-      price.appendChild(el("small", null, p.priceNote));
-      price.appendChild(document.createTextNode("US$" + p.price.toLocaleString("en-US")));
+      if (p.priceCustom) {
+        // Plano sob consulta: texto no lugar do número
+        price.classList.add("price-custom");
+        price.appendChild(document.createTextNode(p.priceCustom));
+      } else {
+        // O preço de referência riscado só aparece quando existe, e
+        // vem antes do valor atual pra ancorar a leitura.
+        if (p.priceWas) {
+          price.appendChild(
+            el("s", "price-was", "US$" + p.priceWas.toLocaleString("en-US"))
+          );
+        }
+        price.appendChild(document.createTextNode("US$" + p.price.toLocaleString("en-US")));
+      }
       card.appendChild(price);
 
+      if (p.priceNote) card.appendChild(el("p", "price-note", p.priceNote));
       card.appendChild(el("p", "timeline", p.timeline));
       card.appendChild(list(p.includes));
+
+      if (p.cta && CONTENT.brand.email) {
+        const cta = link(
+          "mailto:" + CONTENT.brand.email +
+            "?subject=" + encodeURIComponent(p.name + " — scope request"),
+          p.cta,
+          "btn btn-ghost package-cta"
+        );
+        card.appendChild(cta);
+      }
+
       grid.appendChild(card);
     });
     w.appendChild(grid);
 
-    const note = el(
-      "p",
-      "packages-note",
-      "Not sure which one fits? The proposal tool below picks it for you."
-    );
+    const note = el("p", "packages-note", c.note);
     note.setAttribute("data-reveal", "");
     w.appendChild(note);
-  }
-
-  // ---- troca ----
-
-  function renderTrade() {
-    const c = CONTENT.trade;
-    const w = wrap(document.getElementById("trade"));
-    head(w, "trade-title", c.title, c.lead);
-
-    const grid = el("div", "trade-grid");
-    c.points.forEach((p) => {
-      const box = el("div", "trade-point");
-      box.setAttribute("data-reveal", "");
-      box.appendChild(el("h3", null, p.title));
-      box.appendChild(el("p", null, p.text));
-      grid.appendChild(box);
-    });
-    w.appendChild(grid);
-
-    const cta = link("#proposal", c.cta, "btn btn-primary");
-    cta.setAttribute("data-reveal", "");
-    w.appendChild(cta);
   }
 
   // ---- proposta (só o cabeçalho; o fluxo é do proposal.js) ----
@@ -450,11 +403,9 @@
   renderMarquee();
   renderServices();
   renderTeam();
-  renderJourney();
   renderMethod();
   renderCases();
   renderPackages();
-  renderTrade();
   renderProposalHead();
   renderContact();
   renderFloatingContact();

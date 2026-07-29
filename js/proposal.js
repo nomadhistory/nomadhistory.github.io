@@ -22,8 +22,10 @@
     return node;
   }
 
+  // Todas as perguntas são fixas — não há mais ramo condicional desde
+  // que a forma de pagamento saiu do formulário.
   function steps() {
-    return visibleQuestions(answers);
+    return QUESTIONS;
   }
 
   function clear() {
@@ -78,14 +80,6 @@
       button.setAttribute("aria-pressed", String(answers[question.id] === opt.value));
       button.addEventListener("click", () => {
         answers[question.id] = opt.value;
-        // Trocar a forma de pagamento muda quais perguntas existem
-        // daqui pra frente — limpa o ramo antigo pra não sobrar
-        // resposta órfã na proposta.
-        if (question.id === "settlement") {
-          delete answers.budget;
-          delete answers.stay;
-          delete answers.offer;
-        }
         index = Math.min(index + 1, steps().length - 1);
         render();
       });
@@ -172,6 +166,20 @@
     root.appendChild(focus);
 
     root.appendChild(el("p", "result-note", proposal.venueNote));
+
+    // O plano sob consulta nunca é recomendado pela árvore — ele não
+    // tem escopo fixo pra recomendar. Aparece aqui como saída pra quem
+    // precisa de mais do que qualquer pacote fechado entrega.
+    const custom = (CONTENT.packages.items || []).find((p) => p.priceCustom);
+    if (custom) {
+      root.appendChild(
+        el(
+          "p",
+          "result-upsell",
+          "Need more than this? " + custom.name + " is scoped case by case — audit, data and advertising included."
+        )
+      );
+    }
 
     const actions = el("div", "result-actions");
 
