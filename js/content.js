@@ -146,16 +146,38 @@ const CONTENT = {
   // Marina: preencher com trabalho real e virar published: true.
   // ------------------------------------------------------------
   cases: {
-    title: "Case studies",
-    lead: "What changed, in numbers, for the places we worked with.",
+    title: "Selected work",
+    lead: "Shipped end to end — positioning, brand, build and the tools that make it useful.",
     emptyNote:
       "Our first case studies are being written up. Until they're real we'd rather show you the method than invent results — ask us and we'll walk you through work in progress.",
     items: [
+      {
+        published: true,
+        client: "DLT Academy",
+        // Projeto próprio, e o card diz isso. Passar produto da casa
+        // como trabalho de cliente é o tipo de coisa que desmonta na
+        // primeira pergunta.
+        type: "Our own project · built by Tiago",
+        location: "dlt.academy",
+        href: "https://dlt.academy/",
+        challenge:
+          "Financial decisions get made on gut feeling, because the tools that would help are behind a signup, a paywall or a spreadsheet nobody opens.",
+        approach:
+          "Positioning, brand and platform: a portal plus four interactive decision tools, each answering one real question in under two minutes. Every answer is worked out in the visitor's browser.",
+        // Fatos verificáveis clicando no link — não métricas de
+        // desempenho, que nós ainda não temos.
+        results: [
+          "Portal and four decision tools live, each on its own subdomain",
+          "Static build — no backend, no monthly platform cost",
+          "No signup and no data collected: nothing leaves the browser",
+        ],
+      },
       {
         published: false,
         client: "TODO — nome do lugar",
         type: "TODO — hostel / pousada / restaurante",
         location: "TODO — cidade, país",
+        href: "",
         challenge: "TODO — qual era o problema real quando chegamos",
         approach: "TODO — o que fizemos, em 2 frases",
         results: [

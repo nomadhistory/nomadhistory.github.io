@@ -211,6 +211,16 @@
       if (item.results && item.results.length) {
         card.appendChild(list(item.results, "case-results"));
       }
+
+      // O link é a prova: dá pra conferir tudo acima clicando.
+      if (item.href) {
+        const visit = link(item.href, "Visit " + item.client + " →", "case-link");
+        visit.target = "_blank";
+        visit.rel = "noopener noreferrer";
+        visit.referrerPolicy = "no-referrer";
+        card.appendChild(visit);
+      }
+
       grid.appendChild(card);
     });
     w.appendChild(grid);
