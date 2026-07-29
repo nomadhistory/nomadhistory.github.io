@@ -88,23 +88,6 @@
     w.appendChild(points);
   }
 
-  // ---- marquee ----
-
-  function renderMarquee() {
-    const band = document.getElementById("marquee");
-    const items = CONTENT.marquee || [];
-    if (!items.length) {
-      band.remove();
-      return;
-    }
-    const track = el("div", "marquee-track");
-    // duas voltas do mesmo conteúdo: é o que faz o loop não ter emenda
-    for (let pass = 0; pass < 2; pass += 1) {
-      items.forEach((item) => track.appendChild(el("span", null, item)));
-    }
-    band.appendChild(track);
-  }
-
   // ---- serviços ----
 
   function renderServices() {
@@ -118,7 +101,6 @@
       card.setAttribute("data-reveal", "");
       card.appendChild(el("p", "need", item.need));
       card.appendChild(el("p", "service-name", item.title));
-      card.appendChild(el("p", null, item.blurb));
       card.appendChild(list(item.deliverables));
       grid.appendChild(card);
     });
@@ -400,7 +382,6 @@
   document.title = CONTENT.brand.name + " — " + CONTENT.brand.tagline;
 
   renderHero();
-  renderMarquee();
   renderServices();
   renderTeam();
   renderMethod();

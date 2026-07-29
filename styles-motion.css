@@ -69,14 +69,9 @@
 /* O aura acompanha o scroll de leve — parallax barato, só transform */
 .hero-aura { will-change: transform; }
 
-/* ---- marquee ---- */
+/* ---- barra de progresso ---- */
 
-.marquee-track { animation: marquee 42s linear infinite; }
-@keyframes marquee {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-50%, 0, 0); }
-}
-.marquee-band:hover .marquee-track { animation-play-state: paused; }
+.scroll-progress span { transition: width .12s linear; }
 
 /* ---- trilha do itinerário ---- */
 
@@ -101,12 +96,10 @@
 
   .line-inner { transform: none; transition: none; }
 
-  .js-motion .hero-aura,
-  .marquee-track {
-    animation: none;
-  }
+  .js-motion .hero-aura { animation: none; }
 
-  .method-route .route-fill { transition: none; }
+  .method-route .route-fill,
+  .scroll-progress span { transition: none; }
 
   *, *::before, *::after {
     animation-duration: .001ms !important;

@@ -8,7 +8,7 @@
 
 const CONTENT = {
   brand: {
-    name: "História Nômade",
+    name: "Historia Nomade",
     tagline: "Marketing studio for hotels, hostels and tourism",
     email: "historianomadecontact@gmail.com",
     // TODO Tiago: o WhatsApp continua vazio de propósito — número
@@ -33,20 +33,6 @@ const CONTENT = {
       "We work across time zones; research happens on the ground",
     ],
   },
-
-  // Faixa correndo abaixo do hero. Puramente atmosférica.
-  marquee: [
-    "Hostels",
-    "Guesthouses",
-    "Boutique hotels",
-    "Mountain lodges",
-    "Beach cabins",
-    "Family restaurants",
-    "Tour operators",
-    "Vineyards",
-    "Surf camps",
-    "Historic inns",
-  ],
 
   team: {
     title: "Who you'd be working with",
@@ -279,14 +265,14 @@ const CONTENT = {
     // brand.email estiver preenchido.
     floating: {
       label: "Email us",
-      ariaLabel: "Email História Nômade",
+      ariaLabel: "Email Historia Nomade",
       subject: "Hello from your website",
       body: "Hi Marina and Tiago,\n\nI run:\nWhere:\nWhat I need:\n\n",
     },
   },
 
   footer: {
-    note: "História Nômade — brand, web, media and visibility for hospitality.",
+    note: "Historia Nomade — brand, web, media and visibility for hospitality.",
     privacy:
       "No analytics, no cookies, no tracking. Your answers never leave your device.",
   },
