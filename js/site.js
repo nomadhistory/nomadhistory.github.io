@@ -375,6 +375,52 @@
     w.appendChild(actions);
   }
 
+  // ---- botão flutuante de contato ----
+  // Fica na página inteira. Como o resto dos contatos, só existe se
+  // houver e-mail configurado.
+
+  function renderFloatingContact() {
+    const b = CONTENT.brand;
+    const c = CONTENT.contact.floating;
+    if (!b.email || !c) return;
+
+    const a = el("a", "fab");
+    a.href =
+      "mailto:" + b.email +
+      "?subject=" + encodeURIComponent(c.subject) +
+      "&body=" + encodeURIComponent(c.body);
+    a.setAttribute("aria-label", c.ariaLabel);
+
+    // Envelope desenhado em SVG: sem requisição, sem fonte de ícone
+    const ns = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("width", "18");
+    svg.setAttribute("height", "18");
+    svg.setAttribute("fill", "none");
+    svg.setAttribute("stroke", "currentColor");
+    svg.setAttribute("stroke-width", "1.9");
+    svg.setAttribute("stroke-linecap", "round");
+    svg.setAttribute("stroke-linejoin", "round");
+    svg.setAttribute("aria-hidden", "true");
+
+    const box = document.createElementNS(ns, "rect");
+    box.setAttribute("x", "2.5");
+    box.setAttribute("y", "5");
+    box.setAttribute("width", "19");
+    box.setAttribute("height", "14");
+    box.setAttribute("rx", "2.5");
+    svg.appendChild(box);
+
+    const flap = document.createElementNS(ns, "path");
+    flap.setAttribute("d", "M3 7l9 6 9-6");
+    svg.appendChild(flap);
+
+    a.appendChild(svg);
+    a.appendChild(el("span", "fab-label", c.label));
+    document.body.appendChild(a);
+  }
+
   // ---- rodapé ----
 
   function renderFooter() {
@@ -398,5 +444,6 @@
   renderTrade();
   renderProposalHead();
   renderContact();
+  renderFloatingContact();
   renderFooter();
 })();
