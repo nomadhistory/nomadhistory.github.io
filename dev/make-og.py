@@ -62,7 +62,7 @@ def main() -> None:
         image.paste(mark, (margin, 70), mark)
         text_x = margin + mark.width + 20
 
-    draw.text((text_x, 76), "HISTÓRIA NÔMADE", font=wordmark, fill=INK)
+    draw.text((text_x, 76), "HISTORIA NOMADE", font=wordmark, fill=INK)
     draw.rectangle([text_x, 128, text_x + 70, 131], fill=ACCENT)
 
     title = font(SERIF, 62)
