@@ -60,6 +60,9 @@ const CONTENT = {
         name: "Marina",
         photo: "assets/team/marina.webp",
         role: "Creative Strategist",
+        links: [
+          { label: "@marinasil_p", href: "https://www.instagram.com/marinasil_p/" },
+        ],
         // Texto escrito pela própria Marina — não reescrever sem falar
         // com ela.
         bio:
@@ -69,10 +72,9 @@ const CONTENT = {
         name: "Tiago",
         photo: "assets/team/tiago.webp",
         role: "Software Engineer · Digital Marketing",
-        // Opcional, um por membro. Abre em aba nova, sem passar o
-        // referrer. Marina: é só acrescentar o mesmo bloco no card dela.
+        // Abre em aba nova, sem passar o referrer.
         links: [
-          { label: "@tiagohyad", href: "https://instagram.com/tiagohyad" },
+          { label: "@tiagohyad", href: "https://www.instagram.com/tiagohyad/" },
         ],
         bio:
           "Years in software and performance marketing. He builds the brand, the site and the channels around that story, and measures what each booking actually cost. Fast sites, clean tracking, no platform you stay paying for.",
