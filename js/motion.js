@@ -128,10 +128,9 @@
     fill.style.height = Math.max(0, height) + "px";
   }
 
-  // ---- 4. header, progresso de leitura e parallax do hero ----
+  // ---- 4. header, botão flutuante e parallax do hero ----
 
   const header = document.querySelector(".site-header");
-  const progress = document.querySelector(".scroll-progress span");
   const aura = document.querySelector(".hero-aura");
   const fab = document.querySelector(".fab");
 
@@ -145,11 +144,6 @@
     if (header) header.classList.toggle("is-stuck", y > 24);
 
     if (fab) fab.classList.toggle("is-tucked", y < window.innerHeight * 0.6);
-
-    if (progress) {
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      progress.style.width = (max > 0 ? (y / max) * 100 : 0) + "%";
-    }
 
     // O clarão do hero desce mais devagar que a página
     if (aura && y < window.innerHeight * 1.5) {

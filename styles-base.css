@@ -53,9 +53,21 @@
   --dur-fast: .32s;
 }
 
-/* ---- Derivados: saem dos tokens acima, não editar ---------- */
+/* ---- Derivados: saem dos tokens acima, não editar ----------
+
+   O tema tem três estados: seguir o sistema (padrão), forçado claro
+   e forçado escuro. O botão do cabeçalho grava a escolha e o
+   js/theme.js carimba `data-theme` no <html> antes da primeira
+   pintura — por isso ele é o único script no <head>.
+
+   Os valores escuros ficam em `--dark-*`, definidos uma vez só; os
+   dois seletores abaixo apenas apontam para eles. Assim ajustar uma
+   cor do tema escuro continua sendo editar um lugar.
+   ------------------------------------------------------------ */
 
 :root {
+  color-scheme: light;
+
   --paper: var(--brand-paper);
   --paper-alt: color-mix(in srgb, var(--brand-paper) 92%, var(--brand-ink));
   --ink: var(--brand-ink);
@@ -70,21 +82,50 @@
             0 18px 44px color-mix(in srgb, var(--brand-ink) 9%, transparent);
   --shadow-lift: 0 2px 4px color-mix(in srgb, var(--brand-ink) 8%, transparent),
                  0 30px 70px color-mix(in srgb, var(--brand-ink) 16%, transparent);
+
+  /* Paleta escura — os valores moram aqui, e só aqui */
+  --dark-paper: var(--brand-ink);
+  --dark-paper-alt: color-mix(in srgb, var(--brand-ink) 88%, var(--brand-paper));
+  --dark-ink: var(--brand-paper);
+  --dark-ink-soft: color-mix(in srgb, var(--brand-paper) 62%, var(--brand-ink));
+  --dark-line: color-mix(in srgb, var(--brand-paper) 14%, var(--brand-ink));
+  --dark-accent: color-mix(in srgb, var(--brand-accent) 55%, var(--brand-accent-warm));
+  --dark-accent-soft: color-mix(in srgb, var(--brand-accent) 22%, var(--brand-ink));
+  --dark-card: color-mix(in srgb, var(--brand-ink) 92%, var(--brand-paper));
+  --dark-shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 18px 44px rgba(0, 0, 0, .34);
+  --dark-shadow-lift: 0 2px 4px rgba(0, 0, 0, .55), 0 30px 70px rgba(0, 0, 0, .45);
 }
 
+/* Sistema no escuro, e a pessoa não pediu claro explicitamente */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --paper: var(--brand-ink);
-    --paper-alt: color-mix(in srgb, var(--brand-ink) 88%, var(--brand-paper));
-    --ink: var(--brand-paper);
-    --ink-soft: color-mix(in srgb, var(--brand-paper) 62%, var(--brand-ink));
-    --line: color-mix(in srgb, var(--brand-paper) 14%, var(--brand-ink));
-    --accent: color-mix(in srgb, var(--brand-accent) 55%, var(--brand-accent-warm));
-    --accent-soft: color-mix(in srgb, var(--brand-accent) 22%, var(--brand-ink));
-    --card: color-mix(in srgb, var(--brand-ink) 92%, var(--brand-paper));
-    --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 18px 44px rgba(0, 0, 0, .34);
-    --shadow-lift: 0 2px 4px rgba(0, 0, 0, .55), 0 30px 70px rgba(0, 0, 0, .45);
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: var(--dark-paper);
+    --paper-alt: var(--dark-paper-alt);
+    --ink: var(--dark-ink);
+    --ink-soft: var(--dark-ink-soft);
+    --line: var(--dark-line);
+    --accent: var(--dark-accent);
+    --accent-soft: var(--dark-accent-soft);
+    --card: var(--dark-card);
+    --shadow: var(--dark-shadow);
+    --shadow-lift: var(--dark-shadow-lift);
   }
+}
+
+/* Escolha explícita pelo botão, independente do sistema */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: var(--dark-paper);
+  --paper-alt: var(--dark-paper-alt);
+  --ink: var(--dark-ink);
+  --ink-soft: var(--dark-ink-soft);
+  --line: var(--dark-line);
+  --accent: var(--dark-accent);
+  --accent-soft: var(--dark-accent-soft);
+  --card: var(--dark-card);
+  --shadow: var(--dark-shadow);
+  --shadow-lift: var(--dark-shadow-lift);
 }
 
 /* ---- reset ------------------------------------------------ */

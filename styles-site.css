@@ -15,28 +15,12 @@
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
 }
+/* Cada regra de tema escuro precisa das duas formas: seguir o
+   sistema, e obedecer a escolha do botão. */
 @media (prefers-color-scheme: dark) {
-  .grain { mix-blend-mode: screen; opacity: .18; }
+  :root:not([data-theme="light"]) .grain { mix-blend-mode: screen; opacity: .18; }
 }
-
-/* ---- barra de progresso de leitura ---- */
-
-.scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  z-index: 20;
-  pointer-events: none;
-}
-.scroll-progress span {
-  display: block;
-  height: 100%;
-  width: 0;
-  background: var(--gradient);
-  transform-origin: left;
-}
+:root[data-theme="dark"] .grain { mix-blend-mode: screen; opacity: .18; }
 
 /* ---- header ---- */
 
@@ -78,8 +62,9 @@
   transition: transform var(--dur) var(--ease);
 }
 @media (prefers-color-scheme: dark) {
-  .brand-mark { filter: invert(1); }
+  :root:not([data-theme="light"]) .brand-mark { filter: invert(1); }
 }
+:root[data-theme="dark"] .brand-mark { filter: invert(1); }
 
 /* As pegadas saem andando quando o cursor passa */
 .brand:hover .brand-mark { transform: translateY(-2px); }
@@ -118,6 +103,42 @@
 }
 .site-nav a:hover { color: var(--ink); }
 .site-nav a:not(.nav-cta):hover::after { transform: scaleX(1); transform-origin: left; }
+
+/* ---- botão de tema ---- */
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  padding: 0;
+  border: var(--border) solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+}
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: rotate(-15deg);
+}
+
+/* Mostra o ícone do tema que o clique vai trazer, não o do atual —
+   o botão anuncia o destino, não o estado. */
+.theme-toggle .icon-sun { display: none; }
+.theme-toggle .icon-moon { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
+}
 
 .site-nav .nav-cta {
   color: var(--accent);
@@ -860,8 +881,9 @@
               0 2px 6px color-mix(in srgb, var(--brand-ink) 20%, transparent);
 }
 @media (prefers-color-scheme: dark) {
-  .fab { color: #17130f; }
+  :root:not([data-theme="light"]) .fab { color: var(--brand-ink); }
 }
+:root[data-theme="dark"] .fab { color: var(--brand-ink); }
 
 /* Recolhido enquanto a pessoa ainda está no hero, onde já existe um
    CTA grande. Quem controla é o js/motion.js — e se ele não rodar, o
