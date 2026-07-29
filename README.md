@@ -28,6 +28,7 @@ do `index.html` bloqueia qualquer host de fora.
 | `styles-site.css` | Layout das seções. |
 | `styles-motion.css` | Todo o movimento. |
 | `js/motion.js` | Revelação por scroll, título linha a linha, trilha do itinerário. Puro enfeite. |
+| `js/theme.js` | Claro / escuro / seguir o sistema. **Único script no `<head>`** — precisa rodar antes da primeira pintura, senão a página pisca no tema errado. |
 | `dev/make-og.py` | Regera o `og-image.png` (o preview de link compartilhado). |
 | `dev/make-photos.py` | Prepara foto de perfil da equipe. |
 | `dev/make-logo.py` | Regera a marca e os favicons a partir do PNG transparente. |
