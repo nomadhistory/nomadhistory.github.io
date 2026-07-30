@@ -35,6 +35,8 @@
 <link rel="stylesheet" href="styles-base.css">
 <link rel="stylesheet" href="styles-site.css">
 <link rel="stylesheet" href="styles-motion.css">
+<!-- Bloco "Where we've been" do hero (globo + legenda) -->
+<link rel="stylesheet" href="styles-globe.css">
 
 <!-- Único script no <head>: carimba o tema escolhido antes da
      primeira pintura, senão a página pisca no tema errado. -->
@@ -128,5 +130,14 @@
 <script src="js/site.js"></script>
 <script src="js/proposal.js"></script>
 <script src="js/motion.js"></script>
+
+<!-- Globo do hero. Vem depois do site.js porque desenha dentro dos
+     contêineres que ele cria. Tudo local: a CSP do site não permite
+     script de fora do domínio, e a geometria chega como script
+     (window.WORLD_110M) e não por fetch, pra manter connect-src 'none'. -->
+<script src="assets/lib/d3.min.js"></script>
+<script src="assets/lib/topojson-client.min.js"></script>
+<script src="assets/world-110m.js"></script>
+<script src="js/hero-globe.js"></script>
 </body>
 </html>
