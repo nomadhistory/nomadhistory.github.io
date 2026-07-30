@@ -60,28 +60,47 @@
 
   function renderHero() {
     const c = CONTENT.hero;
-    const w = wrap(document.getElementById("hero"));
+    const hero = document.getElementById("hero");
+
+    // Layout de duas colunas: copy à esquerda, globo à direita.
+    hero.classList.add("hero-split");
+
+    const w = wrap(hero);
+    const copy = el("div", "hero-copy");
+    w.appendChild(copy);
 
     const eyebrow = el("p", "eyebrow", c.eyebrow);
     eyebrow.setAttribute("data-reveal", "");
-    w.appendChild(eyebrow);
+    copy.appendChild(eyebrow);
 
     const h = el("h1", null, c.title);
     h.id = "hero-title";
     h.setAttribute("data-split", "");
-    w.appendChild(h);
+    copy.appendChild(h);
 
     const lead = el("p", "lead", c.lead);
     lead.setAttribute("data-reveal", "");
     lead.style.setProperty("--reveal-delay", "160ms");
-    w.appendChild(lead);
+    copy.appendChild(lead);
 
     const actions = el("div", "hero-actions");
     actions.setAttribute("data-reveal", "");
     actions.style.setProperty("--reveal-delay", "260ms");
     actions.appendChild(link("#proposal", c.primaryCta, "btn btn-primary"));
     actions.appendChild(link("#services", c.secondaryCta, "btn btn-ghost"));
-    w.appendChild(actions);
+    copy.appendChild(actions);
+
+    // Globo e legenda: os contêineres nascem vazios aqui e são
+    // preenchidos pelo js/hero-globe.js. Se aquele arquivo não
+    // carregar, sobram duas divs vazias e o hero segue inteiro.
+    const art = el("div", "hero-art");
+    const stage = el("div", "globe-stage");
+    stage.setAttribute("data-globe", "");
+    const legend = el("div");
+    legend.setAttribute("data-globe-legend", "");
+    art.appendChild(stage);
+    art.appendChild(legend);
+    w.appendChild(art);
   }
 
   // ---- serviços ----
