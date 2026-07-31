@@ -1,0 +1,171 @@
+/* ============================================================
+   SERVICES — o guia de campo.
+
+   Sem cards: entradas separadas por fio, foto alternando de lado, o
+   problema em corpo grande de display e o que entregamos numa lista
+   marcada com a pegada do logo. Mesmo vocabulário do globo do hero —
+   massa, vazio e pegada.
+
+   Consome só os tokens de styles-base.css.
+   ============================================================ */
+
+/* O reset de styles-base.css só cobre `ul`, então o `ol` chega aqui com
+   recuo, margem e marcador do navegador. */
+/* Quatro capítulos lado a lado, como etapas de uma história. Cada um é
+   um quadradinho na mesma altura; a numeração grande costura a leitura
+   como página de livro. */
+.field-guide {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(.9rem, 1.6vw, 1.4rem);
+  counter-reset: entry;
+}
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.5rem, 2.4vw, 2.1rem);
+  border: var(--border) solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper-alt);
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.entry-body { display: flex; flex-direction: column; flex: 1; }
+.entry:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  transform: translateY(-3px);
+}
+
+/* ---- o espaço da foto ---- */
+
+.entry-art { position: relative; }
+
+.slot {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  border: var(--border) solid var(--line);
+  background: var(--paper-alt);
+  display: grid;
+  place-items: center;
+}
+
+/* Vazio: listras discretas e uma etiqueta em monoespaçada dizendo o
+   que vai ali. Ninguém confunde com decoração. */
+.slot.is-empty {
+  background-image: repeating-linear-gradient(
+    128deg,
+    transparent 0 11px,
+    color-mix(in srgb, var(--ink) 7%, transparent) 11px 12px
+  );
+}
+.slot.is-empty span {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .71rem;
+  line-height: 1.5;
+  letter-spacing: .02em;
+  color: var(--ink-soft);
+  text-align: center;
+  padding: 0 1.4rem;
+  text-wrap: pretty;
+}
+
+.slot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 1.2s var(--ease);
+}
+.entry:hover .slot img { transform: scale(1.04); }
+
+/* Véu quente por cima da foto, igual ao das fotos da equipe: costura
+   qualquer imagem na paleta da marca. */
+.slot:not(.is-empty)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 52%,
+    color-mix(in srgb, var(--brand-accent) 15%, transparent) 100%
+  );
+}
+
+/* ---- o texto da entrada ---- */
+
+.entry-index {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.4vw, 2.9rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
+  color: color-mix(in srgb, var(--accent) 65%, var(--ink-soft));
+  margin-bottom: 1.1rem;
+}
+
+.entry-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.85vw, 2.3rem);
+  line-height: 1.12;
+  letter-spacing: var(--tracking-display);
+  color: var(--ink);
+  margin: 0 0 1.3rem;
+  text-wrap: pretty;
+}
+
+.entry-list {
+  display: grid;
+  gap: .6rem;
+  margin-top: auto;
+  border-top: var(--border) solid var(--line);
+  padding-top: 1.2rem;
+}
+.entry-list li {
+  display: grid;
+  grid-template-columns: 13px 1fr;
+  gap: .8rem;
+  align-items: start;
+  font-size: .82rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+/* A pegada do logo como marcador. Ela dá um passo à frente quando o
+   cursor entra na entrada — o mesmo gesto da marca no cabeçalho. */
+.foot-mark {
+  width: 13px;
+  height: auto;
+  margin-top: .38rem;
+  fill: var(--accent);
+  opacity: .85;
+  transition: transform var(--dur) var(--ease);
+}
+.entry:hover .foot-mark { transform: translateY(-2px); }
+.entry-list li:nth-child(even) .foot-mark { transform: scaleX(-1); }
+.entry:hover .entry-list li:nth-child(even) .foot-mark {
+  transform: scaleX(-1) translateY(-2px);
+}
+
+@media (max-width: 980px) {
+  .field-guide { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .field-guide { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .foot-mark { transition: none; }
+  .entry:hover { transform: none; }
+  .entry:hover .foot-mark { transform: none; }
+  .entry:hover .entry-list li:nth-child(even) .foot-mark { transform: scaleX(-1); }
+}

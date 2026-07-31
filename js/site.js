@@ -35,6 +35,49 @@
     return a;
   }
 
+  // Pegada do logo, em SVG, sem requisição e sem fonte de ícone.
+  // Duas elipses: sola e calcanhar. É o mesmo desenho das pegadas do
+  // globo do hero, e serve de marcador das listas.
+  function footMark() {
+    const ns = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("viewBox", "-4 -5 9 12");
+    svg.setAttribute("class", "foot-mark");
+    svg.setAttribute("aria-hidden", "true");
+
+    const sole = document.createElementNS(ns, "ellipse");
+    sole.setAttribute("rx", "2.05");
+    sole.setAttribute("ry", "3.3");
+    svg.appendChild(sole);
+
+    const heel = document.createElementNS(ns, "ellipse");
+    heel.setAttribute("cx", "0.2");
+    heel.setAttribute("cy", "4.5");
+    heel.setAttribute("rx", "1.3");
+    heel.setAttribute("ry", "1.45");
+    svg.appendChild(heel);
+
+    return svg;
+  }
+
+  // Espaço da foto. Enquanto `image` for texto, mostra o que vai ali;
+  // quando virar { src, alt }, publica a imagem no mesmo lugar.
+  function imageSlot(image) {
+    const slot = el("div", "slot");
+    if (image && image.src) {
+      const img = document.createElement("img");
+      img.src = image.src;
+      img.alt = image.alt || "";
+      img.loading = "lazy";
+      img.decoding = "async";
+      slot.appendChild(img);
+      return slot;
+    }
+    slot.classList.add("is-empty");
+    slot.appendChild(el("span", null, typeof image === "string" ? image : "photo"));
+    return slot;
+  }
+
   // O site é contado como uma história: cada seção é um capítulo.
   let chapter = 0;
   function head(container, id, title, lead) {
@@ -60,28 +103,47 @@
 
   function renderHero() {
     const c = CONTENT.hero;
-    const w = wrap(document.getElementById("hero"));
+    const hero = document.getElementById("hero");
+
+    // Layout de duas colunas: copy à esquerda, globo à direita.
+    hero.classList.add("hero-split");
+
+    const w = wrap(hero);
+    const copy = el("div", "hero-copy");
+    w.appendChild(copy);
 
     const eyebrow = el("p", "eyebrow", c.eyebrow);
     eyebrow.setAttribute("data-reveal", "");
-    w.appendChild(eyebrow);
+    copy.appendChild(eyebrow);
 
     const h = el("h1", null, c.title);
     h.id = "hero-title";
     h.setAttribute("data-split", "");
-    w.appendChild(h);
+    copy.appendChild(h);
 
     const lead = el("p", "lead", c.lead);
     lead.setAttribute("data-reveal", "");
     lead.style.setProperty("--reveal-delay", "160ms");
-    w.appendChild(lead);
+    copy.appendChild(lead);
 
     const actions = el("div", "hero-actions");
     actions.setAttribute("data-reveal", "");
     actions.style.setProperty("--reveal-delay", "260ms");
     actions.appendChild(link("#proposal", c.primaryCta, "btn btn-primary"));
     actions.appendChild(link("#services", c.secondaryCta, "btn btn-ghost"));
-    w.appendChild(actions);
+    copy.appendChild(actions);
+
+    // Globo e legenda: os contêineres nascem vazios aqui e são
+    // preenchidos pelo js/hero-globe.js. Se aquele arquivo não
+    // carregar, sobram duas divs vazias e o hero segue inteiro.
+    const art = el("div", "hero-art");
+    const stage = el("div", "globe-stage");
+    stage.setAttribute("data-globe", "");
+    const legend = el("div");
+    legend.setAttribute("data-globe-legend", "");
+    art.appendChild(stage);
+    art.appendChild(legend);
+    w.appendChild(art);
   }
 
   // ---- serviços ----
@@ -91,16 +153,39 @@
     const w = wrap(document.getElementById("services"));
     head(w, "services-title", c.title, c.lead);
 
-    const grid = el("div", "service-grid");
-    c.items.forEach((item) => {
-      const card = el("article", "service");
-      card.setAttribute("data-reveal", "");
-      card.appendChild(el("p", "need", item.need));
-      card.appendChild(el("p", "service-name", item.title));
-      card.appendChild(list(item.deliverables));
-      grid.appendChild(card);
+    const guide = el("ol", "field-guide");
+    c.items.forEach(function (item, i) {
+      const entry = el("li", "entry");
+      entry.setAttribute("data-reveal", "");
+      entry.style.setProperty("--reveal-delay", i * 90 + "ms");
+
+      // Só monta o espaço da foto quando há imagem de verdade. Sem ela
+      // a entrada vira coluna única (classe .entry--noart), sem buraco.
+      if (item.image && item.image.src) {
+        const art = el("div", "entry-art");
+        art.appendChild(imageSlot(item.image));
+        entry.appendChild(art);
+      } else {
+        entry.classList.add("entry--noart");
+      }
+
+      const body = el("div", "entry-body");
+      body.appendChild(el("span", "entry-index", String(i + 1).padStart(2, "0")));
+      body.appendChild(el("p", "entry-name", item.title));
+
+      const ul = el("ul", "entry-list");
+      item.deliverables.forEach(function (line) {
+        const li = el("li");
+        li.appendChild(footMark());
+        li.appendChild(el("span", null, line));
+        ul.appendChild(li);
+      });
+      body.appendChild(ul);
+
+      entry.appendChild(body);
+      guide.appendChild(entry);
     });
-    w.appendChild(grid);
+    w.appendChild(guide);
   }
 
   // ---- equipe ----
@@ -180,52 +265,6 @@
     w.appendChild(route);
   }
 
-  // ---- cases ----
-  // Só entra no site o que estiver published: true. Enquanto não
-  // houver trabalho real publicado, a seção diz isso em vez de
-  // mostrar resultado inventado.
-
-  function renderCases() {
-    const c = CONTENT.cases;
-    const w = wrap(document.getElementById("cases"));
-    head(w, "cases-title", c.title, c.lead);
-
-    const live = (c.items || []).filter((item) => item.published);
-    if (!live.length) {
-      const note = el("p", "cases-empty", c.emptyNote);
-      note.setAttribute("data-reveal", "");
-      w.appendChild(note);
-      return;
-    }
-
-    const grid = el("div", "case-grid");
-    live.forEach((item) => {
-      const card = el("article", "case");
-      card.setAttribute("data-reveal", "");
-      card.appendChild(
-        el("p", "case-meta", [item.type, item.location].filter(Boolean).join(" · "))
-      );
-      card.appendChild(el("h3", null, item.client));
-      card.appendChild(el("p", null, item.challenge));
-      card.appendChild(el("p", null, item.approach));
-      if (item.results && item.results.length) {
-        card.appendChild(list(item.results, "case-results"));
-      }
-
-      // O link é a prova: dá pra conferir tudo acima clicando.
-      if (item.href) {
-        const visit = link(item.href, "Visit " + item.client + " →", "case-link");
-        visit.target = "_blank";
-        visit.rel = "noopener noreferrer";
-        visit.referrerPolicy = "no-referrer";
-        card.appendChild(visit);
-      }
-
-      grid.appendChild(card);
-    });
-    w.appendChild(grid);
-  }
-
   // ---- pacotes ----
 
   function renderPackages() {
@@ -233,50 +272,69 @@
     const w = wrap(document.getElementById("packages"));
     head(w, "packages-title", c.title, c.lead);
 
-    const grid = el("div", "package-grid");
-    c.items.forEach((p) => {
-      const card = el("article", "package" + (p.featured ? " featured" : ""));
-      card.setAttribute("data-reveal", "scale");
-      if (p.featured) card.appendChild(el("span", "tag", "Most chosen"));
-      card.appendChild(el("h3", null, p.name));
-      card.appendChild(el("p", "for-who", p.forWho));
+    const ladder = el("ol", "plan-ladder");
+    c.items.forEach(function (p, i) {
+      const row = el("li", "plan" + (p.featured ? " is-featured" : ""));
+      row.setAttribute("data-reveal", "");
+      row.style.setProperty("--reveal-delay", i * 80 + "ms");
 
-      const price = el("div", "price");
+      const lead = el("div", "plan-lead");
+      const top = el("div", "plan-top");
+      top.appendChild(el("span", "plan-step", String(i + 1).padStart(2, "0")));
+      if (p.featured) top.appendChild(el("span", "plan-tag", "Most chosen"));
+      lead.appendChild(top);
+
+      lead.appendChild(el("h3", null, p.name));
+      lead.appendChild(el("p", "plan-for", p.forWho));
+
+      const price = el("p", "plan-price");
       if (p.priceCustom) {
-        // Plano sob consulta: texto no lugar do número
-        price.classList.add("price-custom");
+        price.classList.add("is-custom");
         price.appendChild(document.createTextNode(p.priceCustom));
       } else {
-        // O preço de referência riscado só aparece quando existe, e
-        // vem antes do valor atual pra ancorar a leitura.
         if (p.priceWas) {
           price.appendChild(
-            el("s", "price-was", "US$" + p.priceWas.toLocaleString("en-US"))
+            el("s", "plan-was", "US$" + p.priceWas.toLocaleString("en-US"))
           );
         }
-        price.appendChild(document.createTextNode("US$" + p.price.toLocaleString("en-US")));
+        price.appendChild(
+          document.createTextNode("US$" + p.price.toLocaleString("en-US"))
+        );
       }
-      card.appendChild(price);
+      lead.appendChild(price);
 
-      if (p.priceNote) card.appendChild(el("p", "price-note", p.priceNote));
-      card.appendChild(el("p", "timeline", p.timeline));
-      card.appendChild(list(p.includes));
+      const meta = el("p", "plan-time", p.timeline);
+      if (p.priceNote) {
+        meta.appendChild(document.createElement("br"));
+        meta.appendChild(el("span", "plan-note", p.priceNote));
+      }
+      lead.appendChild(meta);
 
       if (p.cta && CONTENT.brand.email) {
-        const cta = link(
+        lead.appendChild(link(
           "mailto:" + CONTENT.brand.email +
             "?subject=" + encodeURIComponent(p.name + " — scope request"),
           p.cta,
-          "btn btn-ghost package-cta"
-        );
-        card.appendChild(cta);
+          "btn btn-ghost plan-cta"
+        ));
       }
 
-      grid.appendChild(card);
-    });
-    w.appendChild(grid);
+      row.appendChild(lead);
 
-    const note = el("p", "packages-note", c.note);
+      const ul = el("ul", "plan-list");
+      p.includes.forEach(function (line) {
+        const li = el("li");
+        li.appendChild(footMark());
+        li.appendChild(el("span", null, line));
+        ul.appendChild(li);
+      });
+      row.appendChild(ul);
+
+      ladder.appendChild(row);
+    });
+    w.appendChild(ladder);
+
+    const note = el("p", "plan-hint", c.note);
     note.setAttribute("data-reveal", "");
     w.appendChild(note);
   }
@@ -391,7 +449,6 @@
   renderServices();
   renderTeam();
   renderMethod();
-  renderCases();
   renderPackages();
   renderProposalHead();
   renderContact();
