@@ -24,7 +24,7 @@ const CONTENT = {
     eyebrow: "A travelling studio",
     title: "Every place has a story. Most hotels are sitting on theirs.",
     lead:
-      "A creative strategist and a software engineer. We turn what makes your property different into a brand, a website and a presence that fills rooms.",
+      "Just the two of us, your story, and results that matter.",
     primaryCta: "Get your proposal",
     secondaryCta: "See what we do",
   },
@@ -62,15 +62,16 @@ const CONTENT = {
       },
     ],
     note:
-      "Agencies give you a designer who never read a line about your region and a copywriter paid by the word. Here the research and the build are done by the same two people — which is why the story survives all the way into the website.",
+      "Agencies give you a designer who never read a line about your region and a copywriter paid by the word. Here the research and the build are done by the same two people which is why the story survives all the way into the website.",
   },
 
   services: {
     title: "What we fix",
-    lead: "Each one starts from a problem, not from something we happen to sell.",
+    lead: "",
     items: [
       {
         id: "brand",
+        image: null,
         need: "Guests can't tell you apart from the place next door",
         title: "Brand identity",
         deliverables: [
@@ -81,6 +82,7 @@ const CONTENT = {
       },
       {
         id: "website",
+        image: null,
         need: "People find you, look around, and book somewhere else",
         title: "Website and direct booking",
         deliverables: [
@@ -91,6 +93,7 @@ const CONTENT = {
       },
       {
         id: "media",
+        image: null,
         need: "Your photos look like five different businesses",
         title: "Social media, photo and video",
         deliverables: [
@@ -101,6 +104,7 @@ const CONTENT = {
       },
       {
         id: "channels",
+        image: null,
         need: "Booking.com is the only place you exist",
         title: "Channels and visibility",
         deliverables: [
