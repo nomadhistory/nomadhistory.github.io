@@ -111,11 +111,11 @@
     head(w, "services-title", c.title, c.lead);
 
     const grid = el("div", "service-grid");
-    c.items.forEach((item) => {
-      const card = el("article", "service");
+    c.items.forEach((item, i) => {
+      const card = el("article", "service-entry");
       card.setAttribute("data-reveal", "");
-      card.appendChild(el("p", "need", item.need));
-      card.appendChild(el("p", "service-name", item.title));
+      card.appendChild(el("span", "entry-index", String(i + 1).padStart(2, "0")));
+      card.appendChild(el("h3", "entry-name", item.title));
       card.appendChild(list(item.deliverables));
       grid.appendChild(card);
     });
@@ -410,7 +410,6 @@
   renderServices();
   renderTeam();
   renderMethod();
-  renderCases();
   renderPackages();
   renderProposalHead();
   renderContact();
