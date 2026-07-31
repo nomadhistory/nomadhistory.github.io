@@ -35,6 +35,31 @@
     return a;
   }
 
+  // Pegada do logo, em SVG, sem requisição e sem fonte de ícone.
+  // Duas elipses: sola e calcanhar. É o mesmo desenho das pegadas do
+  // globo do hero, e serve de marcador das listas.
+  function footMark() {
+    const ns = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("viewBox", "-4 -5 9 12");
+    svg.setAttribute("class", "foot-mark");
+    svg.setAttribute("aria-hidden", "true");
+
+    const sole = document.createElementNS(ns, "ellipse");
+    sole.setAttribute("rx", "2.05");
+    sole.setAttribute("ry", "3.3");
+    svg.appendChild(sole);
+
+    const heel = document.createElementNS(ns, "ellipse");
+    heel.setAttribute("cx", "0.2");
+    heel.setAttribute("cy", "4.5");
+    heel.setAttribute("rx", "1.3");
+    heel.setAttribute("ry", "1.45");
+    svg.appendChild(heel);
+
+    return svg;
+  }
+
   // O site é contado como uma história: cada seção é um capítulo.
   let chapter = 0;
   function head(container, id, title, lead) {
@@ -252,50 +277,69 @@
     const w = wrap(document.getElementById("packages"));
     head(w, "packages-title", c.title, c.lead);
 
-    const grid = el("div", "package-grid");
-    c.items.forEach((p) => {
-      const card = el("article", "package" + (p.featured ? " featured" : ""));
-      card.setAttribute("data-reveal", "scale");
-      if (p.featured) card.appendChild(el("span", "tag", "Most chosen"));
-      card.appendChild(el("h3", null, p.name));
-      card.appendChild(el("p", "for-who", p.forWho));
+    const ladder = el("ol", "plan-ladder");
+    c.items.forEach(function (p, i) {
+      const row = el("li", "plan" + (p.featured ? " is-featured" : ""));
+      row.setAttribute("data-reveal", "");
+      row.style.setProperty("--reveal-delay", i * 80 + "ms");
 
-      const price = el("div", "price");
+      const lead = el("div", "plan-lead");
+      const top = el("div", "plan-top");
+      top.appendChild(el("span", "plan-step", String(i + 1).padStart(2, "0")));
+      if (p.featured) top.appendChild(el("span", "plan-tag", "Most chosen"));
+      lead.appendChild(top);
+
+      lead.appendChild(el("h3", null, p.name));
+      lead.appendChild(el("p", "plan-for", p.forWho));
+
+      const price = el("p", "plan-price");
       if (p.priceCustom) {
-        // Plano sob consulta: texto no lugar do número
-        price.classList.add("price-custom");
+        price.classList.add("is-custom");
         price.appendChild(document.createTextNode(p.priceCustom));
       } else {
-        // O preço de referência riscado só aparece quando existe, e
-        // vem antes do valor atual pra ancorar a leitura.
         if (p.priceWas) {
           price.appendChild(
-            el("s", "price-was", "US$" + p.priceWas.toLocaleString("en-US"))
+            el("s", "plan-was", "US$" + p.priceWas.toLocaleString("en-US"))
           );
         }
-        price.appendChild(document.createTextNode("US$" + p.price.toLocaleString("en-US")));
+        price.appendChild(
+          document.createTextNode("US$" + p.price.toLocaleString("en-US"))
+        );
       }
-      card.appendChild(price);
+      lead.appendChild(price);
 
-      if (p.priceNote) card.appendChild(el("p", "price-note", p.priceNote));
-      card.appendChild(el("p", "timeline", p.timeline));
-      card.appendChild(list(p.includes));
+      const meta = el("p", "plan-time", p.timeline);
+      if (p.priceNote) {
+        meta.appendChild(document.createElement("br"));
+        meta.appendChild(el("span", "plan-note", p.priceNote));
+      }
+      lead.appendChild(meta);
 
       if (p.cta && CONTENT.brand.email) {
-        const cta = link(
+        lead.appendChild(link(
           "mailto:" + CONTENT.brand.email +
             "?subject=" + encodeURIComponent(p.name + " — scope request"),
           p.cta,
-          "btn btn-ghost package-cta"
-        );
-        card.appendChild(cta);
+          "btn btn-ghost plan-cta"
+        ));
       }
 
-      grid.appendChild(card);
-    });
-    w.appendChild(grid);
+      row.appendChild(lead);
 
-    const note = el("p", "packages-note", c.note);
+      const ul = el("ul", "plan-list");
+      p.includes.forEach(function (line) {
+        const li = el("li");
+        li.appendChild(footMark());
+        li.appendChild(el("span", null, line));
+        ul.appendChild(li);
+      });
+      row.appendChild(ul);
+
+      ladder.appendChild(row);
+    });
+    w.appendChild(ladder);
+
+    const note = el("p", "plan-hint", c.note);
     note.setAttribute("data-reveal", "");
     w.appendChild(note);
   }

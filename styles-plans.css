@@ -1,0 +1,196 @@
+/* ============================================================
+   PLANS — a escada de escopo.
+
+   Uma linha por plano, não quatro cards flutuando: cada plano contém o
+   anterior, então a leitura precisa ser de cima pra baixo. O plano em
+   destaque é a linha em tinta cheia — a mesma massa preta do logo e do
+   globo. Sem sombra, sem gradiente, sem ✓: as entregas são marcadas
+   com a pegada, igual ao Services.
+
+   Consome só os tokens de styles-base.css.
+   ============================================================ */
+
+.plan-ladder {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  border-top: var(--border) solid var(--line);
+}
+
+.plan {
+  display: grid;
+  grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+  gap: clamp(1.4rem, 3.4vw, 3rem);
+  padding: clamp(1.8rem, 3.4vw, 2.6rem) clamp(0rem, 2vw, 1.8rem);
+  border-bottom: var(--border) solid var(--line);
+  transition: background-color var(--dur-fast) var(--ease);
+}
+.plan:hover { background: var(--paper-alt); }
+
+/* O plano escolhido pela maioria: tinta cheia, texto em papel. Não
+   precisa de anel nem de sombra pra se destacar de linhas vazadas. */
+.plan.is-featured {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.plan.is-featured:hover { background: var(--ink); }
+
+.plan-lead { display: grid; align-content: start; }
+
+.plan-top {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  margin-bottom: .9rem;
+  min-height: 1.4rem;
+}
+
+.plan-step {
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  color: var(--ink-soft);
+}
+.plan.is-featured .plan-step {
+  color: color-mix(in srgb, var(--paper) 62%, transparent);
+}
+
+.plan-tag {
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--accent);
+  padding: .26rem .7rem;
+  border-radius: 999px;
+}
+
+.plan h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 2.7vw, 2.3rem);
+  line-height: 1.05;
+  letter-spacing: var(--tracking-display);
+  margin: 0 0 .45rem;
+}
+
+.plan-for {
+  font-size: .95rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0 0 1.3rem;
+  max-width: 34ch;
+  text-wrap: pretty;
+}
+.plan.is-featured .plan-for {
+  color: color-mix(in srgb, var(--paper) 80%, transparent);
+}
+
+.plan-price {
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 3.2vw, 2.7rem);
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
+  margin: 0;
+}
+.plan-price.is-custom {
+  font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+  color: var(--accent);
+}
+
+/* Preço de referência riscado, antes do valor atual */
+.plan-was {
+  font-size: .48em;
+  color: var(--ink-soft);
+  margin-right: .5rem;
+  text-decoration-thickness: 2px;
+  vertical-align: middle;
+}
+.plan.is-featured .plan-was {
+  color: color-mix(in srgb, var(--paper) 60%, transparent);
+}
+
+.plan-time {
+  font-size: .86rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: .6rem 0 0;
+}
+.plan.is-featured .plan-time {
+  color: color-mix(in srgb, var(--paper) 72%, transparent);
+}
+.plan-note { color: var(--accent); }
+/* Na linha em tinta o acento puro cai pra 3.4:1 — clareia com papel
+   até passar AA. É a linha do preço; tem que ser legível. */
+.plan.is-featured .plan-note {
+  color: color-mix(in srgb, var(--brand-accent) 45%, var(--paper));
+}
+
+.plan-cta {
+  justify-self: start;
+  margin-top: 1.3rem;
+  padding: .62rem 1.1rem;
+  font-size: .88rem;
+}
+
+/* ---- o que entra ---- */
+
+.plan-list {
+  display: grid;
+  align-content: start;
+  gap: .7rem;
+  padding-top: .3rem;
+  max-width: 54ch;
+}
+.plan-list li {
+  display: grid;
+  grid-template-columns: 13px 1fr;
+  gap: .8rem;
+  align-items: start;
+  font-size: .95rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+.plan.is-featured .plan-list li {
+  color: color-mix(in srgb, var(--paper) 88%, transparent);
+}
+
+/* A primeira entrega de cada plano é "tudo do plano anterior": é a
+   dobradiça da escada, então vem em tinta e em peso. */
+.plan-list li:first-child { color: var(--ink); font-weight: 620; }
+.plan.is-featured .plan-list li:first-child { color: var(--paper); }
+
+.plan-hint {
+  margin-top: 1.8rem;
+  font-size: .93rem;
+  color: var(--ink-soft);
+}
+
+/* Na linha em tinta a pegada precisa clarear pra continuar visível */
+.plan.is-featured .foot-mark {
+  fill: color-mix(in srgb, var(--brand-accent) 72%, var(--paper));
+  opacity: 1;
+}
+.plan:hover .foot-mark { transform: translateY(-2px); }
+.plan-list li:nth-child(even) .foot-mark { transform: scaleX(-1); }
+.plan:hover .plan-list li:nth-child(even) .foot-mark {
+  transform: scaleX(-1) translateY(-2px);
+}
+
+@media (max-width: 860px) {
+  .plan {
+    grid-template-columns: 1fr;
+    gap: 1.3rem;
+    padding-inline: 0;
+  }
+  .plan.is-featured { padding-inline: 1.2rem; }
+  .plan-for { max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plan:hover .foot-mark { transform: none; }
+  .plan:hover .plan-list li:nth-child(even) .foot-mark { transform: scaleX(-1); }
+}
