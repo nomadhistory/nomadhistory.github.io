@@ -1,0 +1,639 @@
+/* ============================================================
+   JOURNAL — Field Notes: o índice do blog e a página de artigo.
+
+   Mesmo vocabulário do resto do site: capítulos, pegada do logo,
+   fio como divisor, display em serifa e corpo em sans. Consome só
+   os tokens de styles-base.css — nenhuma cor, fonte ou raio literal.
+
+   Duas telas vivem aqui:
+     .journal-index  → a lista de notas (blog/index.html)
+     .article        → uma nota aberta (blog/<slug>.html)
+   ============================================================ */
+
+/* ---- cabeçalho da seção (índice) --------------------------- */
+
+.journal-hero {
+  position: relative;
+  z-index: 2;
+  padding: clamp(3.5rem, 8vw, 6.5rem) 0 clamp(2rem, 4vw, 3.2rem);
+}
+.journal-hero h1 {
+  max-width: 16ch;
+  margin-bottom: .4em;
+}
+.journal-hero .lead {
+  font-size: clamp(1.1rem, 1.75vw, 1.3rem);
+}
+
+/* Fio que fecha o cabeçalho e abre a lista */
+.journal-rule {
+  border: 0;
+  border-top: var(--border) solid var(--line);
+  margin: 0;
+}
+
+/* ---- a lista de notas -------------------------------------- */
+
+.post-feed {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: clamp(1.6rem, 3vw, 2.6rem) clamp(1.4rem, 2.4vw, 2rem);
+  padding: clamp(2.5rem, 5vw, 4rem) 0;
+}
+
+/* Cada nota é um link inteiro, sem card: fio em cima, número grande,
+   título em serifa. A cor de acento entra só no hover, como no resto
+   do site. */
+.post-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: .9rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--ink);
+  color: inherit;
+  text-decoration: none;
+  transition: transform var(--dur) var(--ease);
+}
+.post-card:hover { transform: translateY(-4px); }
+
+.post-card .post-kicker {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.post-card .post-kicker .dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .5;
+}
+
+.post-card h2,
+.post-card h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.3vw, 1.9rem);
+  line-height: 1.12;
+  letter-spacing: var(--tracking-display);
+  margin: 0;
+  text-wrap: pretty;
+  transition: color var(--dur-fast) var(--ease);
+}
+.post-card:hover h2,
+.post-card:hover h3 { color: var(--accent); }
+
+.post-card .post-excerpt {
+  color: var(--ink-soft);
+  font-size: .96rem;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .55rem;
+  margin-top: auto;
+  padding-top: .2rem;
+  font-size: .82rem;
+  color: var(--ink-soft);
+}
+.post-meta .sep {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .55;
+}
+.post-card .read-on {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin-top: .3rem;
+  font-size: .82rem;
+  font-weight: 650;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.post-card .read-on .arrow { transition: transform var(--dur-fast) var(--ease); }
+.post-card:hover .read-on .arrow { transform: translateX(4px); }
+
+/* Nota em destaque: ocupa a linha inteira, foto de um lado e texto do
+   outro, título maior. Um capítulo de abertura para a seção. */
+.post-card.is-featured {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: clamp(1.6rem, 3vw, 3rem);
+  align-items: center;
+  padding-top: 1.8rem;
+  border-top-width: 3px;
+}
+.post-card.is-featured .post-featured-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  order: 2;
+}
+.post-card.is-featured .post-cover { order: 1; }
+.post-card.is-featured h2 {
+  font-size: clamp(2rem, 3.8vw, 3rem);
+  max-width: 18ch;
+}
+.post-card.is-featured .post-excerpt {
+  font-size: clamp(1rem, 1.4vw, 1.12rem);
+  max-width: 52ch;
+}
+
+/* espaço da capa — mesma linguagem do .slot dos serviços */
+.post-cover {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  border: var(--border) solid var(--line);
+  background: var(--paper-alt);
+  display: grid;
+  place-items: center;
+}
+.post-cover.is-empty {
+  background-image: repeating-linear-gradient(
+    128deg,
+    transparent 0 11px,
+    color-mix(in srgb, var(--ink) 7%, transparent) 11px 12px
+  );
+}
+.post-cover.is-empty span {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .71rem;
+  line-height: 1.5;
+  letter-spacing: .02em;
+  color: var(--ink-soft);
+  text-align: center;
+  padding: 0 1.4rem;
+  text-wrap: pretty;
+}
+.post-cover img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 1.2s var(--ease);
+}
+.post-card:hover .post-cover img { transform: scale(1.04); }
+.post-cover:not(.is-empty)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 52%,
+    color-mix(in srgb, var(--brand-accent) 15%, transparent) 100%
+  );
+}
+
+.journal-empty {
+  border: var(--border) dashed var(--line);
+  border-radius: var(--radius);
+  padding: 2.4rem;
+  color: var(--ink-soft);
+  max-width: 60ch;
+}
+
+/* ---- barra de filtros por categoria ---- */
+
+.journal-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+  padding-top: clamp(1.6rem, 3vw, 2.4rem);
+}
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: .42rem 1rem;
+  border: var(--border) solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease),
+              background var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+}
+.filter-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+.filter-chip.is-active {
+  border-color: transparent;
+  background: var(--gradient);
+  color: #fff;
+}
+:root[data-theme="dark"] .filter-chip.is-active { color: var(--brand-ink); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .filter-chip.is-active { color: var(--brand-ink); }
+}
+
+/* ---- paginação ---- */
+
+.journal-pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: clamp(1rem, 2.5vw, 2rem);
+  padding-top: clamp(1.6rem, 3vw, 2.4rem);
+  border-top: var(--border) solid var(--line);
+}
+.pager-step {
+  display: inline-flex;
+  align-items: center;
+  padding: .55rem 1.1rem;
+  border: var(--border) solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: .85rem;
+  font-weight: 620;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+}
+.pager-step:hover:not([disabled]) {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+.pager-step[disabled] { opacity: .35; cursor: not-allowed; }
+.pager-nums { display: flex; gap: .35rem; }
+.pager-num {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 .5rem;
+  border: var(--border) solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
+}
+.pager-num:hover { border-color: var(--line); color: var(--ink); }
+.pager-num.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+
+@media (max-width: 720px) {
+  .post-card.is-featured {
+    grid-template-columns: 1fr;
+  }
+  .post-card.is-featured .post-cover { order: 1; }
+  .post-card.is-featured .post-featured-body { order: 2; }
+}
+
+/* ============================================================
+   ARTIGO — a nota aberta.
+   Coluna de leitura estreita, centrada, com respiro editorial.
+   ============================================================ */
+
+.article {
+  position: relative;
+  z-index: 2;
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(3rem, 6vw, 5rem);
+}
+
+/* Trilha de volta, no topo da página */
+.article-back {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .82rem;
+  font-weight: 650;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease);
+}
+.article-back:hover { color: var(--accent); }
+.article-back .arrow { transition: transform var(--dur-fast) var(--ease); }
+.article-back:hover .arrow { transform: translateX(-3px); }
+
+/* medida de leitura, reaproveitada pelo corpo e pelo cabeçalho */
+.article-column {
+  width: 100%;
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.article-header {
+  margin: clamp(1.8rem, 4vw, 3rem) 0 clamp(1.6rem, 3vw, 2.4rem);
+}
+.article-kicker {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  font-size: .74rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.4rem;
+}
+.article-kicker .dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: currentColor; opacity: .5;
+}
+.article-header h1 {
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  line-height: 1.05;
+  letter-spacing: var(--tracking-display);
+  margin: 0 0 .6em;
+  text-wrap: balance;
+}
+.article-standfirst {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+  line-height: 1.4;
+  letter-spacing: var(--tracking-display);
+  color: var(--ink-soft);
+  margin: 0 0 1.8rem;
+  text-wrap: pretty;
+}
+
+.article-byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .55rem;
+  padding-top: 1.3rem;
+  border-top: var(--border) solid var(--line);
+  font-size: .88rem;
+  color: var(--ink-soft);
+}
+.article-byline strong { color: var(--ink); font-weight: 650; }
+.article-byline .sep {
+  width: 3px; height: 3px; border-radius: 50%;
+  background: currentColor; opacity: .55;
+}
+
+/* capa larga, sangrando um pouco além da coluna de texto */
+.article-cover {
+  position: relative;
+  max-width: 60rem;
+  margin: 0 auto clamp(2rem, 4vw, 3rem);
+  padding: 0 1.5rem;
+}
+.article-cover .post-cover { aspect-ratio: 16 / 9; }
+
+/* ---- corpo ---- */
+
+.prose {
+  font-size: clamp(1.06rem, 1.35vw, 1.19rem);
+  line-height: 1.72;
+  color: var(--ink);
+}
+.prose > * + * { margin-top: 1.35em; }
+.prose p { margin: 0; text-wrap: pretty; }
+.prose strong { font-weight: 650; }
+.prose a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.prose h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.14;
+  letter-spacing: var(--tracking-display);
+  margin: 2.2em 0 0;
+  text-wrap: balance;
+}
+.prose h2 + * { margin-top: .7em; }
+.prose h3 {
+  font-family: var(--font-text);
+  font-weight: 700;
+  font-size: 1.16rem;
+  letter-spacing: 0;
+  margin: 1.9em 0 0;
+}
+.prose h3 + * { margin-top: .5em; }
+
+/* primeira letra da abertura, discreta */
+.prose > p:first-of-type::first-letter {
+  font-family: var(--font-display);
+  font-size: 3.4em;
+  line-height: .82;
+  float: left;
+  padding: .04em .12em 0 0;
+  color: var(--accent);
+}
+
+.prose ul, .prose ol {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: .7rem;
+}
+.prose ul li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 15px 1fr;
+  gap: .85rem;
+  align-items: start;
+}
+.prose ul li .foot-mark {
+  width: 14px;
+  margin-top: .5rem;
+  fill: var(--accent);
+  opacity: .85;
+}
+.prose ol {
+  counter-reset: prose-ol;
+  padding-left: 0;
+}
+.prose ol li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.2rem 1fr;
+  gap: .6rem;
+  align-items: baseline;
+  counter-increment: prose-ol;
+}
+.prose ol li::before {
+  content: counter(prose-ol, decimal-leading-zero);
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.prose blockquote {
+  margin: 2.2em 0;
+  padding: .1em 0 .1em clamp(1.2rem, 3vw, 2rem);
+  border-left: 3px solid var(--accent);
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  line-height: 1.28;
+  letter-spacing: var(--tracking-display);
+  color: var(--ink);
+}
+.prose blockquote p { margin: 0; }
+.prose blockquote cite {
+  display: block;
+  margin-top: .8rem;
+  font-family: var(--font-text);
+  font-style: normal;
+  font-size: .82rem;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.prose figure { margin: 2.2em 0; }
+.prose figure .post-cover { aspect-ratio: 3 / 2; }
+.prose figcaption {
+  margin-top: .7rem;
+  font-size: .84rem;
+  color: var(--ink-soft);
+  text-wrap: pretty;
+}
+
+.prose hr {
+  border: 0;
+  height: 1px;
+  background: var(--line);
+  margin: 2.6em 0;
+}
+
+/* caixa de destaque — mesmo espírito do result-note do formulário */
+.prose .callout {
+  background: var(--accent-soft);
+  border-radius: var(--radius-sm);
+  padding: 1.3rem 1.5rem;
+  font-size: .98rem;
+  color: var(--ink);
+}
+.prose .callout p { margin: 0; }
+.prose .callout p + p { margin-top: .7em; }
+
+/* ---- assinatura da autora, ao fim ---- */
+
+.article-sign {
+  margin: clamp(2.6rem, 5vw, 4rem) 0 0;
+  padding-top: 1.8rem;
+  border-top: var(--border) solid var(--line);
+  display: flex;
+  gap: 1.2rem;
+  align-items: flex-start;
+}
+.article-sign .sign-mark {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: var(--border) solid var(--line);
+  display: grid;
+  place-items: center;
+  background: var(--paper-alt);
+}
+.article-sign .sign-mark .foot-mark { width: 16px; fill: var(--accent); }
+.article-sign .sign-body { font-size: .92rem; color: var(--ink-soft); }
+.article-sign .sign-body strong { color: var(--ink); }
+.article-sign .sign-role {
+  font-size: .72rem;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ---- faixa de CTA de volta à proposta ---- */
+
+.article-cta {
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(3rem, 6vw, 5rem);
+  background: var(--paper-alt);
+  border-top: var(--border) solid var(--line);
+  border-bottom: var(--border) solid var(--line);
+  padding: clamp(2.6rem, 5vw, 4rem) 0;
+}
+.article-cta .article-column { max-width: 52rem; text-align: center; }
+.article-cta h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-display);
+  margin: 0 0 .6em;
+  text-wrap: balance;
+}
+.article-cta p {
+  color: var(--ink-soft);
+  max-width: 46ch;
+  margin: 0 auto 1.8rem;
+}
+.article-cta .article-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .8rem;
+  justify-content: center;
+}
+
+/* ---- "keep reading": notas relacionadas ---- */
+
+.related {
+  position: relative;
+  z-index: 2;
+  padding: clamp(2.6rem, 5vw, 4rem) 0;
+}
+.related h2 {
+  font-size: .74rem;
+  font-weight: 700;
+  font-family: var(--font-text);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 1.8rem;
+}
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: clamp(1.4rem, 2.4vw, 2rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-card, .post-card:hover,
+  .post-card .read-on .arrow,
+  .article-back .arrow { transition: none; transform: none; }
+}
