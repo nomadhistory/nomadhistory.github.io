@@ -9,7 +9,7 @@
 const CONTENT = {
   brand: {
     name: "Historia Nomade",
-    tagline: "Marketing studio for hotels, hostels and tourism",
+    tagline: "Marketing studio for travel, hospitality and tourism",
     email: "historianomadecontact@gmail.com",
     // TODO Tiago: o WhatsApp continua vazio de propósito — número
     // inventado num site público é mensagem de cliente caindo no
@@ -22,11 +22,11 @@ const CONTENT = {
     // A única referência ao nomadismo que sobrou. Curta, e cabe numa
     // linha no celular.
     eyebrow: "A travelling studio",
-    title: "Every place has a story. Most hotels are sitting on theirs.",
+    title: "Every place has a story. Yours is the one thing nobody else can copy.",
     lead:
-      "A creative strategist and a software engineer. We turn what makes your property different into a brand, a website and a presence that fills rooms.",
+      "That's the whole strategy. We find the story and turn it into a position nobody nearby can claim, then build the brand, the site and the channels that carry it. Just the two of us, your story, and results that matter.",
     primaryCta: "Get your proposal",
-    secondaryCta: "See what we do",
+    secondaryCta: "See what we fix",
   },
 
   team: {
@@ -62,51 +62,55 @@ const CONTENT = {
       },
     ],
     note:
-      "Agencies give you a designer who never read a line about your region and a copywriter paid by the word. Here the research and the build are done by the same two people — which is why the story survives all the way into the website.",
+      "Agencies give you a designer who never read a line about your region and a copywriter paid by the word. Here the research and the build are done by the same two people which is why the story survives all the way into the website.",
   },
 
   services: {
     title: "What we fix",
-    lead: "Each one starts from a problem, not from something we happen to sell.",
+    lead: "",
     items: [
       {
         id: "brand",
-        need: "Guests can't tell you apart from the place next door",
+        image: null,
+        need: "A guest scrolls past twelve places that look the same. Yours is one of them.",
         title: "Brand identity",
         deliverables: [
-          "Positioning: who you're for, and who you're not",
-          "Logo and full mark set — digital, print, signage",
-          "Colour, type and photo direction, ready for any printer",
+          "Positioning: who your place is for, and who it is not",
+          "The full mark set — screen, print, signage, a painted wall",
+          "Colour, type and photo direction any printer can follow",
         ],
       },
       {
         id: "website",
-        need: "People find you, look around, and book somewhere else",
+        image: null,
+        need: "People find you, look around, and book somewhere else.",
         title: "Website and direct booking",
         deliverables: [
-          "Fast, mobile-first site — live, and yours",
-          "Story-driven copy instead of filler text",
-          "SEO and Google Business Profile set up",
+          "A fast, mobile-first site — live, and yours",
+          "Copy that tells the story of the place instead of listing amenities",
+          "SEO and Google Business Profile set up properly",
         ],
       },
       {
         id: "media",
-        need: "Your photos look like five different businesses",
+        image: null,
+        need: "Your photos look like five different businesses.",
         title: "Social media, photo and video",
         deliverables: [
-          "Photo and video shot or reworked in your identity",
-          "Social profiles rebuilt to match",
-          "Content templates you keep using after we leave",
+          "Photo and video shot, or reworked, in your identity",
+          "Every profile rebuilt to look like the same place",
+          "Templates you keep using after we leave",
         ],
       },
       {
         id: "channels",
-        need: "Booking.com is the only place you exist",
+        image: null,
+        need: "A booking platform is the only place you exist.",
         title: "Channels and visibility",
         deliverables: [
-          "Booking, Agoda and your own engine updated together",
+          "Booking, Agoda, TripAdvisor and your own site updated together",
           "Google, maps and reviews working for your name",
-          "Paid traffic set up, with cost per booking measured",
+          "Paid traffic set up, with the real cost per booking measured",
         ],
       },
     ],
@@ -114,12 +118,12 @@ const CONTENT = {
 
   method: {
     title: "How we work",
-    lead: "Same process every time. You always know what comes next.",
+    lead: "Same route every time, and the story comes before the design. You always know what comes next.",
     steps: [
       {
         title: "Research",
         text:
-          "Two days on the property, the region and the records. The part almost nobody does.",
+          "Two days on site, in the region and in the records. The part almost nobody does.",
       },
       {
         title: "Positioning",
@@ -196,14 +200,14 @@ const CONTENT = {
   // `priceCustom` — texto no lugar do número (plano sob consulta).
   // ------------------------------------------------------------
   packages: {
-    title: "Plans",
+    title: "Three ways in, and one that is up to you",
     lead:
-      "Fixed scope, fixed price, in USD. Confirmed after we see your property.",
+      "Every plan starts at the story and ends in something people can book. Each one contains the one before it. Fixed scope, fixed price, in USD — confirmed once we have seen your place, and it does not move after that.",
     items: [
       {
         id: "compass",
         name: "Compass",
-        forWho: "You need to look like a business before anything else.",
+        forWho: "Start here if the business looks smaller than it is.",
         price: 500,
         timeline: "About 1 week",
         includes: [
@@ -216,7 +220,7 @@ const CONTENT = {
       {
         id: "landmark",
         name: "Landmark",
-        forWho: "You want a place people can find, trust and book.",
+        forWho: "Start here if people already look for you and leave without booking.",
         price: 599,
         priceWas: 1000,
         // TODO Tiago: confirmar o número de projetos. Isto só pode
@@ -236,7 +240,7 @@ const CONTENT = {
       {
         id: "expedition",
         name: "Expedition",
-        forWho: "You want every channel to look and sell like the same business.",
+        forWho: "Start here if every channel looks like a different business.",
         price: 2000,
         timeline: "4 to 6 weeks",
         includes: [
@@ -250,7 +254,7 @@ const CONTENT = {
       {
         id: "atlas",
         name: "Atlas",
-        forWho: "Bigger than a package. Tell us what the business needs.",
+        forWho: "Past the map. Several places, or one with a lot going on.",
         priceCustom: "Let's talk",
         timeline: "Scoped with you",
         includes: [
@@ -262,7 +266,7 @@ const CONTENT = {
         cta: "Ask for a scope",
       },
     ],
-    note: "Not sure which one fits? The tool below picks it for you.",
+    note: "Not sure which one fits? The form below settles it.",
   },
 
   proposal: {
@@ -289,7 +293,7 @@ const CONTENT = {
   },
 
   footer: {
-    note: "Historia Nomade — brand, web, media and visibility for hospitality.",
+    note: "Historia Nomade — brand, web, media and visibility for travel, hospitality and tourism.",
     privacy:
       "No analytics, no cookies, no tracking. Your answers never leave your device.",
   },

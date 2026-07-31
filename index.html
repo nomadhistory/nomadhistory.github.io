@@ -12,20 +12,20 @@
      tem que voltar vazio. -->
 <meta name="robots" content="noindex, nofollow">
 
-<title>Historia Nomade — Marketing studio for hotels, hostels and tourism</title>
-<meta name="description" content="Brand, website, social media and channel visibility for small hospitality. We turn what makes your property different into direct bookings. Fixed scope, fixed price, from US$500.">
+<title>Historia Nomade — Marketing studio for travel, hospitality and tourism</title>
+<meta name="description" content="Brand, website, social media and channel visibility for hotels, hostels, guesthouses, restaurants and tour operators. We turn what makes a place different into direct bookings. Fixed scope, fixed price, from US$500.">
 <link rel="canonical" href="https://nomadhistory.github.io/">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Historia Nomade — Marketing studio for hotels, hostels and tourism">
-<meta property="og:description" content="Brand, website, social media and channel visibility for small hospitality. Fixed scope, fixed price, from US$500.">
+<meta property="og:title" content="Historia Nomade — Marketing studio for travel, hospitality and tourism">
+<meta property="og:description" content="Brand, website, social media and channel visibility for hotels, hostels, restaurants and tour operators. Fixed scope, fixed price, from US$500.">
 <meta property="og:url" content="https://nomadhistory.github.io/">
 <meta property="og:image" content="https://nomadhistory.github.io/og-image.png">
 <meta property="og:locale" content="en">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Historia Nomade — Marketing studio for hotels, hostels and tourism">
-<meta name="twitter:description" content="Brand, website, social media and channel visibility for small hospitality. Fixed scope, fixed price, from US$500.">
+<meta name="twitter:title" content="Historia Nomade — Marketing studio for travel, hospitality and tourism">
+<meta name="twitter:description" content="Brand, website, social media and channel visibility for hotels, hostels, restaurants and tour operators. Fixed scope, fixed price, from US$500.">
 <meta name="twitter:image" content="https://nomadhistory.github.io/og-image.png">
 
 <meta name="theme-color" content="#14100c">
@@ -34,7 +34,11 @@
 <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon-180.png">
 <link rel="stylesheet" href="styles-base.css">
 <link rel="stylesheet" href="styles-site.css">
+<link rel="stylesheet" href="styles-services.css">
+<link rel="stylesheet" href="styles-plans.css">
 <link rel="stylesheet" href="styles-motion.css">
+<!-- Bloco "Where we've been" do hero (globo + legenda) -->
+<link rel="stylesheet" href="styles-globe.css">
 
 <!-- Único script no <head>: carimba o tema escolhido antes da
      primeira pintura, senão a página pisca no tema errado. -->
@@ -81,7 +85,6 @@
     </a>
     <nav class="site-nav" aria-label="Main">
       <a href="#services">Services</a>
-      <a href="#method">How we work</a>
       <a href="#packages">Plans</a>
       <a href="blog/">Field Notes</a>
       <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Switch theme" title="Switch theme">
@@ -111,8 +114,6 @@
 
   <section class="section" id="method" aria-labelledby="method-title"></section>
 
-  <section class="section section-alt" id="cases" aria-labelledby="cases-title"></section>
-
   <section class="section" id="packages" aria-labelledby="packages-title"></section>
 
   <section class="section section-alt" id="proposal" aria-labelledby="proposal-title"></section>
@@ -129,5 +130,14 @@
 <script src="js/site.js"></script>
 <script src="js/proposal.js"></script>
 <script src="js/motion.js"></script>
+
+<!-- Globo do hero. Vem depois do site.js porque desenha dentro dos
+     contêineres que ele cria. Tudo local: a CSP do site não permite
+     script de fora do domínio, e a geometria chega como script
+     (window.WORLD_110M) e não por fetch, pra manter connect-src 'none'. -->
+<script src="assets/lib/d3.min.js"></script>
+<script src="assets/lib/topojson-client.min.js"></script>
+<script src="assets/world-110m.js"></script>
+<script src="js/hero-globe.js"></script>
 </body>
 </html>
