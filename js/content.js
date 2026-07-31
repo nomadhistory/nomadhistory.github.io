@@ -75,9 +75,9 @@ const CONTENT = {
         need: "Guests can't tell you apart from the place next door",
         title: "Brand identity",
         deliverables: [
-          "Positioning: who you're for, and who you're not",
-          "Logo and full mark set — digital, print, signage",
-          "Colour, type and photo direction, ready for any printer",
+          "Positioning: who your place is for, and who it is not",
+          "The full mark set — screen, print, signage, a painted wall",
+          "Colour, type and photo direction any printer can follow",
         ],
       },
       {
@@ -86,9 +86,9 @@ const CONTENT = {
         need: "People find you, look around, and book somewhere else",
         title: "Website and direct booking",
         deliverables: [
-          "Fast, mobile-first site — live, and yours",
-          "Story-driven copy instead of filler text",
-          "SEO and Google Business Profile set up",
+          "A fast, mobile-first site — live, and yours",
+          "Copy that tells the story of the place instead of listing amenities",
+          "SEO and Google Business Profile set up properly",
         ],
       },
       {
@@ -97,9 +97,9 @@ const CONTENT = {
         need: "Your photos look like five different businesses",
         title: "Social media, photo and video",
         deliverables: [
-          "Photo and video shot or reworked in your identity",
-          "Social profiles rebuilt to match",
-          "Content templates you keep using after we leave",
+          "Photo and video shot, or reworked, in your identity",
+          "Every profile rebuilt to look like the same place",
+          "Templates you keep using after we leave",
         ],
       },
       {
@@ -108,9 +108,9 @@ const CONTENT = {
         need: "Booking.com is the only place you exist",
         title: "Channels and visibility",
         deliverables: [
-          "Booking, Agoda and your own engine updated together",
+          "Booking, Agoda, TripAdvisor and your own site updated together",
           "Google, maps and reviews working for your name",
-          "Paid traffic set up, with cost per booking measured",
+          "Paid traffic set up, with the real cost per booking measured",
         ],
       },
     ],
