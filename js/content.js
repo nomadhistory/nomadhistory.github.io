@@ -72,7 +72,7 @@ const CONTENT = {
       {
         id: "brand",
         image: null,
-        need: "Guests can't tell you apart from the place next door",
+        need: "A guest scrolls past twelve places that look the same. Yours is one of them.",
         title: "Brand identity",
         deliverables: [
           "Positioning: who your place is for, and who it is not",
@@ -83,7 +83,7 @@ const CONTENT = {
       {
         id: "website",
         image: null,
-        need: "People find you, look around, and book somewhere else",
+        need: "People find you, look around, and book somewhere else.",
         title: "Website and direct booking",
         deliverables: [
           "A fast, mobile-first site — live, and yours",
@@ -94,7 +94,7 @@ const CONTENT = {
       {
         id: "media",
         image: null,
-        need: "Your photos look like five different businesses",
+        need: "Your photos look like five different businesses.",
         title: "Social media, photo and video",
         deliverables: [
           "Photo and video shot, or reworked, in your identity",
@@ -105,7 +105,7 @@ const CONTENT = {
       {
         id: "channels",
         image: null,
-        need: "Booking.com is the only place you exist",
+        need: "A booking platform is the only place you exist.",
         title: "Channels and visibility",
         deliverables: [
           "Booking, Agoda, TripAdvisor and your own site updated together",
