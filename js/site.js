@@ -265,52 +265,6 @@
     w.appendChild(route);
   }
 
-  // ---- cases ----
-  // Só entra no site o que estiver published: true. Enquanto não
-  // houver trabalho real publicado, a seção diz isso em vez de
-  // mostrar resultado inventado.
-
-  function renderCases() {
-    const c = CONTENT.cases;
-    const w = wrap(document.getElementById("cases"));
-    head(w, "cases-title", c.title, c.lead);
-
-    const live = (c.items || []).filter((item) => item.published);
-    if (!live.length) {
-      const note = el("p", "cases-empty", c.emptyNote);
-      note.setAttribute("data-reveal", "");
-      w.appendChild(note);
-      return;
-    }
-
-    const grid = el("div", "case-grid");
-    live.forEach((item) => {
-      const card = el("article", "case");
-      card.setAttribute("data-reveal", "");
-      card.appendChild(
-        el("p", "case-meta", [item.type, item.location].filter(Boolean).join(" · "))
-      );
-      card.appendChild(el("h3", null, item.client));
-      card.appendChild(el("p", null, item.challenge));
-      card.appendChild(el("p", null, item.approach));
-      if (item.results && item.results.length) {
-        card.appendChild(list(item.results, "case-results"));
-      }
-
-      // O link é a prova: dá pra conferir tudo acima clicando.
-      if (item.href) {
-        const visit = link(item.href, "Visit " + item.client + " →", "case-link");
-        visit.target = "_blank";
-        visit.rel = "noopener noreferrer";
-        visit.referrerPolicy = "no-referrer";
-        card.appendChild(visit);
-      }
-
-      grid.appendChild(card);
-    });
-    w.appendChild(grid);
-  }
-
   // ---- pacotes ----
 
   function renderPackages() {
