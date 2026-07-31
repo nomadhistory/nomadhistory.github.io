@@ -9,7 +9,7 @@
   "use strict";
 
   const VISITED = [
-    "Brazil", "Argentina", "Chile", "Bolivia", "Peru", "Colombia",
+    "Brazil", "Argentina", "Chile", "Bolivia", "Paraguay", "Peru", "Colombia",
     "Panama", "Spain", "China", "Malaysia", "Thailand"
   ];
   const IN_PROGRESS = ["Vietnam"];
