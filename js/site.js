@@ -60,6 +60,24 @@
     return svg;
   }
 
+  // Espaço da foto. Enquanto `image` for texto, mostra o que vai ali;
+  // quando virar { src, alt }, publica a imagem no mesmo lugar.
+  function imageSlot(image) {
+    const slot = el("div", "slot");
+    if (image && image.src) {
+      const img = document.createElement("img");
+      img.src = image.src;
+      img.alt = image.alt || "";
+      img.loading = "lazy";
+      img.decoding = "async";
+      slot.appendChild(img);
+      return slot;
+    }
+    slot.classList.add("is-empty");
+    slot.appendChild(el("span", null, typeof image === "string" ? image : "photo"));
+    return slot;
+  }
+
   // O site é contado como uma história: cada seção é um capítulo.
   let chapter = 0;
   function head(container, id, title, lead) {
@@ -135,16 +153,39 @@
     const w = wrap(document.getElementById("services"));
     head(w, "services-title", c.title, c.lead);
 
-    const grid = el("div", "service-grid");
-    c.items.forEach((item, i) => {
-      const card = el("article", "service-entry");
-      card.setAttribute("data-reveal", "");
-      card.appendChild(el("span", "entry-index", String(i + 1).padStart(2, "0")));
-      card.appendChild(el("h3", "entry-name", item.title));
-      card.appendChild(list(item.deliverables));
-      grid.appendChild(card);
+    const guide = el("ol", "field-guide");
+    c.items.forEach(function (item, i) {
+      const entry = el("li", "entry");
+      entry.setAttribute("data-reveal", "");
+      entry.style.setProperty("--reveal-delay", i * 90 + "ms");
+
+      // Só monta o espaço da foto quando há imagem de verdade. Sem ela
+      // a entrada vira coluna única (classe .entry--noart), sem buraco.
+      if (item.image && item.image.src) {
+        const art = el("div", "entry-art");
+        art.appendChild(imageSlot(item.image));
+        entry.appendChild(art);
+      } else {
+        entry.classList.add("entry--noart");
+      }
+
+      const body = el("div", "entry-body");
+      body.appendChild(el("span", "entry-index", String(i + 1).padStart(2, "0")));
+      body.appendChild(el("p", "entry-name", item.title));
+
+      const ul = el("ul", "entry-list");
+      item.deliverables.forEach(function (line) {
+        const li = el("li");
+        li.appendChild(footMark());
+        li.appendChild(el("span", null, line));
+        ul.appendChild(li);
+      });
+      body.appendChild(ul);
+
+      entry.appendChild(body);
+      guide.appendChild(entry);
     });
-    w.appendChild(grid);
+    w.appendChild(guide);
   }
 
   // ---- equipe ----
