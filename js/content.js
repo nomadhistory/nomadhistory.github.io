@@ -22,9 +22,9 @@ const CONTENT = {
     // A única referência ao nomadismo que sobrou. Curta, e cabe numa
     // linha no celular.
     eyebrow: "A travelling studio",
-    title: "Every place has a story. Most hotels are sitting on theirs.",
+    title: "Every place has a story. Yours is the one thing nobody else can copy.",
     lead:
-      "Just the two of us, your story, and results that matter.",
+      "That's the whole strategy. We find the story and turn it into a position nobody nearby can claim, then build the brand, the site and the channels that carry it. Just the two of us, your story, and results that matter.",
     primaryCta: "Get your proposal",
     secondaryCta: "See what we do",
   },
