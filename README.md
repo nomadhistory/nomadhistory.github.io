@@ -77,13 +77,14 @@ trabalho real publicado, a seção mostra o aviso de `emptyNote` em vez de
 resultado inventado. **Não publicar case com número que não aconteceu** — é a
 única parte do site que não pode ser escrita antes do trabalho existir.
 
+O primeiro case publicado atualmente é a DLT Academy, identificado claramente
+como projeto próprio do Tiago e sem métricas de desempenho inventadas.
+
 ## Pendências de conteúdo
 
-1. **Contatos reais** — `js/content.js` → `brand.email` e `brand.whatsapp`
-   ainda precisam representar os canais definitivos usados pela operação.
-2. **Primeiro case real** — Marina escreve e vira `published: true` quando houver
-   resultado real que possa ser publicado.
-3. **Wordmark definitivo** — a marca (`assets/logo-mark.png`) já é a final, da
+1. **WhatsApp** — `js/content.js` → `brand.whatsapp` continua vazio de propósito;
+   enquanto não houver um número definitivo, os botões de WhatsApp não aparecem.
+2. **Wordmark definitivo** — a marca (`assets/logo-mark.png`) já é a final, da
    Marina. Só o *nome escrito* ao lado dela (`assets/wordmark.svg`) ainda é
    tipografia de sistema, provisória.
 
