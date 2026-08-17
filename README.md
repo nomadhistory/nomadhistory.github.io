@@ -4,7 +4,7 @@ Site do estúdio: marca, site, automação e tráfego pago para hotelaria e turi
 Serviço com preço fechado — e, para propriedades com quarto sobrando na baixa temporada,
 a opção de pagar em hospedagem.
 
-**No ar:** https://nomadhistory.github.io/
+**No ar:** https://historianomade.com/
 
 ## Arquitetura
 
@@ -77,23 +77,21 @@ trabalho real publicado, a seção mostra o aviso de `emptyNote` em vez de
 resultado inventado. **Não publicar case com número que não aconteceu** — é a
 única parte do site que não pode ser escrita antes do trabalho existir.
 
-## Pendências antes do lançamento
+## Pendências de conteúdo
 
 1. **Contatos reais** — `js/content.js` → `brand.email` e `brand.whatsapp`
-   ainda são placeholder. O site não funciona sem eles.
-2. **Primeiro case real** — Marina escreve, vira `published: true`.
-3. **Tirar o `noindex`** — o `index.html` sobe com
-   `<meta name="robots" content="noindex, nofollow">` de propósito, enquanto o
-   portfólio está vazio. Ao remover, conferir **na URL de produção**, não no repo:
-
-   ```bash
-   curl -s https://nomadhistory.github.io/ | grep robots
-   ```
-
-   Tem que voltar vazio. Repo limpo e página servindo `noindex` já aconteceu antes.
-4. **Wordmark definitivo** — a marca (`assets/logo-mark.png`) já é a final, da
+   ainda precisam representar os canais definitivos usados pela operação.
+2. **Primeiro case real** — Marina escreve e vira `published: true` quando houver
+   resultado real que possa ser publicado.
+3. **Wordmark definitivo** — a marca (`assets/logo-mark.png`) já é a final, da
    Marina. Só o *nome escrito* ao lado dela (`assets/wordmark.svg`) ainda é
    tipografia de sistema, provisória.
+
+O site está liberado para indexação (`index, follow`). Para conferir na produção:
+
+```bash
+curl -s https://historianomade.com/ | grep robots
+```
 
 ## Logo
 
@@ -116,16 +114,27 @@ desaparece na barra de abas dependendo do tema do sistema.
 No cabeçalho a marca aparece com o nome ao lado; abaixo de 560px o nome some e
 fica só a marca, senão o botão "Get a proposal" quebra em duas linhas.
 
-## Domínio próprio (quando comprar)
+## Domínio próprio
 
-1. Criar o arquivo `CNAME` na raiz com o domínio, uma linha só, sem `https://`:
-   ```
-   historianomade.com
-   ```
-2. No registrador (Namecheap, mesmo lugar do `dlt.academy`), criar:
-   - 4 registros `A` para `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
-   - um `CNAME` de `www` para `nomadhistory.github.io`
-3. Em Settings → Pages do repo, preencher o custom domain e marcar **Enforce HTTPS**
-   (o certificado leva alguns minutos).
-4. Trocar as URLs absolutas em `index.html` (canonical, `og:url`, `og:image`,
-   `twitter:image`), em `robots.txt` e em `sitemap.xml`.
+Domínio principal: `historianomade.com`.
+
+O site é publicado por um workflow customizado do GitHub Actions (`.github/workflows/pages.yml`).
+Nesse modo, **não criar arquivo `CNAME` no repositório**: o GitHub Pages ignora esse arquivo.
+O domínio é definido em **Settings → Pages → Custom domain**.
+
+DNS esperado no registrador:
+
+- `A` `@` → `185.199.108.153`
+- `A` `@` → `185.199.109.153`
+- `A` `@` → `185.199.110.153`
+- `A` `@` → `185.199.111.153`
+- `CNAME` `www` → `nomadhistory.github.io`
+
+No GitHub Pages:
+
+1. Custom domain: `historianomade.com`.
+2. **Enforce HTTPS** ativado assim que o certificado estiver disponível.
+3. Com apex e `www` configurados no DNS, o GitHub redireciona `www.historianomade.com` para o domínio canônico configurado.
+
+As URLs absolutas do site usam `https://historianomade.com/` em canonical, Open Graph,
+Twitter metadata, Schema.org, `robots.txt` e `sitemap.xml`.
