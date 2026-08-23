@@ -19,13 +19,11 @@ const CONTENT = {
   },
 
   hero: {
-    // A única referência ao nomadismo que sobrou. Curta, e cabe numa
-    // linha no celular.
     eyebrow: "A travelling studio",
     title: "Every place has a story. Yours is the one thing nobody else can copy.",
     lead:
       "That's the whole strategy. We find the story and turn it into a position nobody nearby can claim, then build the brand, the site and the channels that carry it. Just the two of us, your story, and results that matter.",
-    primaryCta: "Get your proposal",
+    primaryCta: "Get a Field Check",
     secondaryCta: "See what we fix",
   },
 
@@ -33,9 +31,6 @@ const CONTENT = {
     title: "Who you'd be working with",
     lead:
       "Small on purpose. You talk to the two people doing the work — nobody is handed to an account manager.",
-    // `photo` é opcional: sem ela o card renderiza só o texto, sem
-    // buraco nem imagem quebrada. Gerar com:
-    //   python3 dev/make-photos.py <slug> <foto> [--focus 0.45]
     members: [
       {
         name: "Marina",
@@ -44,8 +39,6 @@ const CONTENT = {
         links: [
           { label: "@marinasil_p", href: "https://www.instagram.com/marinasil_p/" },
         ],
-        // Texto escrito pela própria Marina — não reescrever sem falar
-        // com ela.
         bio:
           "With a background in History, Marina uncovers the story behind every business to turn its heritage into its greatest competitive advantage. In a market crowded with generic offerings, she builds strategic positioning that emotionally connects guests to your brand's true value—making your story the definitive reason they choose you.",
       },
@@ -53,7 +46,6 @@ const CONTENT = {
         name: "Tiago",
         photo: "assets/team/tiago.webp",
         role: "Software Engineer · Digital Marketing",
-        // Abre em aba nova, sem passar o referrer.
         links: [
           { label: "@tiagohyad", href: "https://www.instagram.com/tiagohyad/" },
         ],
@@ -143,12 +135,6 @@ const CONTENT = {
     ],
   },
 
-  // ------------------------------------------------------------
-  // CASES — a única coisa aqui que não pode ser inventada.
-  // Enquanto `published` for false, o card NÃO aparece no site;
-  // a seção mostra o aviso de `emptyNote` no lugar.
-  // Marina: preencher com trabalho real e virar published: true.
-  // ------------------------------------------------------------
   cases: {
     title: "Selected work",
     lead: "Shipped end to end — positioning, brand, build and the tools that make it useful.",
@@ -158,9 +144,6 @@ const CONTENT = {
       {
         published: true,
         client: "DLT Academy",
-        // Projeto próprio, e o card diz isso. Passar produto da casa
-        // como trabalho de cliente é o tipo de coisa que desmonta na
-        // primeira pergunta.
         type: "Our own project · built by Tiago",
         location: "dlt.academy",
         href: "https://dlt.academy/",
@@ -168,8 +151,6 @@ const CONTENT = {
           "Financial decisions get made on gut feeling, because the tools that would help are behind a signup, a paywall or a spreadsheet nobody opens.",
         approach:
           "Positioning, brand and platform: a portal plus four interactive decision tools, each answering one real question in under two minutes. Every answer is worked out in the visitor's browser.",
-        // Fatos verificáveis clicando no link — não métricas de
-        // desempenho, que nós ainda não temos.
         results: [
           "Portal and four decision tools live, each on its own subdomain",
           "Static build — no backend, no monthly platform cost",
@@ -192,13 +173,6 @@ const CONTENT = {
     ],
   },
 
-  // ------------------------------------------------------------
-  // PLANOS
-  // `priceWas`  — preço de referência do lançamento. Só é honesto
-  //               enquanto `priceNote` disser quando ele sobe, e
-  //               enquanto vocês realmente subirem. Ver o TODO abaixo.
-  // `priceCustom` — texto no lugar do número (plano sob consulta).
-  // ------------------------------------------------------------
   packages: {
     title: "Three ways in, and one that is up to you",
     lead:
@@ -223,9 +197,6 @@ const CONTENT = {
         forWho: "Start here if people already look for you and leave without booking.",
         price: 599,
         priceWas: 1000,
-        // TODO Tiago: confirmar o número de projetos. Isto só pode
-        // ficar no ar se o preço subir de verdade depois deles —
-        // preço "de/por" que nunca sobe é propaganda enganosa.
         priceNote: "Launch price — goes to US$1,000 after our first five projects",
         timeline: "2 to 3 weeks",
         featured: true,
@@ -266,24 +237,19 @@ const CONTENT = {
         cta: "Ask for a scope",
       },
     ],
-    note: "Not sure which one fits? The form below settles it.",
+    note: "Not sure what fits? Start with the Field Check below — we only recommend a plan after we understand the problem.",
   },
 
   proposal: {
-    title: "Get your proposal",
+    title: "Get a Field Check",
     lead:
-      "Four questions, about a minute. Everything is worked out in your browser — nothing is sent until you press a button at the end.",
+      "Tell us a little about the place. We'll use the public information already online to review up to three practical points: what is working, what may be getting in the way, and what we would look at first. No call required.",
   },
 
   contact: {
     title: "Talk to us",
     lead: "Tell us where you are and what isn't working. We answer every message ourselves.",
-    // Mostrado no lugar dos botões enquanto brand.email e brand.whatsapp
-    // estiverem vazios.
     pending: "Contact details are being set up — they go live with the site.",
-
-    // Botão flutuante, presente na página inteira. Só existe se
-    // brand.email estiver preenchido.
     floating: {
       label: "Email us",
       ariaLabel: "Email Historia Nomade",
