@@ -10,7 +10,7 @@ const CONTENT = {
   brand: {
     name: "Historia Nomade",
     tagline: "Marketing studio for travel, hospitality and tourism",
-    email: "historianomadecontact@gmail.com",
+    email: "hello@historianomade.com",
     // TODO Tiago: o WhatsApp continua vazio de propósito — número
     // inventado num site público é mensagem de cliente caindo no
     // telefone de um desconhecido. Enquanto estiver vazio, os botões
