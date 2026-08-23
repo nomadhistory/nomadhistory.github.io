@@ -32,11 +32,8 @@
 <link rel="stylesheet" href="styles-services.css">
 <link rel="stylesheet" href="styles-plans.css">
 <link rel="stylesheet" href="styles-motion.css">
-<!-- Bloco "Where we've been" do hero (globo + legenda) -->
 <link rel="stylesheet" href="styles-globe.css">
 
-<!-- Único script no <head>: carimba o tema escolhido antes da
-     primeira pintura, senão a página pisca no tema errado. -->
 <script src="js/theme.js"></script>
 
 <script type="application/ld+json">
@@ -65,9 +62,7 @@
 
 <a class="skip-link" href="#main">Skip to content</a>
 
-<!-- Textura de grão sobre a página inteira. Puramente decorativa. -->
 <div class="grain" aria-hidden="true"></div>
-<!-- Progresso de leitura, preenchido pelo js/motion.js -->
 <div class="scroll-progress" aria-hidden="true"><span></span></div>
 
 <header class="site-header">
@@ -91,7 +86,7 @@
           <path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2z"></path>
         </svg>
       </button>
-      <a class="nav-cta" href="#proposal">Get a proposal</a>
+      <a class="nav-cta" href="#proposal">Get a Field Check</a>
     </nav>
   </div>
 </header>
@@ -125,11 +120,6 @@
 <script src="js/site.js"></script>
 <script src="js/proposal.js"></script>
 <script src="js/motion.js"></script>
-
-<!-- Globo do hero. Vem depois do site.js porque desenha dentro dos
-     contêineres que ele cria. Tudo local: a CSP do site não permite
-     script de fora do domínio, e a geometria chega como script
-     (window.WORLD_110M) e não por fetch, pra manter connect-src 'none'. -->
 <script src="assets/lib/d3.min.js"></script>
 <script src="assets/lib/topojson-client.min.js"></script>
 <script src="assets/world-110m.js"></script>
