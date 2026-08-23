@@ -1,11 +1,9 @@
 // ============================================================
-// PROPOSAL ENGINE — lógica pura, sem DOM. Testável em Node.
+// FIELD CHECK ENGINE — lógica pura, sem DOM. Testável em Node.
 //
-// Regra que governa este arquivo: TODA resposta tem que mudar a saída.
-// Se um campo for perguntado e não alterar o pacote, os serviços
-// priorizados ou o texto da mensagem, ele sai do formulário.
-// Perguntar por perguntar é o que faz uma árvore de decisão parecer
-// inteligente sem ser.
+// O formulário público não escolhe plano nem diagnostica o negócio.
+// Ele apenas organiza contexto suficiente para a Historia Nomade
+// revisar até três pontos usando informação pública.
 // ============================================================
 
 const VENUES = {
@@ -13,81 +11,56 @@ const VENUES = {
     label: "Hostel",
     noun: "hostel",
     note:
-      "Hostels live or die on direct bookings and on the vibe people see before they arrive — that's where we'd put the weight.",
+      "We'll look at how clearly the atmosphere, direct contact and booking path come through online.",
   },
   guesthouse: {
     label: "Guesthouse or B&B",
     noun: "guesthouse",
     note:
-      "Guesthouses have the strongest stories and the weakest presentation of them. That gap is the opportunity here.",
+      "We'll look at whether the character of the place is easy to understand outside third-party listings.",
   },
   hotel: {
     label: "Boutique hotel",
     noun: "hotel",
     note:
-      "You already pay OTA commission on rooms you could sell directly. Every point moved to direct booking pays for this work.",
+      "We'll look at the relationship between your own presence, direct contact or booking, and the main booking platforms.",
   },
   restaurant: {
     label: "Restaurant or café",
     noun: "restaurant",
     note:
-      "For a restaurant the fight is local: maps, reviews and photos decide it long before a website does. We'd start there.",
+      "We'll look first at maps, reviews, photos and the clarity of the direct path to the business.",
   },
   tours: {
     label: "Tours and experiences",
     noun: "tour operator",
     note:
-      "Experiences sell on the story more than any other tourism product — the part we're unusually well set up for.",
+      "We'll look at how clearly the experience, difference and booking path are explained online.",
   },
   other: {
     label: "Something else in tourism",
     noun: "business",
     note:
-      "We work across small tourism businesses. Tell us more and we'll say honestly whether we're the right people.",
+      "We'll review the public presence first and say clearly if the fit with Historia Nomade is weak.",
   },
 };
 
 const SERVICES = {
   brand: {
-    title: "Brand identity",
-    why: "so guests stop comparing you on price alone",
+    title: "Story and positioning",
+    why: "whether travellers can quickly understand what makes the place different",
   },
   website: {
-    title: "Website and direct booking",
-    why: "so the people who already find you actually book with you",
+    title: "Website and direct path",
+    why: "whether the main information, contact and booking route are clear",
   },
   media: {
-    title: "Social media, photo and video",
-    why: "so every channel looks like the same business",
+    title: "Photos, content and consistency",
+    why: "whether the online presentation feels like the same place across channels",
   },
   channels: {
-    title: "Channels and visibility",
-    why: "so one booking platform stops owning your demand",
-  },
-};
-
-const PACKAGES = {
-  compass: {
-    id: "compass",
-    name: "Compass",
-    price: 500,
-    timeline: "about 1 week",
-    slots: 1,
-  },
-  landmark: {
-    id: "landmark",
-    name: "Landmark",
-    price: 599,
-    priceWas: 1000,
-    timeline: "2 to 3 weeks",
-    slots: 2,
-  },
-  expedition: {
-    id: "expedition",
-    name: "Expedition",
-    price: 2000,
-    timeline: "4 to 6 weeks",
-    slots: 4,
+    title: "Discovery and third-party channels",
+    why: "how the property appears across search, maps and booking platforms",
   },
 };
 
@@ -103,26 +76,26 @@ const QUESTIONS = [
     label: "What do you have today?",
     type: "choice",
     options: [
-      { value: "nothing", label: "Barely anything — no logo, no site" },
-      { value: "logo", label: "A logo, but nothing built around it" },
-      { value: "old-site", label: "A website, but it's old and slow" },
-      { value: "site-no-bookings", label: "A decent site that brings no bookings" },
+      { value: "nothing", label: "Barely anything — no clear brand or site" },
+      { value: "logo", label: "A logo, but not much built around it" },
+      { value: "old-site", label: "A website, but it feels old or unclear" },
+      { value: "site-no-bookings", label: "A decent site, but the direct path feels weak" },
     ],
   },
   {
     id: "bottleneck",
-    label: "What's the real bottleneck right now?",
+    label: "What feels weakest online right now?",
     type: "choice",
     options: [
-      { value: "invisible", label: "Almost nobody finds us" },
-      { value: "amateur", label: "We look amateur next to the competition" },
-      { value: "ota", label: "All our bookings come through OTAs and their cut hurts" },
-      { value: "manual", label: "We do everything by hand and there's no time left" },
+      { value: "invisible", label: "Travellers mostly find us through third-party platforms" },
+      { value: "amateur", label: "Our online presence does not feel as strong as the place" },
+      { value: "website", label: "Our website or direct path feels outdated or unclear" },
+      { value: "manual", label: "Contact and booking take too many manual steps" },
     ],
   },
   {
     id: "contact",
-    label: "Where should we send the proposal?",
+    label: "Tell us where to start.",
     type: "contact",
     fields: [
       { id: "name", label: "Your name", placeholder: "Marina Silva" },
@@ -132,35 +105,12 @@ const QUESTIONS = [
   },
 ];
 
-// ---- lógica ------------------------------------------------
-
-// O pacote sai do quanto está faltando, cruzando o que já existe com
-// o gargalo declarado. Sem pergunta de orçamento: perguntar dinheiro
-// cedo espanta, e faz a pessoa se auto-rebaixar antes de ver o valor.
-function pickPackage(answers) {
-  const { have, bottleneck } = answers;
-
-  // Não tem nada, ou o problema é a dependência de OTA — os dois casos
-  // exigem marca, site e canais juntos; meio pacote não resolve.
-  if (have === "nothing" || bottleneck === "ota") return PACKAGES.expedition;
-
-  // Site já existe e funciona: o que falta é pontual.
-  if (have === "site-no-bookings" && (bottleneck === "invisible" || bottleneck === "manual")) {
-    return PACKAGES.compass;
-  }
-
-  return PACKAGES.landmark;
-}
-
-// O gargalo define a prioridade; o que já existe reordena.
-// Ex.: "ninguém nos acha" + "site decente sem reservas" não é o mesmo
-// problema que "ninguém nos acha" + "nem logo temos".
 function prioritise(answers) {
   const order = {
     invisible: ["channels", "website", "brand", "media"],
     amateur: ["brand", "media", "website", "channels"],
-    ota: ["website", "channels", "brand", "media"],
-    manual: ["channels", "website", "brand", "media"],
+    website: ["website", "brand", "channels", "media"],
+    manual: ["website", "channels", "brand", "media"],
   }[answers.bottleneck] || ["website", "brand", "channels", "media"];
 
   const ranked = order.slice();
@@ -180,23 +130,17 @@ function prioritise(answers) {
     }
   };
 
-  // Nada existe: a identidade vem primeiro, não há o que construir em cima.
   if (answers.have === "nothing") bump("brand");
-  // Tem logo e mais nada: a vitrine é que falta; a marca já começou.
   if (answers.have === "logo") {
     bump("website");
     demote("brand");
   }
-  // Site velho: reconstruir o site é o gargalo, a marca fica onde está.
   if (answers.have === "old-site") bump("website");
-  // Site bom sem reservas: o problema não é aparência, é audiência.
   if (answers.have === "site-no-bookings") {
     sink("brand");
     bump("channels");
   }
 
-  // Restaurante não tem OTA nem motor de reservas: presença local e
-  // material visual resolvem mais do que reconstruir o site.
   if (answers.venue === "restaurant") {
     bump("media");
     sink("website");
@@ -205,53 +149,40 @@ function prioritise(answers) {
   return ranked;
 }
 
-function buildProposal(answers) {
-  const pkg = pickPackage(answers);
+function buildFieldCheck(answers) {
   const venue = VENUES[answers.venue] || VENUES.other;
-  const ranked = prioritise(answers);
-  const focus = ranked.slice(0, pkg.slots).map((id) => ({
+  const focus = prioritise(answers).slice(0, 3).map((id) => ({
     id,
     title: SERVICES[id].title,
     why: SERVICES[id].why,
   }));
 
-  const priced = "US$" + pkg.price.toLocaleString("en-US");
-  const settlement = {
-    label: priced,
-    detail: pkg.priceWas
-      ? `Launch price, down from US$${pkg.priceWas.toLocaleString("en-US")}. Fixed scope, ${pkg.timeline}, half to start and half at handover.`
-      : `Fixed price, ${pkg.timeline}. Half to start, half at handover.`,
-  };
-
   const place = (answers.contact && answers.contact.place) || "";
-  const headline = place ? `${pkg.name} for ${place}` : `${pkg.name} for your ${venue.noun}`;
+  const headline = place ? `Field Check for ${place}` : `Field Check for your ${venue.noun}`;
 
   return {
-    package: pkg,
     headline,
     venueNote: venue.note,
     focus,
-    settlement,
-    message: buildMessage(answers, pkg, focus, settlement, venue),
+    message: buildMessage(answers, focus, venue),
   };
 }
 
-function buildMessage(answers, pkg, focus, settlement, venue) {
+function buildMessage(answers, focus, venue) {
   const c = answers.contact || {};
   const lines = [
-    "Hi! I used the proposal tool on your site.",
+    "Hi Historia Nomade,",
+    "",
+    "I'd like a short Field Check for my place.",
     "",
     `Place: ${c.place || "(not given)"} — ${venue.label}${c.where ? `, ${c.where}` : ""}`,
     `From: ${c.name || "(not given)"}`,
     "",
-    `It recommended: ${pkg.name} (${pkg.timeline})`,
-    `Focus: ${focus.map((f) => f.title).join(", ")}`,
-    `Price: ${settlement.label}`,
-    "",
     `What we have today: ${labelFor("have", answers.have)}`,
-    `Biggest bottleneck: ${labelFor("bottleneck", answers.bottleneck)}`,
+    `What feels weakest: ${labelFor("bottleneck", answers.bottleneck)}`,
+    `Suggested review areas: ${focus.map((f) => f.title).join(", ")}`,
     "",
-    "Can we talk?",
+    "Please review the public presence and send the short Field Check by email. No call required.",
   ];
   return lines.join("\n");
 }
@@ -267,9 +198,7 @@ if (typeof module !== "undefined" && module.exports) {
     QUESTIONS,
     VENUES,
     SERVICES,
-    PACKAGES,
-    pickPackage,
     prioritise,
-    buildProposal,
+    buildFieldCheck,
   };
 }
