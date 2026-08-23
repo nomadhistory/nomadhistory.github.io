@@ -1,5 +1,5 @@
 // ============================================================
-// PROPOSAL — a interface do formulário. A lógica está em
+// FIELD CHECK — a interface do formulário. A lógica está em
 // js/proposal-engine.js; aqui só há DOM.
 //
 // Nada sai do navegador: as respostas vivem neste objeto `answers`
@@ -22,8 +22,6 @@
     return node;
   }
 
-  // Todas as perguntas são fixas — não há mais ramo condicional desde
-  // que a forma de pagamento saiu do formulário.
   function steps() {
     return QUESTIONS;
   }
@@ -72,8 +70,6 @@
 
     const box = el("div", "options");
     question.options.forEach((opt) => {
-      // O texto vai num span porque o botão tem uma camada de cor
-      // (::before) que varre por baixo dele no hover.
       const button = el("button", "option");
       button.appendChild(el("span", null, opt.label));
       button.type = "button";
@@ -121,7 +117,7 @@
       return Boolean(answers.contact.name && answers.contact.place);
     }
 
-    renderActions("See my proposal", ready, () => {
+    renderActions("Review my Field Check request", ready, () => {
       renderResult();
     });
   }
@@ -139,24 +135,25 @@
   }
 
   function renderResult() {
-    const proposal = buildProposal(answers);
+    const fieldCheck = buildFieldCheck(answers);
     clear();
 
     const head = el("div", "result-head");
-    head.appendChild(el("p", "eyebrow", "Recommended for you"));
-    head.appendChild(el("h3", null, proposal.headline));
-    head.appendChild(el("p", "timeline", "Timeline: " + proposal.package.timeline));
+    head.appendChild(el("p", "eyebrow", "Your Field Check request"));
+    head.appendChild(el("h3", null, fieldCheck.headline));
+    head.appendChild(
+      el(
+        "p",
+        "timeline",
+        "We will verify the public presence before making any recommendation."
+      )
+    );
     root.appendChild(head);
 
-    const settlement = el("div", "result-settlement");
-    settlement.appendChild(el("div", "value", proposal.settlement.label));
-    settlement.appendChild(el("p", null, proposal.settlement.detail));
-    root.appendChild(settlement);
-
     const focus = el("div", "result-focus");
-    focus.appendChild(el("h4", null, "Where we'd start"));
+    focus.appendChild(el("h4", null, "What we'll look at first"));
     const ul = el("ul");
-    proposal.focus.forEach((f) => {
+    fieldCheck.focus.forEach((f) => {
       const li = el("li");
       li.appendChild(el("strong", null, f.title));
       li.appendChild(el("span", null, f.why));
@@ -165,30 +162,21 @@
     focus.appendChild(ul);
     root.appendChild(focus);
 
-    root.appendChild(el("p", "result-note", proposal.venueNote));
-
-    // O plano sob consulta nunca é recomendado pela árvore — ele não
-    // tem escopo fixo pra recomendar. Aparece aqui como saída pra quem
-    // precisa de mais do que qualquer pacote fechado entrega.
-    const custom = (CONTENT.packages.items || []).find((p) => p.priceCustom);
-    if (custom) {
-      root.appendChild(
-        el(
-          "p",
-          "result-upsell",
-          "Need more than this? " + custom.name + " is scoped case by case — audit, data and advertising included."
-        )
-      );
-    }
+    root.appendChild(el("p", "result-note", fieldCheck.venueNote));
+    root.appendChild(
+      el(
+        "p",
+        "result-upsell",
+        "This is not a proposal or a diagnosis yet. If the Field Check confirms a useful problem, we'll recommend one existing plan and explain why."
+      )
+    );
 
     const actions = el("div", "result-actions");
 
-    // Só existe botão de envio para o contato que estiver preenchido
-    // em content.js. Sem contato, a proposta ainda é entregue na tela.
     if (CONTENT.brand.whatsapp) {
-      const wa = el("a", "btn btn-primary", "Send this on WhatsApp");
+      const wa = el("a", "btn btn-primary", "Request on WhatsApp");
       wa.href =
-        "https://wa.me/" + CONTENT.brand.whatsapp + "?text=" + encodeURIComponent(proposal.message);
+        "https://wa.me/" + CONTENT.brand.whatsapp + "?text=" + encodeURIComponent(fieldCheck.message);
       wa.target = "_blank";
       wa.rel = "noopener noreferrer";
       wa.referrerPolicy = "no-referrer";
@@ -196,12 +184,12 @@
     }
 
     if (CONTENT.brand.email) {
-      const mail = el("a", "btn btn-ghost", "Send by email");
-      const subject = "Proposal request — " + (answers.contact.place || "my place");
+      const mail = el("a", "btn btn-primary", "Request Field Check by email");
+      const subject = "Field Check request — " + (answers.contact.place || "my place");
       mail.href =
         "mailto:" + CONTENT.brand.email +
         "?subject=" + encodeURIComponent(subject) +
-        "&body=" + encodeURIComponent(proposal.message);
+        "&body=" + encodeURIComponent(fieldCheck.message);
       actions.appendChild(mail);
     }
 
@@ -222,7 +210,7 @@
         "p",
         "result-privacy",
         canSend
-          ? "Nothing has been sent yet. Your answers stayed in this browser — pressing a button above is what opens a message, already written, for you to review and send."
+          ? "Nothing has been sent yet. Your answers stayed in this browser — pressing a button above opens a message for you to review and send."
           : "Your answers stayed in this browser and were not sent anywhere."
       )
     );
