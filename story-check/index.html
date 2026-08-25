@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
+<meta name="robots" content="noindex, nofollow">
+
+<title>Story Check — Historia Nomade</title>
+<meta name="description" content="A short Historia Nomade diagnostic that compares the real story and personality of a hospitality business with the version a stranger meets online.">
+<meta name="theme-color" content="#14100c">
+
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon-180.png">
+<link rel="stylesheet" href="../styles-base.css">
+<link rel="stylesheet" href="../styles-site.css">
+<link rel="stylesheet" href="../styles-story-check.css">
+<script src="../js/theme.js"></script>
+</head>
+<body class="story-check-page">
+
+<a class="skip-link" href="#main">Skip to the Story Check</a>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="../" aria-label="Historia Nomade — home">
+      <img class="brand-mark" src="../assets/logo-mark.png" alt="" width="512" height="521" aria-hidden="true">
+      <span class="brand-word">
+        <img src="../assets/wordmark.svg" alt="Historia Nomade" width="360" height="42">
+      </span>
+    </a>
+    <nav class="site-nav" aria-label="Story Check navigation">
+      <a href="../">Back to the studio</a>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Switch theme" title="Switch theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"></circle>
+          <path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"></path>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.4 8.4 0 1 0 10.2 10.2z"></path>
+        </svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main class="story-check-main" id="main">
+  <div class="wrap story-check-shell">
+    <section id="story-check-intro" aria-labelledby="story-check-title">
+      <div class="story-check-intro-copy">
+        <p class="eyebrow">Historia Nomade · Story Check</p>
+        <h1 id="story-check-title">Does the internet meet the same business your guests do?</h1>
+        <p class="lead">Before looking at websites, feeds or booking platforms, we want to meet the real business: how it began, what people remember and which stories already live inside it. Then we compare that with the version a stranger can discover online.</p>
+      </div>
+
+      <div class="story-check-principle" aria-label="How the Story Check works">
+        <article>
+          <span>01</span>
+          <h3>Meet the real business</h3>
+          <p>Origin, people, personality, place, craft and the reasons customers come back.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Meet the digital version</h3>
+          <p>What a stranger can actually understand before they already know or trust you.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Measure what gets lost</h3>
+          <p>The distance between those two versions becomes your Storytelling Gap.</p>
+        </article>
+      </div>
+
+      <div class="story-check-start-card">
+        <div>
+          <label for="business-name">What should we call the business? <span aria-hidden="true">(optional)</span></label>
+          <input id="business-name" name="business-name" type="text" maxlength="80" autocomplete="organization" placeholder="Casa do Porto">
+        </div>
+        <button class="btn btn-primary" id="story-check-start" type="button">Start the Story Check</button>
+        <p class="story-check-start-note">One question at a time. No account, no call, and nothing is sent when you finish.</p>
+      </div>
+    </section>
+
+    <section id="story-check-root" tabindex="-1" aria-live="polite" hidden></section>
+  </div>
+</main>
+
+<footer class="story-check-footer">
+  <div class="wrap">
+    <span>Historia Nomade — stories worth travelling for.</span>
+    <span>This MVP is a self-reported diagnostic, not an external audit.</span>
+  </div>
+</footer>
+
+<script src="../js/story-check-engine.js"></script>
+<script src="../js/story-check.js"></script>
+</body>
+</html>
