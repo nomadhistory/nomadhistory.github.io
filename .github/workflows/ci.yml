@@ -27,3 +27,6 @@ jobs:
 
       - name: Story Check engine
         run: node tests/test-diagnostic.mjs
+
+      - name: Story Check UI source
+        run: node tests/test-diagnostic-ui.mjs
