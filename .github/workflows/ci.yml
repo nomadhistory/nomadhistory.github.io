@@ -25,8 +25,11 @@ jobs:
       - name: Field Check engine
         run: node tests/test-proposal.mjs
 
-      - name: Story Check engine
+      - name: Legacy diagnostic engine
         run: node tests/test-diagnostic.mjs
 
-      - name: Story Check UI source
+      - name: Legacy diagnostic UI source
         run: node tests/test-diagnostic-ui.mjs
+
+      - name: Story Check narrative engine
+        run: node tests/test-story-check.mjs
