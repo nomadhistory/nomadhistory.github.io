@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 
 const require = createRequire(import.meta.url);
 const engine = require("../js/story-check-engine.js");
-const { buildStoryPreview, buildDiagnosis, coverage, profileScores } = engine;
+const { buildStoryPreview, buildDiagnosis, coverage, profileScores, narrativeThread } = engine;
 
 let passed = 0;
 function test(name, fn) {
@@ -24,8 +24,8 @@ const base = {
   age: "10+",
   origin: "family",
   storyAnchor: "memory",
-  personality: ["warm", "traditional", "local"],
-  differentiator: "story",
+  storyDetail: "My grandparents opened the house to travellers after the old port closed, and guests still ask about their photographs in the dining room.",
+  observedSignals: ["welcome", "story", "place"],
   storyAssets: ["founder", "team", "local", "customers", "archive"],
   channels: ["website", "instagram", "google"],
   digitalShows: "product",
@@ -44,12 +44,13 @@ test("builds a narrative preview before digital answers exist", () => {
     age: "10+",
     origin: "family",
     storyAnchor: "memory",
-    personality: ["warm", "traditional"],
-    differentiator: "story",
+    storyDetail: "The same guestbook has been on the front desk since my parents opened the house.",
+    observedSignals: ["welcome", "story"],
     storyAssets: ["founder", "archive", "customers"],
   });
   assert.ok(preview.profiles.primary.label);
   assert.ok(preview.strongestStory);
+  assert.match(preview.narrativeThread, /guestbook/i);
   assert.ok(preview.storyPotential >= 0 && preview.storyPotential <= 100);
 });
 
@@ -58,16 +59,28 @@ test("family history and memory create a legacy signal", () => {
   assert.ok(scores.legacy > scores.innovator);
 });
 
+test("real guest signals influence personality instead of brand adjectives", () => {
+  const host = profileScores(with_({ observedSignals: ["welcome", "story"], storyAnchor: "person" }));
+  const craft = profileScores(with_({ observedSignals: ["craft", "knowledge"], storyAnchor: "craft", origin: "problem" }));
+  assert.ok(host.host > host.artisan);
+  assert.ok(craft.artisan > craft.host);
+});
+
+test("the respondent's concrete story appears in the narrative thread", () => {
+  const text = narrativeThread(base);
+  assert.match(text, /grandparents opened the house/i);
+});
+
 test("different businesses produce different primary profiles", () => {
   const legacy = buildDiagnosis(base);
   const artisan = buildDiagnosis(with_({
     age: "2-5",
-    origin: "passion",
+    origin: "problem",
     storyAnchor: "craft",
-    personality: ["creative", "refined"],
-    differentiator: "craft",
-    storyAssets: ["process", "founder"],
-    visibleAssets: ["process", "founder"],
+    storyDetail: "We mill the grain each morning because the standard flour never gave us the texture we wanted.",
+    observedSignals: ["craft", "knowledge", "different"],
+    storyAssets: ["process", "values"],
+    visibleAssets: ["process", "values"],
     digitalShows: "story",
     digitalMatch: "5",
     clarity: "5",
@@ -112,11 +125,9 @@ test("strong story with weak online coverage surfaces a meaningful gap", () => {
   assert.equal(result.opportunities.length, 3);
 });
 
-test("result scores always stay between zero and one hundred", () => {
+test("result scores stay between zero and one hundred", () => {
   const result = buildDiagnosis(base);
-  Object.values(result.scores).forEach((score) => {
-    assert.ok(score >= 0 && score <= 100);
-  });
+  Object.values(result.scores).forEach((score) => assert.ok(score >= 0 && score <= 100));
   assert.ok(result.storyPotential >= 0 && result.storyPotential <= 100);
   assert.ok(result.digitalTranslation >= 0 && result.digitalTranslation <= 100);
   assert.ok(result.gap.value >= 0 && result.gap.value <= 100);
@@ -127,6 +138,7 @@ test("summary clearly states that this is not an external audit", () => {
   assert.match(result.summary, /self-reported/i);
   assert.match(result.summary, /not an external audit/i);
   assert.match(result.summary, /Storytelling Gap/);
+  assert.match(result.summary, /grandparents opened the house/i);
 });
 
 console.log(`\n${passed} Story Check test(s) passed.`);
