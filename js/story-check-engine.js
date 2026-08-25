@@ -6,11 +6,11 @@
       host: ["The Host", "People remember how the place made them feel: welcomed, seen and personally looked after."],
       artisan: ["The Artisan", "The value lives in craft, detail and the way the experience is made."],
       expert: ["The Expert", "Trust comes from knowledge, judgement and confidence in the people behind the business."],
-      explorer: ["The Explorer", "Discovery, experience and a sense of possibility are central to the business."],
-      local: ["The Local Icon", "The strongest advantage is belonging to a neighbourhood, landscape, culture or community."],
-      founder: ["The Founder Story", "The reason someone created this business is part of the reason customers can care about it."],
-      legacy: ["The Family Legacy", "Time, continuity and memory give the business a story newer competitors cannot manufacture."],
-      innovator: ["The Innovator", "Someone looked at the usual way of doing things and chose another route."],
+      explorer: ["The Explorer", "Discovery, atmosphere and a sense of possibility are central to the experience."],
+      local: ["The Local Icon", "The business draws meaning from its neighbourhood, landscape, culture or community."],
+      founder: ["The Founder Story", "The person or motivation behind the beginning is part of why customers can care about the business."],
+      legacy: ["The Living Legacy", "Time, continuity and memory give the business a story newer competitors cannot manufacture."],
+      innovator: ["The Different Route", "Someone looked at the usual way of doing things and chose another route."],
     },
     channels: {
       website: "website",
@@ -36,48 +36,45 @@
   const has = (list, value) => Array.isArray(list) && list.includes(value);
   const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
   const round5 = (value) => Math.round(value / 5) * 5;
+  const detail = (a) => typeof a.storyDetail === "string" ? a.storyDetail.trim() : "";
 
   function profileScores(a) {
     const s = { host: 0, artisan: 0, expert: 0, explorer: 0, local: 0, founder: 0, legacy: 0, innovator: 0 };
-    const p = a.personality || [];
-    if (has(p, "warm")) s.host += 4;
-    if (has(p, "expert")) s.expert += 4;
-    if (has(p, "adventurous")) s.explorer += 4;
-    if (has(p, "refined")) s.artisan += 3;
-    if (has(p, "creative")) { s.artisan += 2; s.innovator += 2; }
-    if (has(p, "local")) s.local += 4;
-    if (has(p, "traditional")) s.legacy += 4;
-    if (has(p, "bold")) s.innovator += 4;
 
     if (a.origin === "family") s.legacy += 6;
-    if (a.origin === "passion") { s.founder += 5; s.explorer += 2; }
+    if (a.origin === "passion") { s.founder += 5; s.explorer += 1; }
     if (a.origin === "community") s.local += 6;
     if (a.origin === "problem") { s.innovator += 5; s.expert += 2; }
-    if (a.origin === "opportunity") s.innovator += 2;
-
-    if (a.differentiator === "service") s.host += 6;
-    if (a.differentiator === "craft") s.artisan += 6;
-    if (a.differentiator === "atmosphere") { s.host += 3; s.explorer += 3; }
-    if (a.differentiator === "expertise") s.expert += 6;
-    if (a.differentiator === "story") { s.legacy += 3; s.founder += 3; s.local += 2; }
+    if (a.origin === "opportunity") s.innovator += 1;
 
     const anchor = a.storyAnchor;
-    if (anchor === "person") { s.founder += 4; s.host += 1; }
-    if (anchor === "place") { s.local += 4; s.explorer += 2; }
-    if (anchor === "craft") { s.artisan += 4; s.expert += 2; }
-    if (anchor === "community") { s.local += 4; s.host += 2; }
-    if (anchor === "idea") { s.innovator += 4; s.expert += 2; }
-    if (anchor === "memory") { s.legacy += 4; s.host += 1; }
+    if (anchor === "person") { s.founder += 6; s.host += 1; }
+    if (anchor === "place") { s.local += 6; s.explorer += 2; }
+    if (anchor === "craft") { s.artisan += 6; s.expert += 2; }
+    if (anchor === "community") { s.local += 5; s.host += 3; }
+    if (anchor === "idea") { s.innovator += 6; s.expert += 2; }
+    if (anchor === "memory") { s.legacy += 6; s.host += 1; }
+
+    const observed = clean(a.observedSignals);
+    if (has(observed, "welcome")) s.host += 5;
+    if (has(observed, "craft")) { s.artisan += 5; s.expert += 1; }
+    if (has(observed, "knowledge")) { s.expert += 5; s.local += 1; }
+    if (has(observed, "atmosphere")) { s.explorer += 4; s.host += 2; }
+    if (has(observed, "place")) { s.local += 5; s.legacy += 1; }
+    if (has(observed, "story")) { s.founder += 3; s.legacy += 3; }
+    if (has(observed, "different")) { s.innovator += 5; s.explorer += 2; }
 
     const assets = clean(a.storyAssets);
-    if (has(assets, "founder")) s.founder += 4;
+    if (has(assets, "founder")) s.founder += 3;
     if (has(assets, "team")) s.host += 2;
-    if (has(assets, "process")) s.artisan += 4;
-    if (has(assets, "local")) s.local += 4;
-    if (has(assets, "customers")) s.host += 3;
-    if (has(assets, "archive")) s.legacy += 4;
-    if (has(assets, "values")) { s.founder += 2; s.innovator += 2; }
-    if (a.age === "10+") { s.legacy += 4; s.local += 2; }
+    if (has(assets, "process")) s.artisan += 3;
+    if (has(assets, "local")) s.local += 3;
+    if (has(assets, "customers")) s.host += 2;
+    if (has(assets, "archive")) s.legacy += 3;
+    if (has(assets, "values")) { s.founder += 1; s.innovator += 2; }
+    if (a.age === "10+") { s.legacy += 4; s.local += 1; }
+    if (detail(a).length >= 20) s[anchor === "person" ? "founder" : anchor === "place" || anchor === "community" ? "local" : anchor === "craft" ? "artisan" : anchor === "memory" ? "legacy" : anchor === "idea" ? "innovator" : "host"] += 2;
+
     return s;
   }
 
@@ -85,32 +82,34 @@
     const s = profileScores(a);
     const ranked = Object.keys(s).sort((x, y) => s[y] - s[x]);
     const make = (id) => ({ id, label: LABELS.profiles[id][0], description: LABELS.profiles[id][1], score: s[id] });
-    const primary = ranked[0] || "founder";
-    let secondary = ranked[1] || "host";
+    const primary = ranked[0] || "host";
+    let secondary = ranked[1] || "local";
     if (!s[secondary]) secondary = primary === "host" ? "local" : "host";
     return { primary: make(primary), secondary: make(secondary) };
   }
 
   function identity(a) {
-    let n = 32;
-    if (a.origin && a.origin !== "other") n += 12;
-    if (["family", "passion", "community", "problem"].includes(a.origin)) n += 6;
-    if (a.storyAnchor) n += 8;
-    if (a.differentiator && a.differentiator !== "convenience") n += 12;
-    n += Math.min((a.personality || []).length, 3) * 6;
+    let n = 28;
+    if (a.origin && a.origin !== "other") n += 10;
+    if (["family", "passion", "community", "problem"].includes(a.origin)) n += 5;
+    if (a.storyAnchor) n += 10;
+    if (detail(a).length >= 12) n += 14;
+    if (detail(a).length >= 60) n += 4;
+    n += Math.min(clean(a.observedSignals).length, 3) * 6;
     if (clean(a.storyAssets).length >= 2) n += 8;
     return round5(clamp(n, 25, 100));
   }
 
   function storyAvailable(a) {
-    let n = 22;
-    if (a.age === "2-5") n += 8;
-    if (a.age === "6-10") n += 14;
-    if (a.age === "10+") n += 20;
-    if (["family", "passion", "community", "problem"].includes(a.origin)) n += 14;
-    if (a.storyAnchor) n += 6;
-    if (a.differentiator === "story") n += 8;
-    n += Math.min(clean(a.storyAssets).length, 5) * 8;
+    let n = 20;
+    if (a.age === "2-5") n += 7;
+    if (a.age === "6-10") n += 13;
+    if (a.age === "10+") n += 19;
+    if (["family", "passion", "community", "problem"].includes(a.origin)) n += 12;
+    if (a.storyAnchor) n += 7;
+    if (detail(a).length >= 12) n += 10;
+    if (detail(a).length >= 60) n += 4;
+    n += Math.min(clean(a.storyAssets).length, 5) * 7;
     return round5(clamp(n, 20, 100));
   }
 
@@ -160,6 +159,20 @@
     return round5(clamp(n, 10, 100));
   }
 
+  function narrativeThread(a) {
+    const d = detail(a);
+    if (!d) return "We found a direction, but not yet the one concrete detail that would make this story unmistakably yours.";
+    const lead = {
+      person: "The story seems to turn around a person:",
+      place: "The story seems rooted in place:",
+      craft: "The story seems to live in how the work is done:",
+      community: "The story seems to live in a relationship with people around the business:",
+      idea: "The story seems to begin with a point of view:",
+      memory: "The story seems to carry a memory that still matters:",
+    }[a.storyAnchor] || "The strongest thread you gave us was:";
+    return `${lead} “${d}”`;
+  }
+
   function strongestStory(a) {
     const assets = clean(a.storyAssets);
     if (a.storyAnchor === "memory" || (a.origin === "family" && has(assets, "archive"))) return "Continuity and memory. There is a before-and-after here — something the business can show, remember and pass forward.";
@@ -168,7 +181,7 @@
     if (a.storyAnchor === "craft" || has(assets, "process")) return "How it is made. The process can turn quality from a claim into something people can see and understand.";
     if (a.storyAnchor === "idea" || a.origin === "problem") return "A point of view. Someone believed the usual way was not good enough and built an alternative around that belief.";
     if (has(assets, "customers")) return "Who comes back. Returning customers are evidence of a relationship, not just a transaction.";
-    return "The experience itself. The clearest starting point is the reason your best customers would tell a friend to choose you.";
+    return "The experience itself. The clearest starting point is what real guests repeatedly remember after they leave.";
   }
 
   function level(gap) {
@@ -201,7 +214,7 @@
     const available = clean(a.storyAssets);
     const visible = clean(a.visibleAssets);
     const missing = (x) => has(available, x) && !has(visible, x);
-    const add = (title, detail) => { if (!out.some((x) => x.title === title)) out.push({ title, detail }); };
+    const add = (title, detailText) => { if (!out.some((x) => x.title === title)) out.push({ title, detail: detailText }); };
 
     if (!clean(a.channels).length) add("Give the story a public front door", "Create one reliable place where a stranger can understand what this business is, why it matters and what to do next.");
     if (missing("founder")) add("Let the beginning leave the back room", "The origin exists, but a new customer cannot easily find it. A concise version can give the business a human reason to exist.");
@@ -220,7 +233,12 @@
   function buildStoryPreview(a) {
     const p = profiles(a);
     const potential = Math.round((identity(a) + storyAvailable(a)) / 2);
-    return { profiles: p, storyPotential: potential, strongestStory: strongestStory(a) };
+    return {
+      profiles: p,
+      storyPotential: potential,
+      strongestStory: strongestStory(a),
+      narrativeThread: narrativeThread(a),
+    };
   }
 
   function buildDiagnosis(a) {
@@ -243,6 +261,7 @@
       digitalTranslation,
       gap: { value: gapValue, id: gapLevel[0], label: gapLevel[1] },
       strongestStory: strongestStory(a),
+      narrativeThread: narrativeThread(a),
       digitalMessage: digitalMessage(a),
       gapMessage: finding(gapValue, scores),
       opportunities: opportunities(a, scores),
@@ -255,6 +274,7 @@
     result.summary = [
       `${name} — Historia Nomade Story Check`,
       `Narrative profile: ${p.primary.label} + ${p.secondary.label}`,
+      `Narrative thread: ${result.narrativeThread}`,
       `Story Potential: ${storyPotential}/100`,
       `Digital Translation: ${digitalTranslation}/100`,
       `Storytelling Gap: ${gapValue} points — ${gapLevel[1]}`,
@@ -271,7 +291,7 @@
     return result;
   }
 
-  const api = { LABELS, profileScores, buildStoryPreview, buildDiagnosis, coverage };
+  const api = { LABELS, profileScores, buildStoryPreview, buildDiagnosis, coverage, narrativeThread };
   global.StoryCheckEngine = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
 })(typeof window !== "undefined" ? window : globalThis);
