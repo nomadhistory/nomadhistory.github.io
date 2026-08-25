@@ -1,18 +1,39 @@
 // ============================================================
 // STORY CHECK — conversational interface.
-// The scoring logic lives in ../js/diagnostic-engine.js.
+// The scoring logic lives in ../js/story-check-engine.js.
 // ============================================================
 
 (function () {
   "use strict";
 
   const root = document.getElementById("diagnostic-root");
-  const engine = window.StoryDiagnosticEngine;
+  const engine = window.StoryCheckEngine;
   if (!root || !engine) return;
 
   const answers = {};
   let stepId = "businessType";
   const history = [];
+
+  function onlyNone(list) {
+    return Array.isArray(list) && list.length === 1 && list[0] === "none";
+  }
+
+  function visibleStoryOptions() {
+    const labels = {
+      founder: ["The founder or origin story", "Why this place exists and what brought it into being."],
+      team: ["The people behind the place", "Owners, team members, voices or characters a stranger can actually meet online."],
+      process: ["How things are done", "Craft, preparation, sourcing, rituals or the process behind the experience."],
+      local: ["The relationship with this place", "Neighbourhood, region, producers, culture, landscape or community."],
+      customers: ["Stories from people who come back", "Regulars, repeat guests, testimonials or recognisable customer stories."],
+      archive: ["History you can actually see", "Old photos, milestones, objects or material from earlier chapters."],
+      values: ["The choices behind your values", "Real decisions that show what matters to the business."],
+    };
+    const options = (answers.storyAssets || [])
+      .filter(function (value) { return value !== "none" && labels[value]; })
+      .map(function (value) { return [value, labels[value][0], labels[value][1]]; });
+    options.push(["none", "Almost none of those stories are easy to find", "They may exist in the real business, but a stranger would need someone to explain them."]);
+    return options;
+  }
 
   const QUESTIONS = {
     businessType: {
@@ -32,7 +53,7 @@
     origin: {
       section: "Where it began",
       title: "Take us back to the beginning. Why did this place start?",
-      help: "Not the polished version — just the reason that feels most true.",
+      help: "Not the polished About-page version — just the reason that feels most true.",
       type: "single",
       options: [
         ["family", "It grew from a family story", "Something inherited, continued or built together."],
@@ -47,13 +68,28 @@
     age: {
       section: "Time",
       title: "How long has this story been unfolding?",
-      help: "Time changes what a business can carry: memories, regulars, traditions, old photos, local recognition.",
+      help: "Time changes what a business can carry: memories, regulars, traditions, old photos and local recognition.",
       type: "single",
       options: [
-        ["0-1", "Less than 2 years", "Still becoming itself."],
+        ["new", "Less than 2 years", "Still becoming itself."],
         ["2-5", "2–5 years", "Enough time for patterns and regulars to appear."],
         ["6-10", "6–10 years", "A real chapter of local memory."],
         ["10+", "More than 10 years", "There is history here, whether or not it has been documented."],
+      ],
+      next: "storyAnchor",
+    },
+    storyAnchor: {
+      section: "The thread underneath",
+      title: "If a curious guest stayed after closing and asked, “Why does this place matter to you?” — where would the story naturally go?",
+      help: "Do not worry about sounding impressive. We are looking for the thread you would keep talking about without needing a marketing brief.",
+      type: "single",
+      options: [
+        ["person", "To a person", "The founder, family or someone whose choices shaped the place."],
+        ["place", "To the place itself", "The building, street, landscape, city or region is inseparable from the story."],
+        ["craft", "To the way we do something", "A recipe, process, skill, ritual or standard that matters here."],
+        ["community", "To the people around us", "Neighbours, regulars, producers, travellers or relationships built over time."],
+        ["idea", "To an idea", "Something we wanted to change, prove, protect or create differently."],
+        ["memory", "To a memory", "A moment, old chapter or piece of history that still explains the place today."],
       ],
       next: "differentiator",
     },
@@ -93,9 +129,8 @@
     storyAssets: {
       section: "Stories already there",
       title: "Which stories are sitting inside the business, even if you rarely tell them online?",
-      help: "Choose everything that genuinely exists. These are raw materials, not marketing claims.",
+      help: "Choose everything that genuinely exists. Imagine what someone could discover by spending an afternoon with you — these are raw materials, not marketing claims.",
       type: "multi",
-      max: 5,
       options: [
         ["founder", "Why the founder started it", "A decision, turning point, obsession or personal reason."],
         ["team", "The people behind the place", "Characters, relationships, ways of working or people guests remember."],
@@ -130,7 +165,7 @@
     digitalShows: {
       section: "First impression",
       title: "If they gave you just 60 seconds online, what would they mostly see?",
-      help: "This is not about whether the content is good. We want to know what story gets the most space.",
+      help: "This is not about whether the content is good. We want to know which version of the business gets the most space.",
       type: "single",
       options: [
         ["product", "What we sell", "Rooms, menu items, prices, packages, offers or practical information."],
@@ -139,36 +174,45 @@
         ["story", "Why this place exists", "Origin, history, values, local connection or the story behind the experience."],
         ["experience", "What it feels like to be here", "Guests, moments, reactions and the experience in use."],
         ["inconsistent", "A bit of everything from different eras", "Old information, mixed visuals or channels that do not quite agree."],
-        ["none", "There is too little to tell", "The presence exists, but barely communicates anything yet."],
       ],
-      next: "clarity",
+      next: function () {
+        return onlyNone(answers.storyAssets) ? "digitalMatch" : "visibleAssets";
+      },
     },
-    clarity: {
-      section: "Difference",
-      title: "How quickly could a stranger understand why they should choose you instead of a similar place nearby?",
-      help: "Answer for someone with no context, no recommendation from a friend and no previous visit.",
-      type: "scale",
-      low: "They probably couldn't",
-      high: "Almost immediately",
+    visibleAssets: {
+      section: "What made the journey",
+      title: "Earlier you told us what stories exist inside the business. Which of those can a stranger actually find online today?",
+      help: "Only count it if someone with no previous context could reasonably discover it without you standing beside them to explain it.",
+      type: "multi",
+      options: visibleStoryOptions,
       next: "digitalMatch",
     },
     digitalMatch: {
       section: "Translation",
-      title: "How much does the online version feel like the real place?",
-      help: "Think about tone, images, people, atmosphere and what matters once someone actually arrives.",
+      title: "When you look at the online version, how much does it feel like the real place?",
+      help: "Think about tone, images, people, atmosphere and what matters once someone actually arrives — not only whether the information is correct.",
       type: "scale",
       low: "They feel like two different places",
       high: "It feels unmistakably like us",
+      next: "clarity",
+    },
+    clarity: {
+      section: "Difference",
+      title: "Would a stranger understand why someone should choose you — not only what you sell?",
+      help: "Answer for someone with no context, no recommendation from a friend and no previous visit.",
+      type: "scale",
+      low: "Probably not",
+      high: "Almost immediately",
       next: "reviews",
     },
     reviews: {
       section: "Trust",
-      title: "When someone is deciding whether to trust you, how much real proof can they find?",
-      help: "Recent reviews, returning guests, recommendations or other signs that real people chose you and were glad they did.",
+      title: "If that stranger likes what they see, how easy is it to find proof that real people believe it too?",
+      help: "Recent reviews, returning guests, recommendations or other signs that people chose you and were glad they did.",
       type: "single",
       options: [
-        ["strong", "A lot — and it is recent", "Trust is easy to verify."],
-        ["some", "There is enough, but it could be stronger", "People can find proof if they look."],
+        ["strong", "Easy — and the proof is recent", "Trust is hard to miss."],
+        ["some", "There is enough, but someone has to look", "The proof exists, but it is not doing much work on its own."],
         ["weak", "Very little", "The reputation may be stronger offline than online."],
         ["unknown", "I'm not really sure", "That uncertainty is useful information too."],
       ],
@@ -176,7 +220,10 @@
     },
   };
 
-  const ORDER = ["businessType", "origin", "age", "differentiator", "personality", "storyAssets", "channels", "digitalShows", "clarity", "digitalMatch", "reviews"];
+  const ORDER = [
+    "businessType", "origin", "age", "storyAnchor", "differentiator", "personality",
+    "storyAssets", "channels", "digitalShows", "visibleAssets", "digitalMatch", "clarity", "reviews",
+  ];
 
   function el(tag, className, text) {
     const node = document.createElement(tag);
@@ -187,10 +234,6 @@
 
   function clear() {
     while (root.firstChild) root.removeChild(root.firstChild);
-  }
-
-  function onlyNone(list) {
-    return Array.isArray(list) && list.length === 1 && list[0] === "none";
   }
 
   function progressValue() {
@@ -245,9 +288,13 @@
     root.appendChild(row);
   }
 
+  function questionOptions(question) {
+    return typeof question.options === "function" ? question.options() : question.options;
+  }
+
   function renderSingle(question) {
     const options = el("div", "diag-options");
-    question.options.forEach(function (opt, index) {
+    questionOptions(question).forEach(function (opt, index) {
       const value = opt[0];
       const button = el("button", "diag-option");
       button.type = "button";
@@ -272,11 +319,7 @@
     const list = answers[stepId];
     const options = el("div", "diag-options");
 
-    function refresh() {
-      render();
-    }
-
-    question.options.forEach(function (opt, index) {
+    questionOptions(question).forEach(function (opt, index) {
       const value = opt[0];
       const selected = list.indexOf(value) !== -1;
       const button = el("button", "diag-option");
@@ -290,16 +333,15 @@
       button.addEventListener("click", function () {
         if (value === "none") {
           answers[stepId] = selected ? [] : ["none"];
-          refresh();
+          render();
           return;
         }
-
         const current = (answers[stepId] || []).filter(function (x) { return x !== "none"; });
         const at = current.indexOf(value);
         if (at >= 0) current.splice(at, 1);
         else if (!question.max || current.length < question.max) current.push(value);
         answers[stepId] = current;
-        refresh();
+        render();
       });
       options.appendChild(button);
     });
@@ -315,7 +357,6 @@
     labels.appendChild(el("span", null, question.low));
     labels.appendChild(el("span", null, question.high));
     wrap.appendChild(labels);
-
     const options = el("div", "scale-options");
     for (let value = 1; value <= 5; value += 1) {
       const button = el("button", "scale-option", String(value));
@@ -339,7 +380,6 @@
     root.appendChild(el("p", "diag-kicker", question.section));
     root.appendChild(el("h2", "diag-question", question.title));
     root.appendChild(el("p", "diag-help", question.help));
-
     if (question.type === "single") renderSingle(question);
     if (question.type === "multi") renderMulti(question);
     if (question.type === "scale") renderScale(question);
@@ -348,17 +388,22 @@
   function renderCheckpoint() {
     clear();
     renderProgress("Your story so far");
-    const result = engine.buildDiagnosis(answers);
+    const preview = engine.buildStoryPreview(answers);
     const box = el("div", "diag-checkpoint");
     box.appendChild(el("p", "diag-kicker", "Before we look at the internet"));
     box.appendChild(el("h2", null, "We can already see the shape of your story."));
-    box.appendChild(el("p", null, "This is not a label we are trying to force onto the business. It is a clue: the strongest patterns in what you have told us so far."));
+    box.appendChild(el("p", null, "This is not a brand archetype we are trying to force onto you. It is a clue: the strongest patterns in what you have told us so far."));
     const pair = el("div", "profile-pair");
-    pair.appendChild(el("span", "profile-chip", result.profiles.primary.label));
-    pair.appendChild(el("span", "profile-chip", result.profiles.secondary.label));
+    pair.appendChild(el("span", "profile-chip", preview.profiles.primary.label));
+    pair.appendChild(el("span", "profile-chip", preview.profiles.secondary.label));
     box.appendChild(pair);
-    box.appendChild(el("p", null, result.profiles.primary.description));
-    const button = el("button", "btn btn-primary", "Now compare it with the internet");
+    box.appendChild(el("p", null, preview.profiles.primary.description));
+    const note = el("div", "checkpoint-note");
+    note.appendChild(el("strong", null, "The story we would pull on first"));
+    note.appendChild(el("p", null, preview.strongestStory));
+    box.appendChild(note);
+    box.appendChild(el("p", null, "Now we can ask the useful question: when someone meets this place through a screen, how much of that character makes it across?"));
+    const button = el("button", "btn btn-primary", "Now meet the digital version");
     button.type = "button";
     button.addEventListener("click", function () { go("channels"); });
     box.appendChild(button);
@@ -406,7 +451,7 @@
     gap.appendChild(el("div", "gap-number", String(result.gap.value)));
     const gapCopy = el("div", "gap-copy");
     gapCopy.appendChild(el("strong", null, result.gap.label));
-    gapCopy.appendChild(el("p", null, "Storytelling Gap — the distance between the story available inside the business and how strongly it appears in the digital version."));
+    gapCopy.appendChild(el("p", null, "Story Potential " + result.storyPotential + "/100 → Digital Translation " + result.digitalTranslation + "/100. The difference is the Storytelling Gap: how much of the real business is being lost before a stranger arrives."));
     gap.appendChild(gapCopy);
     root.appendChild(gap);
 
@@ -441,13 +486,12 @@
     opportunities.appendChild(list);
     root.appendChild(opportunities);
 
-    root.appendChild(el("p", "result-disclaimer", "This MVP is a self-reported Story Check. It has not inspected your website, Google profile, social accounts or booking pages yet. The stronger version of this diagnostic will compare what you told us with what a first-time visitor can actually see publicly."));
+    root.appendChild(el("p", "result-disclaimer", "This MVP is a self-reported Story Check. It has not inspected your website, Google profile, social accounts or booking pages yet. The stronger version compares what you told us with what a first-time visitor can actually see publicly — that is the Storytelling Gap we would trust for a real recommendation."));
 
     const actions = el("div", "result-actions");
-    const email = el("a", "btn btn-primary", "Send this to Historia Nomade");
-    email.href = "mailto:hello@historianomade.com?subject=" + encodeURIComponent("Story Check — follow-up") + "&body=" + encodeURIComponent("Hi Historia Nomade,\n\nI completed the Story Check and would like you to look at my public presence.\n\n" + result.summary);
+    const email = el("a", "btn btn-primary", "Ask Historia Nomade to verify it");
+    email.href = "mailto:hello@historianomade.com?subject=" + encodeURIComponent("Story Check — follow-up") + "&body=" + encodeURIComponent("Hi Historia Nomade,\n\nI completed the Story Check and would like you to compare it with my real public presence.\n\n" + result.summary);
     actions.appendChild(email);
-
     const again = el("button", "btn btn-ghost", "Start again");
     again.type = "button";
     again.addEventListener("click", function () {
