@@ -1,0 +1,44 @@
+.sc-text-answer {
+  max-width: 720px;
+}
+
+.sc-text-answer textarea {
+  width: 100%;
+  min-height: 150px;
+  resize: vertical;
+  padding: 1rem 1.05rem;
+  border: var(--border) solid var(--line);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--paper) 76%, var(--card));
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.55;
+  outline: none;
+  transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
+}
+
+.sc-text-answer textarea::placeholder {
+  color: var(--ink-soft);
+  opacity: .7;
+}
+
+.sc-text-answer textarea:focus {
+  border-color: var(--accent);
+  background: var(--paper);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.sc-text-note {
+  margin-top: .55rem;
+  color: var(--ink-soft);
+  font-size: .82rem;
+}
+
+.sc-story-note + .sc-preview-grid,
+.sc-preview-grid + .sc-story-note {
+  margin-top: 1rem;
+}
+
+.sc-result-section > .sc-story-note {
+  margin-bottom: 1rem;
+}
