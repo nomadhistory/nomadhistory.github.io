@@ -1,53 +1,73 @@
 # História Nômade
 
-Site do estúdio: marca, site, automação e tráfego pago para hotelaria e turismo pequeno.
-Serviço com preço fechado — e, para propriedades com quarto sobrando na baixa temporada,
-a opção de pagar em hospedagem.
+Site do estúdio: marca, sites, conteúdo, automação e aquisição para hospitalidade e turismo.
+
+O objetivo comercial atual é fechar **serviços pagos**, com criação/reconstrução de sites como principal porta de entrada quando essa necessidade estiver clara.
 
 **No ar:** https://historianomade.com/
 
 ## Arquitetura
 
-Estático puro: HTML + CSS + JS, sem build, sem dependência, sem backend.
+Estático puro: HTML + CSS + JS, sem build, sem backend e sem banco de dados.
 Deploy por GitHub Pages a cada push na `main`.
 
-Nada é coletado de ninguém. O formulário de proposta roda inteiro no navegador;
-a única saída possível é a mensagem que a própria pessoa envia clicando em
-WhatsApp ou e-mail. Sem analytics, sem cookie, sem requisição externa — a CSP
-do `index.html` bloqueia qualquer host de fora.
+Nada é coletado automaticamente. O **Field Check** roda inteiro no navegador; as respostas ficam no dispositivo e a única saída possível é a mensagem que a própria pessoa abre e envia por e-mail ou WhatsApp quando esse canal estiver configurado.
+
+Sem analytics, sem cookies e sem requisições externas de aplicação. A CSP do `index.html` restringe hosts externos.
 
 ## Arquivos
 
 | Arquivo | O que é |
 |---|---|
-| `js/content.js` | **Toda a copy do site.** Editar texto = editar só este arquivo. |
-| `js/site.js` | Monta as seções a partir do `content.js`. Não tem texto dentro. |
-| `js/proposal-engine.js` | Lógica do formulário: qual pacote, quais serviços, qual acerto. Sem DOM. |
-| `js/proposal.js` | Interface do formulário. Só DOM. |
-| `styles-base.css` | **Tokens da marca** — cor, fonte, raio, movimento. É aqui que a identidade visual entra. |
+| `js/content.js` | **Toda a copy do site.** Editar texto = editar este arquivo. |
+| `js/site.js` | Monta as seções a partir do `content.js`. |
+| `js/proposal-engine.js` | Lógica pura do Field Check: perguntas, prioridade de áreas e mensagem final. **Não escolhe plano nem preço.** |
+| `js/proposal.js` | Interface DOM do Field Check e abertura do e-mail/WhatsApp para revisão do usuário. |
+| `styles-base.css` | Tokens da marca — cor, fonte, raio e movimento. |
 | `styles-site.css` | Layout das seções. |
-| `styles-motion.css` | Todo o movimento. |
-| `js/motion.js` | Revelação por scroll, título linha a linha, trilha do itinerário. Puro enfeite. |
-| `js/theme.js` | Claro / escuro / seguir o sistema. **Único script no `<head>`** — precisa rodar antes da primeira pintura, senão a página pisca no tema errado. |
-| `dev/make-og.py` | Regera o `og-image.png` (o preview de link compartilhado). |
+| `styles-motion.css` | Movimento visual. |
+| `js/motion.js` | Revelação por scroll, títulos e trilha do itinerário. |
+| `js/theme.js` | Claro / escuro / seguir o sistema. |
+| `tests/test-proposal.mjs` | Testes do motor atual de **Field Check**. O nome do arquivo é legado. |
+| `dev/make-og.py` | Regera o `og-image.png`. |
 | `dev/make-photos.py` | Prepara foto de perfil da equipe. |
 | `dev/make-logo.py` | Regera a marca e os favicons a partir do PNG transparente. |
-| `tests/test-proposal.mjs` | Testes do motor de propostas. |
 
-## Foto de perfil da equipe
+## Fluxo comercial do site
 
-```bash
-python3 dev/make-photos.py marina ~/Downloads/foto.jpg --focus 0.35
+O site não gera proposta comercial automaticamente.
+
+O fluxo atual é:
+
+```text
+visitante
+↓
+Get a Field Check
+↓
+4 perguntas curtas
+↓
+até 3 áreas sugeridas para revisão
+↓
+mensagem aberta para hello@historianomade.com
+↓
+revisão humana da presença pública
+↓
+Field Check real
+↓
+plano/proposta somente se houver problema confirmado e interesse
 ```
 
-Aceita `.jpg`, `.png` e `.heic` do iPhone. Recorta em 4:5 em volta do
-rosto (`--focus` é a altura dele, 0 = topo, 1 = base; o padrão 0.38
-serve pra retrato em pé), redimensiona pra 900px, **remove o EXIF** —
-o original carrega GPS e modelo do aparelho, que não têm o que fazer
-num site público — e salva em `assets/team/<slug>.webp`.
+O browser **não recomenda Compass, Landmark, Expedition ou Atlas**, não calcula preço e não diagnostica o negócio sozinho.
 
-Depois é só apontar o campo `photo` do membro em `js/content.js`.
-Membro sem foto renderiza só o texto, sem buraco no layout.
+## Contato profissional
+
+E-mail público:
+
+```text
+hello@historianomade.com
+```
+
+O WhatsApp em `js/content.js` permanece vazio até existir um número profissional definitivo. Enquanto estiver vazio, os botões de WhatsApp não aparecem.
 
 ## Rodar local
 
@@ -55,7 +75,7 @@ Membro sem foto renderiza só o texto, sem buraco no layout.
 python3 -m http.server 4321
 ```
 
-E abrir http://localhost:4321.
+Depois abrir `http://localhost:4321`.
 
 ## Antes de fazer push
 
@@ -63,32 +83,45 @@ E abrir http://localhost:4321.
 python3 security_check.py . && node tests/test-proposal.mjs
 ```
 
-O CI roda exatamente isso.
+O workflow `Validate` executa o checker de segurança, valida a sintaxe JavaScript e roda os testes do Field Check.
 
 ## Mudar texto do site
 
-Tudo em `js/content.js`. Se um dia o site virar bilíngue, esse objeto vira
-`CONTENT.en` e ganha um `CONTENT.pt` do lado — a estrutura não muda.
+A copy principal vive em `js/content.js`.
 
-## Cases (`js/content.js` → `cases.items`)
+Se o site virar bilíngue, a estrutura prevista é transformar esse objeto em `CONTENT.en` e adicionar `CONTENT.pt`, sem alterar a arquitetura geral.
 
-Um case só aparece no site quando tem `published: true`. Enquanto não houver
-trabalho real publicado, a seção mostra o aviso de `emptyNote` em vez de
-resultado inventado. **Não publicar case com número que não aconteceu** — é a
-única parte do site que não pode ser escrita antes do trabalho existir.
+## Cases
 
-O primeiro case publicado atualmente é a DLT Academy, identificado claramente
-como projeto próprio do Tiago e sem métricas de desempenho inventadas.
+Um case só aparece quando `published: true` em `js/content.js`.
 
-## Pendências de conteúdo
+Não publicar cliente, resultado ou métrica que não aconteceu.
 
-1. **WhatsApp** — `js/content.js` → `brand.whatsapp` continua vazio de propósito;
-   enquanto não houver um número definitivo, os botões de WhatsApp não aparecem.
-2. **Wordmark definitivo** — a marca (`assets/logo-mark.png`) já é a final, da
-   Marina. Só o *nome escrito* ao lado dela (`assets/wordmark.svg`) ainda é
-   tipografia de sistema, provisória.
+O primeiro case publicado é a **DLT Academy**, identificado claramente como projeto próprio do Tiago e sem métricas de desempenho inventadas.
 
-O site está liberado para indexação (`index, follow`). Para conferir na produção:
+## Planos
+
+A versão publicada na `main` continua sendo a oferta oficialmente aprovada naquele momento.
+
+Mudanças de arquitetura comercial devem ser revisadas em branch separada antes de chegar à `main`. Enquanto uma revisão não for aprovada, documentação experimental não substitui a oferta publicada.
+
+## Foto de perfil da equipe
+
+```bash
+python3 dev/make-photos.py marina ~/Downloads/foto.jpg --focus 0.35
+```
+
+Aceita `.jpg`, `.png` e `.heic` do iPhone. O script recorta em 4:5, redimensiona para 900 px, remove EXIF e salva em `assets/team/<slug>.webp`.
+
+## Indexação
+
+O site está liberado para indexação:
+
+```html
+<meta name="robots" content="index, follow">
+```
+
+Para conferir na produção:
 
 ```bash
 curl -s https://historianomade.com/ | grep robots
@@ -96,34 +129,23 @@ curl -s https://historianomade.com/ | grep robots
 
 ## Logo
 
-A marca vem de um PNG preto sobre transparente. Para regerar tudo:
+Para regerar a marca e favicons:
 
 ```bash
 python3 dev/make-logo.py ~/Downloads/historia-nomade-logo-transparente.png
 ```
 
-Gera `logo-mark.png` (recortado no limite real, cinza+alfa pra pesar pouco) e
-os três favicons.
-
-**A marca tem que ser preta pura, sem cor.** No tema escuro o CSS aplica
-`filter: invert(1)` pra deixar ela branca — é o que impede o logo de sumir no
-fundo escuro. Qualquer cor no arquivo vira cor invertida errada.
-
-Os favicons saem com o fundo creme de propósito: ícone transparente
-desaparece na barra de abas dependendo do tema do sistema.
-
-No cabeçalho a marca aparece com o nome ao lado; abaixo de 560px o nome some e
-fica só a marca, senão o botão "Get a proposal" quebra em duas linhas.
+A marca-base deve permanecer preta sobre transparente. No tema escuro o CSS faz a inversão necessária.
 
 ## Domínio próprio
 
 Domínio principal: `historianomade.com`.
 
-O site é publicado por um workflow customizado do GitHub Actions (`.github/workflows/pages.yml`).
-Nesse modo, **não criar arquivo `CNAME` no repositório**: o GitHub Pages ignora esse arquivo.
-O domínio é definido em **Settings → Pages → Custom domain**.
+O site é publicado pelo workflow `.github/workflows/pages.yml`.
 
-DNS esperado no registrador:
+Nesse modo, não criar `CNAME` no repositório; o domínio é configurado em **Settings → Pages → Custom domain**.
+
+DNS esperado:
 
 - `A` `@` → `185.199.108.153`
 - `A` `@` → `185.199.109.153`
@@ -131,11 +153,4 @@ DNS esperado no registrador:
 - `A` `@` → `185.199.111.153`
 - `CNAME` `www` → `nomadhistory.github.io`
 
-No GitHub Pages:
-
-1. Custom domain: `historianomade.com`.
-2. **Enforce HTTPS** ativado assim que o certificado estiver disponível.
-3. Com apex e `www` configurados no DNS, o GitHub redireciona `www.historianomade.com` para o domínio canônico configurado.
-
-As URLs absolutas do site usam `https://historianomade.com/` em canonical, Open Graph,
-Twitter metadata, Schema.org, `robots.txt` e `sitemap.xml`.
+As URLs absolutas usam `https://historianomade.com/` em canonical, Open Graph, Twitter metadata, Schema.org, `robots.txt` e `sitemap.xml`.
