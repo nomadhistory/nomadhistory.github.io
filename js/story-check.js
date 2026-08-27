@@ -589,11 +589,17 @@
     };
     const signals = clean(answers.observedSignals);
     const matched = signals.map((x) => signalToAsset[x]).find((x) => x && missing.includes(x));
-    const asset = matched || missing[0];
     const signal = signals[0] ? SIGNAL_LABELS[signals[0]] : "the real experience";
 
-    if (asset) {
-      return `Based on your answers, people seem to value ${signal}, but ${ASSET_LABELS[asset]} is still difficult for a stranger to find online. The business is richer than the version people meet before arrival.`;
+    if (matched) {
+      return `Based on your answers, people seem to value ${signal}, but a stranger still has difficulty finding ${ASSET_LABELS[matched]} online. The business is richer than the version people meet before arrival.`;
+    }
+
+    if (answers.digitalPain === "photos") {
+      return `People seem to value ${signal}, but you also told us the photos do not do the place justice. The strongest part of the real experience may be arriving too late — after someone has already decided to visit.`;
+    }
+    if (answers.digitalPain === "generic") {
+      return `People seem to value ${signal}, while the digital version feels more generic than the real business. The problem may be less about missing information and more about missing character.`;
     }
 
     const match = Number(answers.digitalMatch || 1);
