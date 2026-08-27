@@ -27,35 +27,77 @@
       placeholder: "For example: We prepare every... ourselves because...",
     },
     community: {
-      label: "Which relationship, regular guest or local ritual says the most about this place?",
+      label: "What relationship, tradition or local connection says something important about this place?",
       hint: "Tell us about one real example rather than describing the community in general.",
       placeholder: "For example: Every Friday, the same group...",
     },
     idea: {
-      label: "What did you want to do differently from the usual version of this kind of business?",
+      label: "What did you want to do differently from the usual way?",
       hint: "Think about the thing you refused to copy, compromise on or do the standard way.",
       placeholder: "For example: We were tired of places that... so we decided to...",
     },
     memory: {
-      label: "What happened here that still gets told?",
+      label: "What happened here that people still remember or talk about?",
       hint: "A moment, person, turning point or small story that still carries meaning inside the business.",
       placeholder: "For example: In our first year... and people still remember it because...",
     },
+  };
+
+  const SIGNAL_LABELS = {
+    welcome: "the people and the way guests are looked after",
+    craft: "the quality and care in how things are done",
+    knowledge: "the knowledge and confidence behind the experience",
+    atmosphere: "the atmosphere and feeling of the place",
+    place: "the building, neighbourhood or location itself",
+    story: "the people and story behind the business",
+    different: "the fact that it does not feel like the usual version of this category",
+    functional: "price, location or convenience",
+  };
+
+  const ASSET_LABELS = {
+    founder: "the founder or origin story",
+    team: "the people behind the business",
+    process: "the process, craft or way you work",
+    local: "the relationship with the local place or community",
+    customers: "stories from regulars or returning guests",
+    archive: "old photos, milestones or historical material",
+    values: "the choices and values behind the business",
+  };
+
+  const PAIN_TEXT = {
+    generic: "the digital version feels more generic than the real business",
+    photos: "the photos do not do the place justice",
+    confusion: "people still arrive without understanding things they should already know",
+    dependence: "the business depends too much on platforms or third-party channels",
+    attention: "there is attention, but too little of it turns into a direct next step",
+    outdated: "the online presence feels old or inconsistent",
+    unsure: "the digital problem is not fully clear from inside the business yet",
+  };
+
+  const GOAL_LABELS = {
+    direct: "more direct bookings or sales",
+    aligned: "attracting people who are a better fit",
+    value: "increasing perceived value",
+    platforms: "depending less on Booking, OTAs or other platforms",
+    lowseason: "making the low season work better",
+    launch: "giving visibility to something new",
+    professional: "making the digital presence more professional and consistent",
+    unknown: "figuring out what actually needs to change first",
   };
 
   const QUESTIONS = [
     {
       id: "businessType",
       stage: "Meet the business",
-      label: "First — what kind of place are we talking about?",
-      hint: "Choose the closest fit. We care more about the story than the category label.",
+      label: "First — what kind of place are we getting to know?",
+      hint: "Choose the closest fit. The category gives us context, not the conclusion.",
       type: "single",
       options: [
-        ["hostel", "A hostel"],
-        ["guesthouse", "A guesthouse or B&B"],
-        ["hotel", "A boutique hotel"],
-        ["restaurant", "A restaurant or café"],
-        ["tours", "Tours or experiences"],
+        ["hotel", "Hotel / boutique hotel"],
+        ["guesthouse", "Guesthouse / B&B"],
+        ["hostel", "Hostel"],
+        ["restaurant", "Restaurant / café"],
+        ["tours", "Tours / experiences"],
         ["other", "Something else in travel or hospitality"],
       ],
     },
@@ -65,10 +107,10 @@
       label: "How long has this story been unfolding?",
       type: "single",
       options: [
-        ["new", "We are still in the first 2 years"],
+        ["new", "Less than 2 years"],
         ["2-5", "2–5 years"],
         ["6-10", "6–10 years"],
-        ["10+", "More than 10 years — there is some history here"],
+        ["10+", "More than 10 years"],
       ],
     },
     {
@@ -79,26 +121,26 @@
       type: "single",
       options: [
         ["family", "It grew from a family story, tradition or place we already had"],
-        ["passion", "Someone cared about the idea enough to turn it into a business"],
-        ["community", "This place, neighbourhood or community pulled the business into existence"],
-        ["problem", "We thought the usual way was not good enough and wanted to do it differently"],
-        ["opportunity", "An opportunity came first — the meaning grew around it later"],
-        ["other", "It is harder to reduce to one reason"],
+        ["passion", "Someone really wanted to create it"],
+        ["community", "It grew from a relationship with the place or community"],
+        ["problem", "We wanted to do something differently from the usual way"],
+        ["opportunity", "An opportunity came first and meaning grew around it later"],
+        ["other", "It is more complicated than one of these"],
       ],
     },
     {
       id: "storyAnchor",
       stage: "Where the story lives",
-      label: "If a curious guest stayed after closing and asked, “Why does this place matter to you?” — where would the story naturally go?",
-      hint: "There is no marketing answer here. Choose the direction the conversation would genuinely take.",
+      label: "When you explain why this place matters, where does the story naturally go?",
+      hint: "Choose the direction the conversation would genuinely take.",
       type: "single",
       options: [
-        ["person", "To a person — the founder, family or someone who shaped it"],
-        ["place", "To the place itself — the building, street, landscape or region"],
-        ["craft", "To the way we make or do something"],
-        ["community", "To the people around us and the relationships built here"],
-        ["idea", "To an idea — what we wanted to change, prove or create"],
-        ["memory", "To a memory — something that happened here and still matters"],
+        ["person", "A person"],
+        ["place", "The place itself"],
+        ["craft", "The way something is made or done"],
+        ["community", "The community or relationships around it"],
+        ["idea", "An idea or point of view"],
+        ["memory", "A memory or story that happened here"],
       ],
     },
     {
@@ -110,29 +152,38 @@
     },
     {
       id: "observedSignals",
-      stage: "What people actually remember",
-      label: "Think of comments you have genuinely heard more than once. What do guests tend to mention after the experience?",
+      stage: "What people actually value",
+      label: "Think about the compliments you hear again and again. What do people actually mention?",
       hint: "Pick up to three based on what people really say — not what you hope they say.",
       type: "multi",
       min: 1,
       max: 3,
       options: [
-        ["welcome", "“The people made us feel at home / really looked after us.”"],
-        ["craft", "“You notice the quality and the care in how things are done.”"],
-        ["knowledge", "“They really know their area, craft or world.”"],
-        ["atmosphere", "“There is a feeling here that is hard to explain.”"],
-        ["place", "“The building, neighbourhood or location is part of what makes it special.”"],
-        ["story", "“The story, family or people behind it stayed with us.”"],
-        ["different", "“It does not feel like the other places in this category.”"],
-        ["functional", "“It was mainly a good option for price, location or convenience.”"],
+        ["welcome", "People / service / being looked after"],
+        ["atmosphere", "Atmosphere and feeling"],
+        ["craft", "Quality or care in how things are done"],
+        ["knowledge", "Knowledge / confidence"],
+        ["story", "The personality or story of the place"],
+        ["place", "The building, neighbourhood or location"],
+        ["different", "It feels meaningfully different from similar places"],
+        ["functional", "Location, price or convenience"],
         ["none", "We do not hear a clear pattern yet"],
       ],
     },
     {
+      id: "afterVisit",
+      stage: "What arrives too late",
+      label: "What do people usually only understand after they have already been here?",
+      hint: "Think of something the real experience makes obvious, but a stranger may not understand before choosing you.",
+      type: "text",
+      minLength: 12,
+      placeholder: "For example: They only realise how personal the experience is once they meet the team...",
+    },
+    {
       id: "storyAssets",
       stage: "Stories already inside",
-      label: "Which other stories are already sitting inside the business — even if you rarely tell them online?",
-      hint: "Think of what someone could discover by spending an afternoon with you. Select all that genuinely exist.",
+      label: "Which of these stories already exist inside the business — even if you rarely show them?",
+      hint: "Select all that genuinely exist.",
       type: "multi",
       min: 1,
       options: [
@@ -148,71 +199,97 @@
     },
     {
       id: "storyBridge",
-      stage: "Your story so far",
+      stage: "What we understood",
       type: "bridge",
+    },
+    {
+      id: "sixMonths",
+      stage: "What matters now",
+      label: "If the next six months went well, what would be different?",
+      hint: "Choose up to two. This helps us prioritise the diagnosis around a real business need.",
+      type: "multi",
+      min: 1,
+      max: 2,
+      options: [
+        ["direct", "More direct bookings / sales"],
+        ["aligned", "Attract people who are a better fit"],
+        ["value", "Increase perceived value / charge better"],
+        ["platforms", "Depend less on Booking, OTAs or platforms"],
+        ["lowseason", "Improve the low season"],
+        ["launch", "Give visibility to something new"],
+        ["professional", "Have a more professional and consistent digital presence"],
+        ["unknown", "We are not sure yet"],
+      ],
+    },
+    {
+      id: "digitalPain",
+      stage: "What already feels wrong",
+      label: "When people find you online, what feels most wrong or frustrating?",
+      type: "single",
+      options: [
+        ["generic", "It looks more generic than the real business"],
+        ["photos", "The photos do not do the place justice"],
+        ["confusion", "People arrive without understanding things they should already know"],
+        ["dependence", "We depend too much on Booking, Instagram, referrals or other platforms"],
+        ["attention", "We get attention, but too little turns into bookings or enquiries"],
+        ["outdated", "Everything feels a little old or inconsistent"],
+        ["unsure", "I am not sure"],
+      ],
     },
     {
       id: "channels",
       stage: "Now meet the digital version",
-      label: "Now imagine someone hears your name for the first time. Where are they likely to meet you online?",
-      hint: "Choose the places a stranger would realistically find or use today.",
+      label: "Where are people likely to meet you online today?",
+      hint: "Choose the places a stranger would realistically find or use.",
       type: "multi",
       min: 1,
       options: [
-        ["website", "Your own website"],
-        ["instagram", "Instagram"],
+        ["website", "Website"],
         ["google", "Google Search or Maps"],
+        ["instagram", "Instagram"],
         ["ota", "Booking or travel platforms"],
         ["facebook", "Facebook"],
         ["tiktok", "TikTok"],
         ["whatsapp", "WhatsApp or direct messaging"],
-        ["none", "Almost nowhere — most people find us offline or by referral"],
+        ["none", "Practically nowhere"],
       ],
     },
     {
       id: "digitalShows",
-      stage: "What a stranger sees",
-      label: "Give that stranger sixty seconds. What would they learn most clearly?",
-      hint: "Choose what is actually easiest to understand from the public presence today.",
+      stage: "The sixty-second test",
+      label: "If a stranger gave you sixty seconds online, what would they understand most clearly?",
+      hint: "Choose what is actually easiest to understand today.",
       type: "single",
       when: () => !selected("channels", "none"),
       options: [
         ["product", "What we sell — rooms, menu, tours, prices or promotions"],
-        ["place", "What the place looks and feels like"],
+        ["place", "How the place looks"],
         ["people", "Who the people behind it are"],
-        ["story", "Where the business came from and what it stands for"],
-        ["experience", "What guests or customers actually experience"],
-        ["inconsistent", "Mostly fragments — old, mixed or inconsistent information"],
+        ["story", "Our story"],
+        ["experience", "What the experience feels like"],
+        ["inconsistent", "Mostly fragmented or inconsistent information"],
       ],
     },
     {
       id: "visibleAssets",
-      stage: "What a stranger sees",
-      label: "Earlier you told us what stories exist inside the business. Which of those can a stranger actually find online today?",
+      stage: "What is actually visible",
+      label: "Earlier you told us which stories exist inside the business. Which of those can a stranger actually find online today?",
       hint: "Only count something if a first-time visitor could reasonably discover it without already knowing the story.",
       type: "multi",
       min: 1,
       when: () => !selected("channels", "none") && !selected("storyAssets", "none"),
       dynamicOptions: () => {
-        const names = {
-          founder: "The founder or origin story",
-          team: "The people behind the business",
-          process: "The process, craft or way you work",
-          local: "The relationship with the local place or community",
-          customers: "Stories from regulars or returning guests",
-          archive: "Old photos, milestones or historical material",
-          values: "The choices and values behind the business",
-        };
-        const options = (answers.storyAssets || []).filter((x) => x !== "none").map((x) => [x, names[x]]);
+        const options = (answers.storyAssets || [])
+          .filter((x) => x !== "none")
+          .map((x) => [x, ASSET_LABELS[x]]);
         options.push(["none", "Almost none of those stories are easy to find online"]);
         return options;
       },
     },
     {
       id: "digitalMatch",
-      stage: "Does the feeling survive?",
-      label: "When you look at your own pages, do they feel like the same place people experience in real life?",
-      hint: "Think about tone, photos, people, expectations and overall feeling — not just whether the information is correct.",
+      stage: "Does the experience survive?",
+      label: "When you look at your own pages, does it feel like the same place people experience in real life?",
       type: "scale",
       when: () => !selected("channels", "none"),
       low: "Barely feels like us",
@@ -220,8 +297,8 @@
     },
     {
       id: "clarity",
-      stage: "Does the difference survive?",
-      label: "Without already knowing you, would a stranger understand why someone chooses this place instead of another nearby?",
+      stage: "Is the reason to choose clear?",
+      label: "Would a stranger understand why people choose you — not just what you sell?",
       type: "scale",
       when: () => !selected("channels", "none"),
       low: "Probably not",
@@ -230,15 +307,14 @@
     {
       id: "reviews",
       stage: "Can they believe it?",
-      label: "How easy is it for that stranger to find proof from real guests that matches the story you just described?",
-      hint: "Think recent reviews, testimonials, repeat guests and other visible signs of trust.",
+      label: "If someone liked what they saw, how easy would it be for them to find proof from real guests or customers?",
       type: "single",
       when: () => !selected("channels", "none"),
       options: [
-        ["strong", "Easy — recent, credible proof is hard to miss"],
-        ["some", "There is proof, but someone has to look for it"],
-        ["weak", "Very little public proof is visible"],
-        ["unknown", "I am genuinely not sure"],
+        ["strong", "Very easy"],
+        ["some", "It exists, but someone has to look for it"],
+        ["weak", "Very little is visible"],
+        ["unknown", "I am not sure"],
       ],
     },
   ];
@@ -257,6 +333,10 @@
 
   function activeQuestions() {
     return QUESTIONS.filter((q) => !q.when || q.when());
+  }
+
+  function clean(list) {
+    return (Array.isArray(list) ? list : []).filter((x) => x && x !== "none");
   }
 
   function clear() {
@@ -310,11 +390,11 @@
 
   function toggleMulti(question, value) {
     let current = Array.isArray(answers[question.id]) ? answers[question.id].slice() : [];
-    if (value === "none") {
-      answers[question.id] = current.includes("none") ? [] : ["none"];
+    if (value === "none" || value === "unknown") {
+      answers[question.id] = current.includes(value) ? [] : [value];
       return;
     }
-    current = current.filter((x) => x !== "none");
+    current = current.filter((x) => x !== "none" && x !== "unknown");
     if (current.includes(value)) current = current.filter((x) => x !== value);
     else if (!question.max || current.length < question.max) current.push(value);
     answers[question.id] = current;
@@ -393,7 +473,7 @@
   function ready(question) {
     if (question.type === "multi") {
       const value = Array.isArray(answers[question.id]) ? answers[question.id] : [];
-      if (value.includes("none")) return true;
+      if (value.includes("none") || value.includes("unknown")) return true;
       return value.length >= (question.min || 1);
     }
     if (question.type === "text") return String(answers[question.id] || "").trim().length >= (question.minLength || 1);
@@ -421,36 +501,34 @@
     root.appendChild(box);
   }
 
+  function storyUnderstanding() {
+    const anchor = {
+      person: "a person and the choices they left inside the business",
+      place: "the place itself and what would disappear if the business moved",
+      craft: "the way things are made or done behind the scenes",
+      community: "relationships, traditions and local connections",
+      idea: "a point of view about doing things differently",
+      memory: "a memory or event that still gives the place meaning",
+    }[answers.storyAnchor] || "the experience itself";
+    const signals = clean(answers.observedSignals).map((x) => SIGNAL_LABELS[x]).filter(Boolean);
+    const signalText = signals.length ? signals.slice(0, 2).join(" and ") : "the experience people have once they arrive";
+    return `The strongest part of this story seems to live in ${anchor}. Guests appear to remember ${signalText}. One important part of the value only becomes clear after the experience: “${answers.afterVisit || "something the digital presence is not explaining early enough"}”`;
+  }
+
   function bridge(question) {
-    const preview = window.StoryCheckEngine.buildStoryPreview(answers);
     const head = el("div", "sc-bridge-head");
     head.appendChild(el("p", "eyebrow", "Before we look at the internet"));
-    head.appendChild(el("h2", null, "We have met the real business first."));
-    head.appendChild(el("p", "lead", "That matters. Otherwise we would be judging a website without knowing what it is supposed to carry."));
+    head.appendChild(el("h2", null, "There is already something clear here."));
+    head.appendChild(el("p", "lead", storyUnderstanding()));
     root.appendChild(head);
 
-    const thread = el("div", "sc-story-note");
-    thread.appendChild(el("span", "sc-card-kicker", "The thread in your own story"));
-    thread.appendChild(el("p", null, preview.narrativeThread));
-    root.appendChild(thread);
+    const note = el("div", "sc-story-note");
+    note.appendChild(el("span", "sc-card-kicker", "One detail worth holding onto"));
+    note.appendChild(el("p", null, answers.storyDetail));
+    root.appendChild(note);
 
-    const grid = el("div", "sc-preview-grid");
-    [preview.profiles.primary, preview.profiles.secondary].forEach((profile, i) => {
-      const card = el("article", "sc-preview-card");
-      card.appendChild(el("span", "sc-card-kicker", i === 0 ? "Strongest character signal" : "Supporting signal"));
-      card.appendChild(el("h3", null, profile.label));
-      card.appendChild(el("p", null, profile.description));
-      grid.appendChild(card);
-    });
-    root.appendChild(grid);
-
-    const story = el("div", "sc-story-note");
-    story.appendChild(el("span", "sc-card-kicker", "The larger story we would pull on first"));
-    story.appendChild(el("p", null, preview.strongestStory));
-    root.appendChild(story);
-
-    root.appendChild(el("p", "sc-transition", "Now we can ask the useful question: when a stranger meets this business through a screen, how much of that story and character makes it across?"));
-    actions(question, "Meet the digital version");
+    root.appendChild(el("p", "sc-transition", "Now we want to understand what the business needs next — and whether a stranger can see enough of this before choosing you."));
+    actions(question, "Continue");
   }
 
   function move(delta) {
@@ -489,19 +567,102 @@
     root.focus({ preventScroll: true });
   }
 
-  function scoreCard(label, value, note) {
-    const card = el("article", "sc-score-card");
-    const row = el("div", "sc-score-row");
-    row.appendChild(el("strong", null, label));
-    row.appendChild(el("span", "sc-score-value", `${value}/100`));
-    card.appendChild(row);
-    const meter = document.createElement("progress");
-    meter.max = 100;
-    meter.value = value;
-    meter.setAttribute("aria-label", `${label}: ${value} out of 100`);
-    card.appendChild(meter);
-    card.appendChild(el("p", null, note));
-    return card;
+  function missingAssets() {
+    const available = clean(answers.storyAssets);
+    const visible = clean(answers.visibleAssets);
+    return available.filter((x) => !visible.includes(x));
+  }
+
+  function strongestContradiction() {
+    if (selected("channels", "none")) {
+      return "The main gap is simple: the business has a real experience and story, but a stranger has almost no digital version of it to meet before choosing you.";
+    }
+
+    const missing = missingAssets();
+    const signalToAsset = {
+      welcome: "team",
+      craft: "process",
+      knowledge: "process",
+      place: "local",
+      story: "founder",
+      different: "values",
+    };
+    const signals = clean(answers.observedSignals);
+    const matched = signals.map((x) => signalToAsset[x]).find((x) => x && missing.includes(x));
+    const asset = matched || missing[0];
+    const signal = signals[0] ? SIGNAL_LABELS[signals[0]] : "the real experience";
+
+    if (asset) {
+      return `Based on your answers, people seem to value ${signal}, but ${ASSET_LABELS[asset]} is still difficult for a stranger to find online. The business is richer than the version people meet before arrival.`;
+    }
+
+    const match = Number(answers.digitalMatch || 1);
+    const clarity = Number(answers.clarity || 1);
+    if (match <= 2) return "The clearest tension is not missing information — it is that the digital presence does not feel like the same business people experience in real life.";
+    if (clarity <= 2) return "The business may be represented online, but the reason people choose it is still much less clear than the offer itself.";
+    return "The core story is making part of the journey online. The remaining opportunity is to make the strongest reasons to care more consistent and easier to find before someone decides.";
+  }
+
+  function digitalReading(report) {
+    if (selected("channels", "none")) return "A stranger has almost no digital version of the business to meet yet.";
+    const pain = PAIN_TEXT[answers.digitalPain];
+    const base = report.digitalMessage || "A stranger can find the business, but not necessarily the same experience guests describe afterwards.";
+    return pain ? `${base} You also told us that ${pain}.` : base;
+  }
+
+  function addPriority(list, title, detail) {
+    if (!list.some((item) => item.title === title)) list.push({ title, detail });
+  }
+
+  function priorities(report) {
+    const out = [];
+    const goals = clean(answers.sixMonths);
+    const missing = missingAssets();
+
+    if (answers.digitalPain === "photos") {
+      addPriority(out, "Rebuild the visual first impression", "Show the people, atmosphere and details that make the real experience feel different before adding more volume of content.");
+    }
+    if (answers.digitalPain === "generic") {
+      addPriority(out, "Make the first impression unmistakably yours", "Move one or two real story signals into the places a stranger sees first instead of relying on generic category language.");
+    }
+    if (answers.digitalPain === "confusion") {
+      addPriority(out, "Fix what people should understand before arrival", "Turn the questions and surprises guests repeatedly have into clearer information and story before they contact or book.");
+    }
+    if (answers.digitalPain === "dependence" || goals.includes("platforms")) {
+      addPriority(out, "Strengthen the path you own", "Give people a clear place to understand the business and take a direct next step without forcing the whole relationship through a third-party platform.");
+    }
+    if (answers.digitalPain === "attention" || goals.includes("direct")) {
+      addPriority(out, "Connect interest to one clear next step", "Make the reason to choose you and the path to enquire, book or buy feel like the same journey instead of two separate tasks.");
+    }
+    if (answers.digitalPain === "outdated" || goals.includes("professional")) {
+      addPriority(out, "Create one consistent version of the business", "Align the most important pages and channels around the same current message, visuals and next step before expanding into more channels.");
+    }
+    if (goals.includes("aligned") || goals.includes("value")) {
+      addPriority(out, "Make the reason people care more visible", "Use the strongest real story signal to attract people who value the experience, not only people comparing features or price.");
+    }
+    if (goals.includes("lowseason") || goals.includes("launch")) {
+      addPriority(out, "Build one specific story around the current need", "Instead of generic posting, create a focused piece of content or campaign around the season, experience or offer you actually need people to notice now.");
+    }
+
+    const missingPriority = missing.find((x) => ASSET_LABELS[x]);
+    if (missingPriority) {
+      addPriority(out, "Bring a real story signal into the public journey", `Start with ${ASSET_LABELS[missingPriority]} — it already exists inside the business, but it is not doing enough work online.`);
+    }
+
+    if (answers.reviews === "weak") {
+      addPriority(out, "Make proof easier to find", "Bring recent, credible guest proof closer to the moment a stranger is deciding whether to believe the promise.");
+    }
+
+    (report.opportunities || []).forEach((item) => addPriority(out, item.title, item.detail));
+    return out.slice(0, 3);
+  }
+
+  function notFirst() {
+    if (answers.digitalPain === "photos") return "I would not start by adding more copy. The first mismatch sounds visual.";
+    if (answers.digitalPain === "dependence" || clean(answers.sixMonths).includes("direct")) return "I would not start with more paid traffic. First make the owned path worth sending people to.";
+    if (answers.digitalShows === "inconsistent") return "I would not add more channels yet. First make the existing ones agree about who you are.";
+    if (clean(answers.storyAssets).length >= 3) return "I would not start by posting more often. You already appear to have enough material; the first job is deciding what deserves to be visible.";
+    return "I would not start by inventing a new brand story. The useful material should come from what already happens in the business.";
   }
 
   function result() {
@@ -510,73 +671,57 @@
 
     const hero = el("section", "sc-result-hero");
     hero.appendChild(el("p", "eyebrow", "Your Historia Nomade Story Check"));
-    hero.appendChild(el("h1", null, answers.businessName ? `The story of ${answers.businessName}` : "How much of your real story survives online?"));
-    hero.appendChild(el("p", "sc-result-lead", report.gapMessage));
-    const comparison = el("div", "sc-comparison");
-    const potential = el("div", "sc-comparison-side");
-    potential.appendChild(el("span", null, "Story potential"));
-    potential.appendChild(el("strong", null, String(report.storyPotential)));
-    comparison.appendChild(potential);
-    comparison.appendChild(el("span", "sc-comparison-arrow", "→"));
-    const digital = el("div", "sc-comparison-side");
-    digital.appendChild(el("span", null, "Digital translation"));
-    digital.appendChild(el("strong", null, String(report.digitalTranslation)));
-    comparison.appendChild(digital);
-    hero.appendChild(comparison);
-    const gap = el("div", `sc-gap sc-gap-${report.gap.id}`);
-    gap.appendChild(el("span", "sc-gap-label", "Storytelling Gap"));
-    gap.appendChild(el("strong", "sc-gap-number", String(report.gap.value)));
-    gap.appendChild(el("span", "sc-gap-unit", "points"));
-    gap.appendChild(el("span", "sc-gap-level", report.gap.label));
-    hero.appendChild(gap);
+    hero.appendChild(el("h1", null, answers.businessName ? `What we understood about ${answers.businessName}` : "What seems to be getting lost online"));
+    hero.appendChild(el("p", "sc-result-lead", strongestContradiction()));
     root.appendChild(hero);
 
-    const profile = el("section", "sc-result-section");
-    profile.appendChild(el("span", "section-index", "01 — The business we met"));
-    const thread = el("div", "sc-story-note");
-    thread.appendChild(el("span", "sc-card-kicker", "The story in your own words"));
-    thread.appendChild(el("p", null, report.narrativeThread));
-    profile.appendChild(thread);
-    const profileGrid = el("div", "sc-profile-grid");
-    [report.profiles.primary, report.profiles.secondary].forEach((p, i) => {
-      const card = el("article", "sc-profile-card");
-      card.appendChild(el("span", "sc-card-kicker", i === 0 ? "Primary character" : "Secondary character"));
-      card.appendChild(el("h2", null, p.label));
-      card.appendChild(el("p", null, p.description));
-      profileGrid.appendChild(card);
-    });
-    profile.appendChild(profileGrid);
-    root.appendChild(profile);
+    const understood = el("section", "sc-result-section");
+    understood.appendChild(el("span", "section-index", "01 — What we understood about you"));
+    const story = el("div", "sc-story-note");
+    story.appendChild(el("p", null, storyUnderstanding()));
+    understood.appendChild(story);
+    const detail = el("div", "sc-finding-grid");
+    const detailCard = el("article", "sc-finding-card");
+    detailCard.appendChild(el("h3", null, "A real detail worth keeping"));
+    detailCard.appendChild(el("p", null, answers.storyDetail));
+    detail.appendChild(detailCard);
+    const goalCard = el("article", "sc-finding-card");
+    goalCard.appendChild(el("h3", null, "What matters in the next six months"));
+    const goals = clean(answers.sixMonths).map((x) => GOAL_LABELS[x]).filter(Boolean);
+    goalCard.appendChild(el("p", null, goals.length ? goals.join("; ") : "You are still working out what should change first."));
+    detail.appendChild(goalCard);
+    understood.appendChild(detail);
+    root.appendChild(understood);
 
-    const findings = el("section", "sc-result-section");
-    findings.appendChild(el("span", "section-index", "02 — What is making the journey online"));
-    const findingGrid = el("div", "sc-finding-grid");
-    const real = el("article", "sc-finding-card");
-    real.appendChild(el("h3", null, "Strongest story signal"));
-    real.appendChild(el("p", null, report.strongestStory));
-    findingGrid.appendChild(real);
-    const online = el("article", "sc-finding-card");
-    online.appendChild(el("h3", null, "What a stranger is meeting"));
-    online.appendChild(el("p", null, report.digitalMessage));
-    findingGrid.appendChild(online);
-    findings.appendChild(findingGrid);
-    root.appendChild(findings);
+    const online = el("section", "sc-result-section");
+    online.appendChild(el("span", "section-index", "02 — What a stranger probably meets online"));
+    const onlineNote = el("div", "sc-story-note");
+    onlineNote.appendChild(el("p", null, digitalReading(report)));
+    online.appendChild(onlineNote);
+    root.appendChild(online);
 
-    const signals = el("section", "sc-result-section");
-    signals.appendChild(el("span", "section-index", "03 — Diagnostic signals"));
-    const scores = el("div", "sc-score-grid");
-    scores.appendChild(scoreCard("Identity", report.scores.identity, "How much distinctive human material the answers reveal about this specific business."));
-    scores.appendChild(scoreCard("Story available", report.scores.storyAvailable, "How much genuine narrative material seems to exist before any marketing is invented."));
-    scores.appendChild(scoreCard("Story visible online", report.scores.storyVisible, "How much of that real material a first-time visitor appears able to discover digitally."));
-    scores.appendChild(scoreCard("Digital personality", report.scores.personalityDigital, "How closely the digital version seems to feel like the real experience."));
-    scores.appendChild(scoreCard("Trust / social proof", report.scores.trust, "How easily a stranger can find credible evidence that real guests support the promise."));
-    signals.appendChild(scores);
-    root.appendChild(signals);
+    const lost = el("section", "sc-result-section");
+    lost.appendChild(el("span", "section-index", "03 — What is getting lost"));
+    const lostGrid = el("div", "sc-finding-grid");
+    const contradiction = el("article", "sc-finding-card");
+    contradiction.appendChild(el("h3", null, "The main contradiction"));
+    contradiction.appendChild(el("p", null, strongestContradiction()));
+    lostGrid.appendChild(contradiction);
+    const late = el("article", "sc-finding-card");
+    late.appendChild(el("h3", null, "What people understand too late"));
+    late.appendChild(el("p", null, answers.afterVisit));
+    lostGrid.appendChild(late);
+    lost.appendChild(lostGrid);
+    root.appendChild(lost);
 
     const next = el("section", "sc-result-section");
-    next.appendChild(el("span", "section-index", "04 — Where we would look next"));
+    next.appendChild(el("span", "section-index", "04 — What I would do first"));
+    const notNow = el("div", "sc-story-note");
+    notNow.appendChild(el("span", "sc-card-kicker", "Not first"));
+    notNow.appendChild(el("p", null, notFirst()));
+    next.appendChild(notNow);
     const list = el("div", "sc-opportunities");
-    report.opportunities.forEach((op, i) => {
+    priorities(report).forEach((op, i) => {
       const item = el("article", "sc-opportunity");
       item.appendChild(el("span", "sc-opportunity-number", String(i + 1).padStart(2, "0")));
       const copy = el("div");
@@ -590,12 +735,13 @@
 
     const caveat = el("section", "sc-caveat");
     caveat.appendChild(el("p", "eyebrow", "One important thing"));
-    caveat.appendChild(el("h2", null, "This is the hypothesis. The internet is the evidence."));
-    caveat.appendChild(el("p", null, "Your answers tell us how you understand the business. The next layer is to open the real website, maps, social profiles and booking channels as a stranger would, then compare what is actually there with the story above."));
-    caveat.appendChild(el("p", null, "That is the version of the Storytelling Gap we would trust for a real recommendation."));
+    caveat.appendChild(el("h2", null, "This is based on your answers. The public internet is the next evidence."));
+    caveat.appendChild(el("p", null, "The useful next layer is to open the real website, Google, social profiles and booking channels as a stranger would, then compare what is actually there with the business you just described."));
+    caveat.appendChild(el("p", null, "If that external check confirms the same gap, we can recommend a practical next step around the problem — not around a preset package."));
     const actionRow = el("div", "sc-result-actions");
-    const email = el("a", "btn btn-primary", "Ask us to verify the public story");
-    email.href = `mailto:hello@historianomade.com?subject=${encodeURIComponent(`Story Check — ${answers.businessName || "my business"}`)}&body=${encodeURIComponent(`${report.summary}\n\nI would like Historia Nomade to compare this with what a stranger actually sees online.`)}`;
+    const email = el("a", "btn btn-primary", "Ask us to check the public version");
+    const summary = `${storyUnderstanding()}\n\nMain gap: ${strongestContradiction()}\n\nWhat matters now: ${clean(answers.sixMonths).map((x) => GOAL_LABELS[x]).filter(Boolean).join(", ")}`;
+    email.href = `mailto:hello@historianomade.com?subject=${encodeURIComponent(`Story Check — ${answers.businessName || "my business"}`)}&body=${encodeURIComponent(`${summary}\n\nI would like Historia Nomade to compare this with what a stranger actually sees online.`)}`;
     actionRow.appendChild(email);
     const restart = el("button", "btn btn-ghost", "Start again");
     restart.type = "button";
