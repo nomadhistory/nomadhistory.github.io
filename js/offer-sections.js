@@ -87,6 +87,12 @@
     w.appendChild(panel);
   }
 
+  function alignHeroSecondaryCta() {
+    const secondary = document.querySelector(".hero-actions .btn-ghost");
+    if (secondary) secondary.href = "#problems";
+  }
+
   renderProblems();
   renderWebsiteSpotlight();
+  alignHeroSecondaryCta();
 })();
