@@ -1,25 +1,61 @@
 /* ============================================================
-   SERVICES — o guia de campo.
+   OFFER — problemas, competências e website spotlight.
 
-   Sem cards: entradas separadas por fio, foto alternando de lado, o
-   problema em corpo grande de display e o que entregamos numa lista
-   marcada com a pegada do logo. Mesmo vocabulário do globo do hero —
-   massa, vazio e pegada.
+   Mantém o vocabulário visual do site: linhas finas, papel, tinta,
+   tipografia editorial e a pegada da marca. Sem inventar uma segunda
+   identidade para a oferta comercial.
 
    Consome só os tokens de styles-base.css.
    ============================================================ */
 
-/* O reset de styles-base.css só cobre `ul`, então o `ol` chega aqui com
-   recuo, margem e marcador do navegador. */
-/* Quatro capítulos lado a lado, como etapas de uma história. Cada um é
-   um quadradinho na mesma altura; a numeração grande costura a leitura
-   como página de livro. */
+/* ---- What we fix ------------------------------------------ */
+
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 1.8vw, 1.5rem);
+}
+
+.problem-item {
+  position: relative;
+  padding: clamp(1.5rem, 2.4vw, 2rem) 0 0;
+  border-top: var(--border) solid var(--line);
+}
+
+.problem-number {
+  display: block;
+  margin-bottom: 1rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 2.8vw, 2.45rem);
+  line-height: 1;
+  color: color-mix(in srgb, var(--accent) 62%, var(--ink-soft));
+}
+
+.problem-item h3 {
+  margin-bottom: .7rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+  font-weight: 600;
+  line-height: 1.16;
+  letter-spacing: var(--tracking-display);
+}
+
+.problem-item p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: .94rem;
+  line-height: 1.58;
+  text-wrap: pretty;
+}
+
+/* ---- What we can build ----------------------------------- */
+
 .field-guide {
   margin: 0;
   padding: 0;
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(.9rem, 1.6vw, 1.4rem);
   counter-reset: entry;
 }
@@ -39,8 +75,6 @@
   transform: translateY(-3px);
 }
 
-/* ---- o espaço da foto ---- */
-
 .entry-art { position: relative; }
 
 .slot {
@@ -54,8 +88,6 @@
   place-items: center;
 }
 
-/* Vazio: listras discretas e uma etiqueta em monoespaçada dizendo o
-   que vai ali. Ninguém confunde com decoração. */
 .slot.is-empty {
   background-image: repeating-linear-gradient(
     128deg,
@@ -85,8 +117,6 @@
 }
 .entry:hover .slot img { transform: scale(1.04); }
 
-/* Véu quente por cima da foto, igual ao das fotos da equipe: costura
-   qualquer imagem na paleta da marca. */
 .slot:not(.is-empty)::after {
   content: "";
   position: absolute;
@@ -98,8 +128,6 @@
     color-mix(in srgb, var(--brand-accent) 15%, transparent) 100%
   );
 }
-
-/* ---- o texto da entrada ---- */
 
 .entry-index {
   display: block;
@@ -114,7 +142,7 @@
 
 .entry-name {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 2.85vw, 2.3rem);
+  font-size: clamp(1.45rem, 2.35vw, 2rem);
   line-height: 1.12;
   letter-spacing: var(--tracking-display);
   color: var(--ink);
@@ -140,8 +168,6 @@
   text-wrap: pretty;
 }
 
-/* A pegada do logo como marcador. Ela dá um passo à frente quando o
-   cursor entra na entrada — o mesmo gesto da marca no cabeçalho. */
 .foot-mark {
   width: 13px;
   height: auto;
@@ -156,11 +182,107 @@
   transform: scaleX(-1) translateY(-2px);
 }
 
-@media (max-width: 980px) {
-  .field-guide { grid-template-columns: repeat(2, 1fr); }
+/* ---- Website spotlight ----------------------------------- */
+
+#website-spotlight {
+  padding-top: clamp(2rem, 4vw, 4rem);
+  padding-bottom: clamp(3.5rem, 7vw, 6rem);
 }
-@media (max-width: 560px) {
+
+.website-spotlight-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  padding: clamp(2rem, 5vw, 4.5rem);
+  border-radius: var(--radius);
+  background: var(--deep);
+  color: var(--brand-paper);
+  box-shadow: var(--shadow);
+}
+
+.spotlight-eyebrow {
+  margin: 0 0 1rem;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--brand-accent-warm) 72%, var(--brand-paper));
+}
+
+.website-spotlight-panel h2 {
+  margin-bottom: .65em;
+  max-width: 15ch;
+  color: var(--brand-paper);
+}
+
+.spotlight-lead {
+  margin: 0;
+  max-width: 54ch;
+  color: color-mix(in srgb, var(--brand-paper) 78%, transparent);
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+}
+
+.website-spotlight-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.spotlight-list {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.spotlight-list li {
+  display: grid;
+  grid-template-columns: 1.25rem 1fr;
+  gap: .65rem;
+  color: color-mix(in srgb, var(--brand-paper) 90%, transparent);
+  font-size: .95rem;
+  line-height: 1.52;
+}
+
+.spotlight-mark {
+  color: color-mix(in srgb, var(--brand-accent-warm) 75%, var(--brand-paper));
+  font-weight: 700;
+}
+
+.spotlight-note {
+  padding-top: 1.2rem;
+  border-top: var(--border) solid color-mix(in srgb, var(--brand-paper) 20%, transparent);
+  color: color-mix(in srgb, var(--brand-paper) 66%, transparent);
+  font-size: .85rem;
+  line-height: 1.55;
+}
+
+.spotlight-cta {
+  margin-top: 1.5rem;
+}
+
+/* ---- Responsive ------------------------------------------ */
+
+@media (max-width: 980px) {
+  .problem-grid,
+  .field-guide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .website-spotlight-panel {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .website-spotlight-panel h2 { max-width: 18ch; }
+}
+
+@media (max-width: 620px) {
+  .problem-grid,
   .field-guide { grid-template-columns: 1fr; }
+
+  .website-spotlight-panel {
+    padding: 1.6rem;
+    border-radius: var(--radius-sm);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
