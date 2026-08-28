@@ -1,0 +1,155 @@
+{
+  "siteUrl": "https://nomadhistory.github.io",
+  "robots": "noindex, nofollow",
+  "updatedAt": "2026-07-31",
+  "siteName": "Historia Nomade",
+  "title": "Journal — Historia Nomade",
+  "description": "Field notes on positioning, websites and the small decisions that help a hospitality business become easier to choose.",
+  "ogImage": "/og-image.png",
+  "journal": {
+    "eyebrow": "A field journal",
+    "title": "The place is the story.",
+    "lead": "Notes on positioning, websites and the small decisions that help a hospitality business become easier to choose.",
+    "archiveLabel": "Three notes to start",
+    "archiveMeta": "Written by the people doing the work · Updated July 2026",
+    "articleCtaTitle": "Have a place with a story?",
+    "articleCtaLead": "If the way your property feels is stronger than the way it looks online, tell us where the gap is."
+  },
+  "posts": [
+    {
+      "slug": "your-hotel-is-not-a-commodity",
+      "issue": "Field note 01",
+      "category": "Positioning",
+      "title": "Your hotel is not a commodity. Your website is making it one.",
+      "dek": "When every property describes itself as charming, central and welcoming, guests end up choosing on price. A better site gives them a reason to choose on fit.",
+      "excerpt": "The quickest way to make a good property look interchangeable is to describe it with the same adjectives as everyone else.",
+      "date": "July 18, 2026",
+      "datePublished": "2026-07-18",
+      "dateModified": "2026-07-18",
+      "readTime": "6 min read",
+      "author": "Marina",
+      "accent": "terracotta",
+      "image": "/og-image.png",
+      "tags": ["hotel positioning", "hospitality marketing", "hotel brand"],
+      "pullQuote": "People do not book a list of amenities. They book the version of a stay they can already imagine.",
+      "sections": [
+        {
+          "heading": "The words are not the story",
+          "paragraphs": [
+            "A guest can find beautiful, comfortable and well-located on almost every booking page. The phrases are not false. They are simply too thin to help someone decide between two places that both look fine.",
+            "The useful story is more specific. It is the breakfast that starts after the market opens. It is the quiet courtyard at the end of a long walk. It is the fact that the person at reception knows which bus gets you to the beach before the afternoon heat. Details like these turn a room into a kind of stay."
+          ]
+        },
+        {
+          "heading": "Start with the guest you can actually delight",
+          "paragraphs": [
+            "Positioning is not a slogan exercise. It is deciding which guest will feel that your property was made with them in mind — and being willing to be less relevant to everyone else.",
+            "A small hotel does not need to win every search. It needs to be unmistakably right for a few valuable situations: a slow weekend, a family base for exploring, a quiet place to work, or the first night after a long journey. Once that choice is clear, the copy, photos and offers stop pulling in different directions."
+          ]
+        },
+        {
+          "heading": "Make the difference visible before the booking button",
+          "paragraphs": [
+            "A guest should not have to open five tabs and compare amenities to discover why your place is different. Put the point of view near the beginning, then let the rest of the page prove it with rooms, rituals, neighbourhood details and honest practical information.",
+            "The result is not louder marketing. It is a calmer decision. The right guest recognises themselves sooner, and the property has a better chance of being chosen for what it actually does well."
+          ]
+        }
+      ],
+      "takeaways": [
+        "Replace generic adjectives with observable details.",
+        "Choose a guest situation you can serve unusually well.",
+        "Let the same idea guide the headline, photos and booking path."
+      ]
+    },
+    {
+      "slug": "the-story-should-survive-the-booking-page",
+      "issue": "Field note 02",
+      "category": "Experience",
+      "title": "The story should survive the booking page.",
+      "dek": "A thoughtful brand can disappear the moment a guest reaches a listing, a map result or a confirmation email. The full journey has to sound like the same place.",
+      "excerpt": "A story that exists only on the homepage is decoration. The useful version travels with the guest through every decision.",
+      "date": "July 23, 2026",
+      "datePublished": "2026-07-23",
+      "dateModified": "2026-07-23",
+      "readTime": "5 min read",
+      "author": "Tiago",
+      "accent": "deep",
+      "image": "/og-image.png",
+      "tags": ["hotel guest experience", "booking journey", "hospitality brand"],
+      "pullQuote": "A brand is not the page where you introduce yourself. It is the thread people can still feel when they are ready to book.",
+      "sections": [
+        {
+          "heading": "Guests meet you in fragments",
+          "paragraphs": [
+            "Most people do not experience a property in the order its owner planned. They see a photo in a map result, a room name on Booking.com, a review from a stranger and a short message after they reserve. The homepage may be the least common first impression.",
+            "That makes consistency practical, not cosmetic. If the promise changes from channel to channel, the guest has to do the work of joining the pieces together — and uncertainty is a good reason to keep looking."
+          ]
+        },
+        {
+          "heading": "Build one idea, then give it different jobs",
+          "paragraphs": [
+            "The same positioning should not be pasted into every field. A listing title earns attention. A photo caption adds context. A room description answers a question. A confirmation email makes the promised experience feel real before arrival.",
+            "The words can change while the point of view stays intact. A place built around unhurried local mornings can talk about the market in its story, the late breakfast in its amenities and the walkable neighbourhood in its arrival message. Each touchpoint does a different job for the same idea."
+          ]
+        },
+        {
+          "heading": "The handoff is part of the hospitality",
+          "paragraphs": [
+            "A good booking path removes small doubts: what is included, how to arrive, what happens next and who to contact. Those details are not separate from the brand. They are where the brand proves it is paying attention.",
+            "When the promise and the practical layer agree, the guest arrives with the right expectations. That is good for them and good for the team on site — fewer surprises, fewer repetitive questions and a better chance that the experience matches the decision."
+          ]
+        }
+      ],
+      "takeaways": [
+        "Map the real discovery path, not only the pages you control.",
+        "Give each channel a job while keeping one point of view.",
+        "Treat arrival information as a branded guest experience."
+      ]
+    },
+    {
+      "slug": "the-first-thirty-seconds-of-a-hospitality-website",
+      "issue": "Field note 03",
+      "category": "Websites",
+      "title": "The first 30 seconds of a small hospitality website.",
+      "dek": "People do not need to know everything immediately. They need to know where they are, who the place is for and what makes it worth a closer look.",
+      "excerpt": "A useful first screen is less about cramming in information and more about removing the three doubts that stop a guest from continuing.",
+      "date": "July 29, 2026",
+      "datePublished": "2026-07-29",
+      "dateModified": "2026-07-29",
+      "readTime": "7 min read",
+      "author": "Tiago",
+      "accent": "ochre",
+      "image": "/og-image.png",
+      "tags": ["hotel website", "hospitality web design", "direct booking"],
+      "pullQuote": "The first screen is not a brochure cover. It is the first moment of orientation.",
+      "sections": [
+        {
+          "heading": "Where am I?",
+          "paragraphs": [
+            "The opening of a site should make the property and its setting legible without asking for detective work. A name, a recognisable place and a clear type of stay do more than a vague promise to offer an unforgettable experience.",
+            "This is especially important for small properties. You may not have the recognition of a chain, so the first screen has to give the guest a confident frame: what kind of place is this, and what kind of trip would it suit?"
+          ]
+        },
+        {
+          "heading": "Why this place?",
+          "paragraphs": [
+            "The answer does not need to be a paragraph. One sharp sentence, supported by the right image, can do more work than a list of features. The goal is not to explain every room before the guest scrolls. It is to create enough relevance that they want to see the proof.",
+            "Good proof is concrete: the shaded terrace, the short walk to the old town, the kitchen that locals use, the view that changes at dusk. These details give the eye somewhere to go and give the guest a reason to keep reading."
+          ]
+        },
+        {
+          "heading": "What can I do next?",
+          "paragraphs": [
+            "A website can be beautiful and still leave the guest stranded. The next action should be obvious: check availability, see the rooms, ask a question or understand the neighbourhood. One primary path is usually stronger than six competing buttons.",
+            "Keep the practical information close enough to be found without a scavenger hunt. Dates, contact details, cancellation terms and directions are part of the decision. Good design does not hide them; it gives them a clear place in the journey."
+          ]
+        }
+      ],
+      "takeaways": [
+        "Orient the visitor before trying to impress them.",
+        "Use specific local proof instead of a longer list of amenities.",
+        "Make one next step obvious and keep practical answers nearby."
+      ]
+    }
+  ]
+}

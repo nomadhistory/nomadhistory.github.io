@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Historia Nomade Journal</title>
+    <link>https://nomadhistory.github.io/journal/</link>
+    <description>Field notes on positioning, websites and the small decisions that help a hospitality business become easier to choose.</description>
+    <language>en</language>
+    <lastBuildDate>Fri, 31 Jul 2026 00:00:00 GMT</lastBuildDate>
+    <atom:link href="https://nomadhistory.github.io/journal/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Your hotel is not a commodity. Your website is making it one.</title>
+      <link>https://nomadhistory.github.io/journal/your-hotel-is-not-a-commodity/</link>
+      <guid isPermaLink="true">https://nomadhistory.github.io/journal/your-hotel-is-not-a-commodity/</guid>
+      <pubDate>Sat, 18 Jul 2026 00:00:00 GMT</pubDate>
+      <category>Positioning</category>
+      <description>When every property describes itself as charming, central and welcoming, guests end up choosing on price. A better site gives them a reason to choose on fit.</description>
+    </item>
+    <item>
+      <title>The story should survive the booking page.</title>
+      <link>https://nomadhistory.github.io/journal/the-story-should-survive-the-booking-page/</link>
+      <guid isPermaLink="true">https://nomadhistory.github.io/journal/the-story-should-survive-the-booking-page/</guid>
+      <pubDate>Thu, 23 Jul 2026 00:00:00 GMT</pubDate>
+      <category>Experience</category>
+      <description>A thoughtful brand can disappear the moment a guest reaches a listing, a map result or a confirmation email. The full journey has to sound like the same place.</description>
+    </item>
+    <item>
+      <title>The first 30 seconds of a small hospitality website.</title>
+      <link>https://nomadhistory.github.io/journal/the-first-thirty-seconds-of-a-hospitality-website/</link>
+      <guid isPermaLink="true">https://nomadhistory.github.io/journal/the-first-thirty-seconds-of-a-hospitality-website/</guid>
+      <pubDate>Wed, 29 Jul 2026 00:00:00 GMT</pubDate>
+      <category>Websites</category>
+      <description>People do not need to know everything immediately. They need to know where they are, who the place is for and what makes it worth a closer look.</description>
+    </item>
+  </channel>
+</rss>
