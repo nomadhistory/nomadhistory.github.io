@@ -24,7 +24,40 @@ const CONTENT = {
     lead:
       "We find the story, turn it into a position nobody nearby can claim, then build the digital presence around the real bottleneck. Most projects start with the website when that is the clearest gap; brand, content, channels, growth and systems come in when the problem calls for them.",
     primaryCta: "Get a Field Check",
-    secondaryCta: "See what we build",
+    secondaryCta: "See what we fix",
+  },
+
+  problems: {
+    eyebrow: "Start with the problem",
+    title: "What we fix",
+    lead:
+      "The usual signal is simple: the business feels stronger in person than it looks online. We look for the point where that gap is costing clarity, trust or direct contact.",
+    items: [
+      {
+        title: "The place is better than the website makes it feel.",
+        text: "The real experience has character, but the official site feels generic, dated or difficult to use on a phone.",
+      },
+      {
+        title: "There is no clear official home online.",
+        text: "Travellers can find listings and social profiles, but not one place that clearly explains the business in its own voice.",
+      },
+      {
+        title: "People find you, but the direct path is weak.",
+        text: "Contact, booking or buying directly takes too many steps, or the next action is hard to understand.",
+      },
+      {
+        title: "Every channel looks like a different business.",
+        text: "The website, Google, social profiles, photos and booking platforms are not reinforcing the same story.",
+      },
+      {
+        title: "Too much depends on third-party platforms.",
+        text: "OTAs, directories or social networks carry most of the discovery while the business owns too little of the relationship.",
+      },
+      {
+        title: "Growth or operations need structure.",
+        text: "Campaigns, measurement, enquiries or recurring tasks need a clearer system before adding more tools or more posting.",
+      },
+    ],
   },
 
   team: {
@@ -126,6 +159,22 @@ const CONTENT = {
     ],
   },
 
+  websiteSpotlight: {
+    eyebrow: "Your own digital home",
+    title: "The website is usually where we start when the foundation is weak.",
+    lead:
+      "A good hospitality website does more than look polished. It should help someone understand the place, know where it is and see the clearest next step without depending on a third-party platform to explain the business for you.",
+    points: [
+      "Built for the phone first, because that is where most first impressions happen",
+      "Clear offer, location and direct contact or booking path",
+      "Story and proof working together instead of a page that only lists amenities",
+      "Files, domain and handover kept under your control — no unnecessary lock-in",
+    ],
+    note:
+      "If the existing brand is already doing its job, we keep it. If the real bottleneck is elsewhere, we do not force a website rebuild just because websites are a core capability.",
+    cta: "Get a Field Check",
+  },
+
   method: {
     title: "How we work",
     lead: "Same route every time, and the story comes before the design. You always know what comes next.",
@@ -200,7 +249,7 @@ const CONTENT = {
         id: "focused",
         name: "Focused project",
         forWho: "For one clear, controlled problem that does not need a full rebuild.",
-        priceCustom: "Scoped after the Field Check",
+        priceCustom: "Defined after the Field Check",
         timeline: "One focused scope",
         includes: [
           "A small site, landing page or essential direct presence",
@@ -213,7 +262,7 @@ const CONTENT = {
         id: "rebuild",
         name: "Full rebuild",
         forWho: "When the website, brand, content and channels need to be reorganized together.",
-        priceCustom: "Scope built around the rebuild",
+        priceCustom: "One connected rebuild scope",
         timeline: "Multi-part project",
         includes: [
           "Website and direct contact or booking path",
@@ -226,8 +275,8 @@ const CONTENT = {
         id: "business",
         name: "Business / custom",
         forWho: "For larger, recurring or more technical needs that do not fit a fixed build.",
-        priceCustom: "Custom scope",
-        timeline: "Defined with you",
+        priceCustom: "Defined with the business",
+        timeline: "Larger or ongoing scope",
         includes: [
           "Growth, campaigns, analytics and ongoing acquisition",
           "Automations, CRM, integrations and internal systems",
@@ -238,7 +287,7 @@ const CONTENT = {
       },
     ],
     note:
-      "The Field Check is the starting point. Once we understand the problem, we recommend a scope and send a one-page proposal.",
+      "The Field Check is the starting point. Once we understand the problem, we recommend a scope and send a one-page proposal with price, timing, inclusions and exclusions.",
   },
 
   proposal: {
