@@ -97,7 +97,7 @@ Um case só aparece quando `published: true` em `js/content.js`.
 
 Não publicar cliente, resultado ou métrica que não aconteceu.
 
-O primeiro case publicado é a **DLT Academy**, identificado claramente como projeto próprio do Tiago e sem métricas de desempenho inventadas.
+O primeiro case publicado é a **DLT Academy**, identificado claramente como projeto próprio e sem métricas de desempenho inventadas.
 
 ## Planos
 

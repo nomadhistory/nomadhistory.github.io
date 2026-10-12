@@ -4,7 +4,7 @@
 Uso:
     python3 dev/make-photos.py <slug> <arquivo-de-origem> [--focus 0.38]
 
-    slug            nome do arquivo final (ex.: tiago, marina)
+    slug            nome do arquivo final (ex.: marina)
     arquivo         .jpg, .png ou .heic vindo do celular
     --focus         onde está o rosto na vertical, de 0 (topo) a 1
                     (base). O recorte 4:5 é feito em volta desse ponto.

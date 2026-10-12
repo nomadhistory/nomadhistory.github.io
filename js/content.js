@@ -11,7 +11,7 @@ const CONTENT = {
     name: "Historia Nomade",
     tagline: "Marketing studio for travel, hospitality and tourism",
     email: "hello@historianomade.com",
-    // TODO Tiago: o WhatsApp continua vazio de propósito — número
+    // TODO: o WhatsApp continua vazio de propósito — número
     // inventado num site público é mensagem de cliente caindo no
     // telefone de um desconhecido. Enquanto estiver vazio, os botões
     // de WhatsApp simplesmente não aparecem.
@@ -74,16 +74,6 @@ const CONTENT = {
         ],
         bio:
           "With a background in History, Marina uncovers the story behind every business to turn its heritage into its greatest competitive advantage. In a market crowded with generic offerings, she builds strategic positioning that emotionally connects guests to your brand's true value—making your story the definitive reason they choose you.",
-      },
-      {
-        name: "Tiago",
-        photo: "assets/team/tiago.webp",
-        role: "Software Engineer · Digital Marketing",
-        links: [
-          { label: "@tiagohyad", href: "https://www.instagram.com/tiagohyad/" },
-        ],
-        bio:
-          "Years in software and performance marketing. He builds the brand, the site and the channels around that story, and measures what each booking actually cost. Fast sites, clean tracking, no platform you stay paying for.",
       },
     ],
     note:
@@ -211,7 +201,7 @@ const CONTENT = {
       {
         published: true,
         client: "DLT Academy",
-        type: "Our own project · built by Tiago",
+        type: "Our own project",
         location: "dlt.academy",
         href: "https://dlt.academy/",
         challenge:
@@ -304,7 +294,7 @@ const CONTENT = {
       label: "Email us",
       ariaLabel: "Email Historia Nomade",
       subject: "Hello from your website",
-      body: "Hi Marina and Tiago,\n\nI run:\nWhere:\nWhat I need:\n\n",
+      body: "Hi Marina,\n\nI run:\nWhere:\nWhat I need:\n\n",
     },
   },
 
